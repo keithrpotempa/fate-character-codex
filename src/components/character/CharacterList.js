@@ -41,6 +41,7 @@ const CharacterList = props => {
               <CharacterCard
                 key={character.id}
                 name={character.name}
+                id={character.id}
                 highConcept={getHighConcept(character)}
               />
             )}

@@ -6,6 +6,7 @@ import SkillList from "./skill/SkillList";
 import StuntList from "./stunt/StuntList";
 
 import CharacterList from "./character/CharacterList";
+import CharacterSheet from "./character/CharacterSheet";
 
 const ApplicationViews = props => {
   // TODO: hasUser & setUser
@@ -18,9 +19,17 @@ const ApplicationViews = props => {
       <Route path="/stunts" render={props => {
         return <StuntList {...props}/>
       }}/>
-      <Route path="/characters" render={props => {
+      <Route exact path="/characters" render={props => {
         return <CharacterList {...props}/>
       }}/>
+      <Route
+        exact
+        path="/characters/:characterId(\d+)"
+        render={props => {
+          const characterId = parseInt(props.match.params.characterId);
+          return <CharacterSheet characterId={characterId} {...props} />;
+        }}
+      />
     </>
   )
 }
