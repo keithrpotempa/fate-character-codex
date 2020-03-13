@@ -1,6 +1,5 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import React from "react";
-import Home from "./home/Home";
 
 import SkillList from "./skill/SkillList"
 
