@@ -13,6 +13,10 @@ export default {
     return fetch(`${remoteURL}/${dataType}?_expand=${expandType}`)
       .then(results => results.json())
   },
+  getAllEmbed(dataType, embedType) {
+    return fetch(`${remoteURL}/${dataType}?_embed=${embedType}`)
+      .then(results => results.json())
+  },
   search(dataType, query){
     return fetch(`${remoteURL}/${dataType}?q=${query}`)
       .then(results => results.json())

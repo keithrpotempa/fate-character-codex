@@ -2,14 +2,13 @@ import React from "react";
 import "./Character.css";
 
 const CharacterCard = props => {
-  const name = props.character.name;
   
   return (
     <>
       <div className="card">
-        <div className="card-content">
+        <div className="card-content character-card">
           <h3>
-            Name: {name}
+            {props.name}, {props.highConcept}
           </h3>
         </div>
       </div>
