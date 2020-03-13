@@ -5,6 +5,8 @@ import SkillList from "./skill/SkillList";
 
 import StuntList from "./stunt/StuntList";
 
+import CharacterList from "./character/CharacterList";
+
 const ApplicationViews = props => {
   // TODO: hasUser & setUser
 
@@ -15,6 +17,9 @@ const ApplicationViews = props => {
       }}/>
       <Route path="/stunts" render={props => {
         return <StuntList {...props}/>
+      }}/>
+      <Route path="/characters" render={props => {
+        return <CharacterList {...props}/>
       }}/>
     </>
   )

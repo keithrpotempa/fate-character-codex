@@ -25,6 +25,15 @@ const NavBar = props => {
             <NavLink 
               className="nav-link" 
               activeClassName="active" 
+              exact to="/characters"
+            >
+              Characters
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              className="nav-link" 
+              activeClassName="active" 
               exact to="/skills"
             >
               Skills
