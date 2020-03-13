@@ -1,4 +1,5 @@
-import React, { Link } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import "./Character.css";
 
 const CharacterCard = props => {
@@ -10,9 +11,9 @@ const CharacterCard = props => {
           <h3>
             {props.name}, {props.highConcept}
           </h3>
-          {/* FIXME: <Link to={`/characters/${props.id}`}>
+          <Link to={`/characters/${props.id}`}>
             <button>Details</button>
-          </Link> */}
+          </Link>
         </div>
       </div>
     </>
