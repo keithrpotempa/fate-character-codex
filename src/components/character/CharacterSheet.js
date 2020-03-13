@@ -5,22 +5,39 @@ const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
   const [aspects, setAspects] = useState([]);
   const [skillGroups, setSkillGroups] = useState([]);
+  const [physiqueRating, setPhysiqueRating] = useState({});
+  const [willRating, setWillRating] = useState({});
+  const [stunts, setStunts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const id = props.characterId;
 
   const getCharacter = () => {
-    ApiManager.get("characters", props.characterId)
+    ApiManager.get("characters", id)
       .then(setCharacter);
   }
 
   const getAspects = () => {
-    ApiManager.getCharacterAspects(props.characterId)
+    ApiManager.getCharacterAspects(id)
       .then(setAspects);
   }
 
   const getSkills = () => {
-    ApiManager.getCharacterSkills(props.characterId)
+    ApiManager.getCharacterSkills(id)
+      // Before the skills are sorted into a weird format to output
+      // we extract the rating of will and physique to use later
+      .then(skills => {
+        setWillRating(skills.find( ({skillId}) => skillId === 18).skillRating)
+        setPhysiqueRating(skills.find( ({skillId}) => skillId === 12).skillRating)
+        return skills
+      })
       .then(makeSkillGroups)
       .then(setSkillGroups)
+  }
+
+  const getStunts = () => {
+    ApiManager.getCharacterStunts(id)
+      .then(setStunts);
   }
 
   const makeSkillGroups = (skills) => {
@@ -42,14 +59,61 @@ const CharacterSheet = props => {
         ? matchingGroup.skills.push(skillName) 
         : skillGroups.push({rating: skillRating, skills: [skillName]})
     })
-    console.log("skillGroups", skillGroups);
     return skillGroups;
   }
+
+  const makeStressBoxes = (stressType) => {
+    // If stresstype rating is 1-2, they get 1, 2, 3 boxes
+    // If 3-4, they get 1, 2, 3, 4 boxes
+    // If 5+, they also get a mild consequence slot 
+    let rating;
+    if (stressType === "physical") {
+      rating = physiqueRating;
+    } else if (stressType === "mental") {
+      rating = willRating;
+    }
+
+    const checkBox = (number) => {
+      return (
+        <>
+          <strong>{number}</strong><input type="checkbox"/>
+        </>
+      )
+    }
+
+    // TODO: make this DRY-er
+    if (rating < 0) {
+      return (
+        <>
+          {checkBox(1)}
+          {checkBox(2)}
+        </>
+      ) 
+    } else if (rating <= 2 ) {
+      return (
+        <>
+          {checkBox(1)}
+          {checkBox(2)}
+          {checkBox(3)}
+      </>
+      ) 
+    } else if (rating >= 3 ) {
+      return (
+        <>
+          {checkBox(1)}
+          {checkBox(2)}
+          {checkBox(3)}
+          {checkBox(4)}
+      </>
+      )
+  }
+}
 
   useEffect(()=>{
     getCharacter();
     getAspects();
-    getSkills()
+    getSkills();
+    getStunts();
     setIsLoading(false);
   }, [])
 
@@ -61,7 +125,7 @@ const CharacterSheet = props => {
           <p><strong>Aspects:</strong></p>
           <ul>
             {aspects.map(aspect =>
-              <li key={aspect.id}>
+              <li key={"aspect-" + aspect.id}>
                 {aspect.name}
               </li>
             )}
@@ -69,11 +133,27 @@ const CharacterSheet = props => {
           <p><strong>Skills:</strong></p>
           <ul>
             {skillGroups.map(group => 
-              <li key={group.rating}>
+              <li key={"skillRating-" + group.rating}>
                 <strong>+{group.rating}:</strong> {group.skills.join(", ")}
               </li>  
             )}
           </ul>
+          <p><strong>Stunts:</strong></p>
+          <ul>
+            {stunts.map(stunt => 
+              <li key={"stunt-" + stunt.stunt.id }>
+                <strong>{stunt.stunt.name}:</strong> {stunt.stunt.description}
+              </li>
+            )}
+          </ul>
+          <p><strong>Physical Stress:</strong></p>
+          <div className="stress-boxes-container">
+            {makeStressBoxes("physical")}
+          </div>
+          <p><strong>Mental Stress:</strong></p>
+          <div className="stress-boxes-container">
+            {makeStressBoxes("mental")}
+          </div>
         </div>
       </div>
     </>
