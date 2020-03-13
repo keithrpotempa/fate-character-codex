@@ -4,7 +4,7 @@ import ApiManager from "../../modules/ApiManager";
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
   const [aspects, setAspects] = useState([]);
-  const [skills, setSkills] = useState([]);
+  const [skillGroups, setSkillGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getCharacter = () => {
@@ -19,13 +19,37 @@ const CharacterSheet = props => {
 
   const getSkills = () => {
     ApiManager.getCharacterSkills(props.characterId)
-      .then(setSkills);
+      .then(makeSkillGroups)
+      .then(setSkillGroups)
+  }
+
+  const makeSkillGroups = (skills) => {
+    // Sort the skills so that the highest rating is at the top
+    skills = skills.sort((a,b) =>  b.skillRating - a.skillRating)
+    // Seed/start the skillGroups array with the char's highest skill rating
+    const skillGroups = [{rating: skills[0].skillRating, skills: []}]
+    /* 
+      Loop over every skill the character has;
+      if there's a matching group, 
+      place it in that group's skills array, 
+      otherwise, start a new group. 
+    */
+    skills.forEach(skill => {
+      const skillName = skill.skill.name;
+      const skillRating = skill.skillRating;
+      const matchingGroup = skillGroups.find( ({rating}) => rating === skillRating)
+      matchingGroup 
+        ? matchingGroup.skills.push(skillName) 
+        : skillGroups.push({rating: skillRating, skills: [skillName]})
+    })
+    console.log("skillGroups", skillGroups);
+    return skillGroups;
   }
 
   useEffect(()=>{
     getCharacter();
     getAspects();
-    getSkills();
+    getSkills()
     setIsLoading(false);
   }, [])
 
@@ -42,10 +66,11 @@ const CharacterSheet = props => {
               </li>
             )}
           </ul>
+          <p><strong>Skills:</strong></p>
           <ul>
-            {skills.map(skill => 
-              <li key={skill.id}>
-                {skill.skill.name}, {skill.skillRating}
+            {skillGroups.map(group => 
+              <li key={group.rating}>
+                <strong>+{group.rating}:</strong> {group.skills.join(", ")}
               </li>  
             )}
           </ul>
