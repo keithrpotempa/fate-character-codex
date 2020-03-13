@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiManager from "../../modules/ApiManager";
+import StressConsequences from "./StressConsequences";
 
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
@@ -62,53 +63,6 @@ const CharacterSheet = props => {
     return skillGroups;
   }
 
-  const makeStressBoxes = (stressType) => {
-    // If stresstype rating is 1-2, they get 1, 2, 3 boxes
-    // If 3-4, they get 1, 2, 3, 4 boxes
-    // If 5+, they also get a mild consequence slot 
-    let rating;
-    if (stressType === "physical") {
-      rating = physiqueRating;
-    } else if (stressType === "mental") {
-      rating = willRating;
-    }
-
-    const checkBox = (number) => {
-      return (
-        <>
-          <strong>{number}</strong><input type="checkbox"/>
-        </>
-      )
-    }
-
-    // TODO: make this DRY-er
-    if (rating < 0) {
-      return (
-        <>
-          {checkBox(1)}
-          {checkBox(2)}
-        </>
-      ) 
-    } else if (rating <= 2 ) {
-      return (
-        <>
-          {checkBox(1)}
-          {checkBox(2)}
-          {checkBox(3)}
-      </>
-      ) 
-    } else if (rating >= 3 ) {
-      return (
-        <>
-          {checkBox(1)}
-          {checkBox(2)}
-          {checkBox(3)}
-          {checkBox(4)}
-      </>
-      )
-  }
-}
-
   useEffect(()=>{
     getCharacter();
     getAspects();
@@ -146,14 +100,10 @@ const CharacterSheet = props => {
               </li>
             )}
           </ul>
-          <p><strong>Physical Stress:</strong></p>
-          <div className="stress-boxes-container">
-            {makeStressBoxes("physical")}
-          </div>
-          <p><strong>Mental Stress:</strong></p>
-          <div className="stress-boxes-container">
-            {makeStressBoxes("mental")}
-          </div>
+          <StressConsequences
+            physiqueRating={physiqueRating}
+            willRating={willRating}
+          />
         </div>
       </div>
     </>
