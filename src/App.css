@@ -26,6 +26,11 @@ main {
   margin: 10px 5px;
 }
 
+.flex-rows {
+  display: flex;
+  flex-direction: row;
+}
+
 /* Came default */
 
 .App {

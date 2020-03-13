@@ -73,39 +73,44 @@ const CharacterSheet = props => {
 
   return (
     <>
-      <div className="card">
-        <div className="card-content">
-          <p><strong>Name:</strong> {character.name}</p>
-          <p><strong>Aspects:</strong></p>
-          <ul>
-            {aspects.map(aspect =>
-              <li key={"aspect-" + aspect.id}>
-                {aspect.name}
-              </li>
-            )}
-          </ul>
-          <p><strong>Skills:</strong></p>
-          <ul>
-            {skillGroups.map(group => 
-              <li key={"skillRating-" + group.rating}>
-                <strong>+{group.rating}:</strong> {group.skills.join(", ")}
-              </li>  
-            )}
-          </ul>
-          <p><strong>Stunts:</strong></p>
-          <ul>
-            {stunts.map(stunt => 
-              <li key={"stunt-" + stunt.stunt.id }>
-                <strong>{stunt.stunt.name}:</strong> {stunt.stunt.description}
-              </li>
-            )}
-          </ul>
-          <StressConsequences
-            physiqueRating={physiqueRating}
-            willRating={willRating}
-          />
+      <main>
+        <div className="card">
+          <div className="card-content">
+            <p><strong>Name:</strong> {character.name}</p>
+            <div>
+              {/* TOFIX: className="flex-row" */}
+              <p><strong>Aspects</strong></p>
+              <ul>
+                {aspects.map(aspect =>
+                  <li key={"aspect-" + aspect.id}>
+                    {aspect.name}
+                  </li>
+                )}
+              </ul>
+              <p><strong>Skills</strong></p>
+              <ul>
+                {skillGroups.map(group => 
+                  <li key={"skillRating-" + group.rating}>
+                    <strong>+{group.rating}:</strong> {group.skills.join(", ")}
+                  </li>  
+                )}
+              </ul>
+            </div>
+            <p><strong>Stunts</strong></p>
+            <ul>
+              {stunts.map(stunt => 
+                <li key={"stunt-" + stunt.stunt.id }>
+                  <strong>{stunt.stunt.name}:</strong> {stunt.stunt.description}
+                </li>
+              )}
+            </ul>
+            <StressConsequences
+              physiqueRating={physiqueRating}
+              willRating={willRating}
+            />
+          </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

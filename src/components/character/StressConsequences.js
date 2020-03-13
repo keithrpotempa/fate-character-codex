@@ -1,4 +1,5 @@
 import React from "react";
+import "./Character.css"
 
 const StressConsequences = props => {
   const physiqueRating = props.physiqueRating;
@@ -87,19 +88,25 @@ const StressConsequences = props => {
 
   return (
     <>
-      <div className="stress-container">
-        <p><strong>Physical Stress:</strong></p>
-        <div className="stress-boxes-container">
-          {makeStressBoxes("physical")}
-        </div>
-        <p><strong>Mental Stress:</strong></p>
-        <div className="stress-boxes-container">
-          {makeStressBoxes("mental")}
-        </div>
-      </div>
-      <p><strong>Consequences:</strong></p>
-      <div className="consequences-container">
-        {makeConsequenceInputs()}
+      <div className="flex-rows">
+          <div className="stress-container">
+            <p><strong>Physical Stress</strong></p>
+            <div className="stress-boxes-container">
+              {makeStressBoxes("physical")}
+            </div>
+          </div>
+          <div className="stress-container">
+            <p><strong>Mental Stress</strong></p>
+            <div className="stress-boxes-container">
+              {makeStressBoxes("mental")}
+            </div>
+          </div>
+          <div className="stress-container">
+            <p><strong>Consequences</strong></p>
+            <div className="consequences-container">
+              {makeConsequenceInputs()}
+            </div>
+          </div>
       </div>
     </>
   )
