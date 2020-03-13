@@ -4,6 +4,7 @@ import ApiManager from "../../modules/ApiManager";
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
   const [aspects, setAspects] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getCharacter = () => {
@@ -12,13 +13,19 @@ const CharacterSheet = props => {
   }
 
   const getAspects = () => {
-    ApiManager.getCharactersAspects(props.characterId)
+    ApiManager.getCharacterAspects(props.characterId)
       .then(setAspects);
+  }
+
+  const getSkills = () => {
+    ApiManager.getCharacterSkills(props.characterId)
+      .then(setSkills);
   }
 
   useEffect(()=>{
     getCharacter();
     getAspects();
+    getSkills();
     setIsLoading(false);
   }, [])
 
@@ -33,6 +40,13 @@ const CharacterSheet = props => {
               <li key={aspect.id}>
                 {aspect.name}
               </li>
+            )}
+          </ul>
+          <ul>
+            {skills.map(skill => 
+              <li key={skill.id}>
+                {skill.skill.name}, {skill.skillRating}
+              </li>  
             )}
           </ul>
         </div>

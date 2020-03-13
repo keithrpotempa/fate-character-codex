@@ -9,8 +9,12 @@ export default {
     return fetch(`${remoteURL}/${dataType}`)
       .then(result => result.json());
   },
-  getCharactersAspects(id){
+  getCharacterAspects(id){
     return fetch(`${remoteURL}/characterAspects?characterId=${id}`)
+      .then(results => results.json());
+  },
+  getCharacterSkills(id){
+    return fetch(`${remoteURL}/characterSkills?characterId=${id}&_expand=skill`)
       .then(results => results.json());
   },
   getAllExpand(dataType, expandType) {
