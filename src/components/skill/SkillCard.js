@@ -1,4 +1,5 @@
 import React from "react";
+import "./Skill.css";
 
 const SkillCard = props => {
   const name = props.skill.name
@@ -10,6 +11,8 @@ const SkillCard = props => {
         <div className="card-content">
           <p>
             <strong>{name}</strong>
+          </p>
+          <p>
             <a href={url}>Link</a>
           </p>
         </div>

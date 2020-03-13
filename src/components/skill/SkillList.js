@@ -16,17 +16,21 @@ const SkillList = props => {
 
   return (
     <>
-      <div className="skills-wrapper">
-        <div className="header-container">
-          <h1>Skills</h1>
+      <main>
+        <div className="skills-wrapper">
+          <div className="header-container">
+            <h1>Skills</h1>
+          </div>
+          <div className="skills-container">
+            {skills.map(skill => 
+              <SkillCard
+                key={skill.id}
+                skill={skill}
+              />  
+            )}
+          </div>
         </div>
-        {skills.map(skill => 
-          <SkillCard
-            key={skill.id}
-            skill={skill}
-          />  
-        )}
-      </div>
+      </main>
     </>
   )
 }
