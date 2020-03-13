@@ -1,0 +1,118 @@
+import React, { useEffect, useState } from "react";
+import ApiManager from "../../modules/ApiManager";
+import StressConsequences from "./StressConsequences";
+
+const CharacterSheet = props => {
+  const [character, setCharacter] = useState({});
+  const [aspects, setAspects] = useState([]);
+  const [skillGroups, setSkillGroups] = useState([]);
+  const [physiqueRating, setPhysiqueRating] = useState({});
+  const [willRating, setWillRating] = useState({});
+  const [stunts, setStunts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const id = props.characterId;
+
+  const getCharacter = () => {
+    ApiManager.get("characters", id)
+      .then(setCharacter);
+  }
+
+  const getAspects = () => {
+    ApiManager.getCharacterAspects(id)
+      .then(setAspects);
+  }
+
+  const getSkills = () => {
+    ApiManager.getCharacterSkills(id)
+      // Before the skills are sorted into a weird format to output
+      // we extract the rating of will and physique to use later
+      .then(skills => {
+        setWillRating(skills.find( ({skillId}) => skillId === 18).skillRating)
+        setPhysiqueRating(skills.find( ({skillId}) => skillId === 12).skillRating)
+        return skills
+      })
+      .then(makeSkillGroups)
+      .then(setSkillGroups)
+  }
+
+  const getStunts = () => {
+    ApiManager.getCharacterStunts(id)
+      .then(setStunts);
+  }
+
+  const makeSkillGroups = (skills) => {
+    // Sort the skills so that the highest rating is at the top
+    skills = skills.sort((a,b) =>  b.skillRating - a.skillRating)
+    // Seed/start the skillGroups array with the char's highest skill rating
+    const skillGroups = [{rating: skills[0].skillRating, skills: []}]
+    /* 
+      Loop over every skill the character has;
+      if there's a matching group, 
+      place it in that group's skills array, 
+      otherwise, start a new group. 
+    */
+    skills.forEach(skill => {
+      const skillName = skill.skill.name;
+      const skillRating = skill.skillRating;
+      const matchingGroup = skillGroups.find( ({rating}) => rating === skillRating)
+      matchingGroup 
+        ? matchingGroup.skills.push(skillName) 
+        : skillGroups.push({rating: skillRating, skills: [skillName]})
+    })
+    return skillGroups;
+  }
+
+  useEffect(()=>{
+    getCharacter();
+    getAspects();
+    getSkills();
+    getStunts();
+    setIsLoading(false);
+  }, [])
+
+  return (
+    <>
+      <main>
+        <div className="card">
+          <div className="card-content">
+            <p><strong>Name:</strong> {character.name}</p>
+            <div>
+              {/* TOFIX: className="flex-row" */}
+              <p><strong>Aspects</strong></p>
+              <ul>
+                {aspects.map(aspect =>
+                  <li key={"aspect-" + aspect.id}>
+                    {aspect.name}
+                  </li>
+                )}
+              </ul>
+              <p><strong>Skills</strong></p>
+              <ul>
+                {skillGroups.map(group => 
+                  <li key={"skillRating-" + group.rating}>
+                    <strong>+{group.rating}:</strong> {group.skills.join(", ")}
+                  </li>  
+                )}
+              </ul>
+            </div>
+            <p><strong>Stunts</strong></p>
+            <ul>
+              {stunts.map(stunt => 
+                <li key={"stunt-" + stunt.stunt.id }>
+                  <strong>{stunt.stunt.name}:</strong> {stunt.stunt.description}
+                </li>
+              )}
+            </ul>
+            <StressConsequences
+              physiqueRating={physiqueRating}
+              willRating={willRating}
+            />
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}
+
+export default CharacterSheet

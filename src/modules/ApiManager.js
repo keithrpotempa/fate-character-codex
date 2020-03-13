@@ -9,8 +9,24 @@ export default {
     return fetch(`${remoteURL}/${dataType}`)
       .then(result => result.json());
   },
+  getCharacterAspects(id){
+    return fetch(`${remoteURL}/characterAspects?characterId=${id}`)
+      .then(results => results.json());
+  },
+  getCharacterSkills(id){
+    return fetch(`${remoteURL}/characterSkills?characterId=${id}&_expand=skill`)
+      .then(results => results.json());
+  },
+  getCharacterStunts(id) {
+    return fetch(`${remoteURL}/characterStunts?characterId=${id}&_expand=stunt`)
+      .then(results => results.json())
+  },
   getAllExpand(dataType, expandType) {
     return fetch(`${remoteURL}/${dataType}?_expand=${expandType}`)
+      .then(results => results.json())
+  },
+  getAllEmbed(dataType, embedType) {
+    return fetch(`${remoteURL}/${dataType}?_embed=${embedType}`)
       .then(results => results.json())
   },
   search(dataType, query){

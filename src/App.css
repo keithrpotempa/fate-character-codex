@@ -1,3 +1,38 @@
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.skills-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 1170px;
+}
+
+.header-container {
+  display:flex;
+  justify-content: center;
+  border: 2px solid #dedede;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+.card-content {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  margin: 10px 5px;
+}
+
+.flex-rows {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Came default */
+
 .App {
   text-align: center;
 }
