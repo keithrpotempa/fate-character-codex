@@ -23,9 +23,12 @@ main {
   border: 2px solid #dedede;
   background-color: #f1f1f1;
   border-radius: 5px;
+  margin: 10px 5px;
+}
+
+.skill-card {
   width: 150px;
   padding: 10px;
-  margin: 10px 5px;
 }
 
 .skills-container {

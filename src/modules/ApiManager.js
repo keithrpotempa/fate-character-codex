@@ -2,10 +2,16 @@ const remoteURL = "http://localhost:5002";
 
 export default {
   get(dataType, id) {
-    return fetch(`${remoteURL}/${dataType}/${id}`).then(result => result.json());
+    return fetch(`${remoteURL}/${dataType}/${id}`)
+      .then(result => result.json());
   },
   getAll(dataType) {
-    return fetch(`${remoteURL}/${dataType}`).then(result => result.json());
+    return fetch(`${remoteURL}/${dataType}`)
+      .then(result => result.json());
+  },
+  getAllExpand(dataType, expandType) {
+    return fetch(`${remoteURL}/${dataType}?_expand=${expandType}`)
+      .then(results => results.json())
   },
   search(dataType, query){
     return fetch(`${remoteURL}/${dataType}?q=${query}`)

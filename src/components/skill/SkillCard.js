@@ -2,13 +2,13 @@ import React from "react";
 import "./Skill.css";
 
 const SkillCard = props => {
-  const name = props.skill.name
-  const url = props.skill.url
+  const name = props.skill.name;
+  const url = props.skill.url;
 
   return (
     <>
       <div className="card">
-        <div className="card-content">
+        <div className="card-content skill-card">
           <p>
             <strong>{name}</strong>
           </p>
