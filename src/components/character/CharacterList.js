@@ -38,6 +38,12 @@ const CharacterList = props => {
     <>
       <main>
         <div className="characters-wrapper">
+          <button
+            type="button"
+            onClick={() => {props.history.push("/characters/new")}}
+          >
+            New Character
+          </button>
           <div className="header-container">
             <h1>Characters</h1>
           </div>
