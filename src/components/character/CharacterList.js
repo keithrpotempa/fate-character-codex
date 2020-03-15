@@ -25,6 +25,11 @@ const CharacterList = props => {
     return highConcept;
   }
 
+  const handleDelete = (id) => {
+    ApiManager.delete("characters", id)
+      .then(getCharacters)
+  }
+
   useEffect(() => {
     getCharacters();
   }, [])
@@ -43,6 +48,7 @@ const CharacterList = props => {
                 name={character.name}
                 id={character.id}
                 highConcept={getHighConcept(character)}
+                handleDelete={() => handleDelete(character.id)}
               />
             )}
           </div>

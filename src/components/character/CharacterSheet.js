@@ -108,6 +108,12 @@ const CharacterSheet = props => {
               physiqueRating={physiqueRating}
               willRating={willRating}
             />
+          <button
+            type="button"
+            onClick={props.handleDelete}
+          >
+            Delete
+          </button>
           </div>
         </div>
       </main>

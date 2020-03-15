@@ -11,7 +11,10 @@ const CharacterCard = props => {
           <h3>
             {props.name}, {props.highConcept}
           </h3>
-          <Link to={`/characters/${props.id}`}>
+          <Link 
+            to={`/characters/${props.id}`}
+            handleDelete={props.handleDelete}
+          >
             <button>Details</button>
           </Link>
         </div>
