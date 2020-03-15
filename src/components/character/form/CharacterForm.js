@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../Character.css";
 import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
+import SkillsForm from "./SkillsForm";
 
 const CharacterForm = props => {
   // All the state for the character form is here, in the parent component
@@ -18,6 +19,7 @@ const CharacterForm = props => {
     { name: "", aspectTypeId: 3 },
     { name: "", aspectTypeId: 3 }
   ])
+  const [skills, setSkills] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // TODO: likely have state for all the various attributes of a character
 
@@ -101,13 +103,13 @@ const CharacterForm = props => {
             placeholder="Character name"
           />
           <AspectForm 
-            handleFieldChange={handleFieldChange}
             aspects={aspects}
             setAspects={setAspects}
           />
-          <div className="skills-container">
-
-          </div>
+          <SkillsForm 
+            characterSkills={skills}
+            setCharacterSkills={setSkills}
+          />
           <button
             type="button"
             disabled={isLoading}
