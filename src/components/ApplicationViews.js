@@ -7,7 +7,7 @@ import StuntList from "./stunt/StuntList";
 
 import CharacterList from "./character/CharacterList";
 import CharacterSheet from "./character/CharacterSheet";
-import CharacterForm from "./character/CharacterForm";
+import CharacterForm from "./character/form/CharacterForm";
 
 const ApplicationViews = props => {
   // TODO: hasUser & setUser
