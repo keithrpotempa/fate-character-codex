@@ -8,11 +8,11 @@ const StuntsForm = props => {
   const skillList = props.skillList;
   const [stuntList, setStuntList] = useState([]);
 
-  const [filter1, setFilter1] = useState([]);
-  const [filter2, setFilter2] = useState([]);
-  const [filter3, setFilter3] = useState([]);
-  const [filter4, setFilter4] = useState([]);
-  const [filter5, setFilter5] = useState([]);
+  const [filter1, setFilter1] = useState("");
+  const [filter2, setFilter2] = useState("");
+  const [filter3, setFilter3] = useState("");
+  const [filter4, setFilter4] = useState("");
+  const [filter5, setFilter5] = useState("");
 
   const getStuntList = () => {
     return ApiManager.getAll("stunts")
@@ -91,23 +91,41 @@ const StuntsForm = props => {
   // FIXME: dropdowns get wiped by re-rendering dom, 
   // though the info is properly saved 
   const StuntsDropdown = props => {
-    const filteredList = stuntList.filter(stunt => stunt.skillId === props.filter)
-
-    return (
-      <>
-        <select
-          className="stunt-selector"
-          id={`stunts--${props.x}`}
-          onChange={handleFieldChange}
-        >
-          {filteredList.map(stunt => (
+    if (props.filter === "") {
+      return (
+        <>
+          <select
+            className="stunt-selector"
+            id={`stunts--${props.x}`}
+            onChange={handleFieldChange}
+          >
+          {stuntList.map(stunt => (
             <option key={stunt.id} value={stunt.id}>
               {stunt.name}
             </option>
           ))}
         </select>
-      </>
-    )
+        </>
+      )
+    } else {
+      const filteredList = stuntList.filter(stunt => stunt.skillId === props.filter)
+      return (
+        <>
+          <select
+            className="stunt-selector"
+            id={`stunts--${props.x}`}
+            onChange={handleFieldChange}
+          >
+            {filteredList.map(stunt => (
+              <option key={stunt.id} value={stunt.id}>
+                {stunt.name}
+              </option>
+            ))}
+          </select>
+        </>
+      )
+    }
+
   }
 
   const StuntDescription = props => {
@@ -173,6 +191,7 @@ const StuntsForm = props => {
   return (
     <>
       <h3>Stunts</h3>
+      <p>(choose a skill to filter by)</p>
       <StuntRow x="1"/>
       <StuntRow x="2"/>
       <StuntRow x="3"/>

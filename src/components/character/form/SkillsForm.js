@@ -5,7 +5,8 @@ const SkillsForm = props => {
   const setCharacterSkills = props.setCharacterSkills;
   const characterSkills = props.characterSkills;
   const skillList = props.skillList;
-  const setSkillList = props.setSkillList;
+  // TODO: filter out skills already chosen for future dropdowns
+  // const setSkillList = props.setSkillList;
 
   const handleFieldChange = evt => {
     const stateToChange = [...characterSkills];
