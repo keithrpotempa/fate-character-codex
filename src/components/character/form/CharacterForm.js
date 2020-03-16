@@ -19,7 +19,9 @@ const CharacterForm = props => {
     { name: "", aspectTypeId: 3 },
     { name: "", aspectTypeId: 3 }
   ])
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState([
+    { skillId: 0, skillRating: 0 }
+  ]);
   const [isLoading, setIsLoading] = useState(false);
   // TODO: likely have state for all the various attributes of a character
 
