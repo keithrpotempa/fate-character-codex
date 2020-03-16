@@ -4,17 +4,8 @@ import ApiManager from "../../../modules/ApiManager"
 const SkillsForm = props => {
   const setCharacterSkills = props.setCharacterSkills;
   const characterSkills = props.characterSkills;
-  const [skillList, setSkillList] = useState([]);
-
-  const getSkillList = () => {
-    return ApiManager.getAll("skills")
-      // Hacky way of adding a default / blank value to the list
-      .then(skills => {
-        skills.unshift({id: 0, name: "[Choose Skill]"});
-        return skills;
-      })
-      .then(setSkillList);      
-  }
+  const skillList = props.skillList;
+  const setSkillList = props.setSkillList;
 
   const handleFieldChange = evt => {
     const stateToChange = [...characterSkills];
@@ -73,7 +64,7 @@ const SkillsForm = props => {
   }
 
   useEffect(() => {
-    getSkillList();
+
   }, [])
 
   return (

@@ -3,6 +3,7 @@ import "../Character.css";
 import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
+import StuntsForm from "./StuntsForm";
 
 const CharacterForm = props => {
   // All the state for the character form is here, in the parent component
@@ -20,9 +21,19 @@ const CharacterForm = props => {
     { name: "", aspectTypeId: 3 }
   ])
   const [skills, setSkills] = useState([]);
+  const [skillList, setSkillList] = useState([]);
+  const [stunts, setStunts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // TODO: stunts
 
+  const getSkillList = () => {
+    return ApiManager.getAll("skills")
+      // Hacky way of adding a default / blank value to the list
+      .then(skills => {
+        skills.unshift({id: 0, name: "[Choose Skill]"});
+        return skills;
+      })
+      .then(setSkillList);      
+  }
 
   // Note: Most field changes are handled 
   // by their respective child components
@@ -87,7 +98,6 @@ const CharacterForm = props => {
   }
 
   const saveCharacter = character => {
-    //TODO: implement edits as well
     return ApiManager.post("characters", character)
   }
 
@@ -100,6 +110,7 @@ const CharacterForm = props => {
   }
 
   useEffect(() => {
+    getSkillList();
     setIsLoading(false);
   }, [])
 
@@ -121,8 +132,15 @@ const CharacterForm = props => {
             setAspects={setAspects}
           />
           <SkillsForm 
+            skillList={skillList}
+            setSkillList={setSkillList}
             characterSkills={skills}
             setCharacterSkills={setSkills}
+          />
+          <StuntsForm
+            characterStunts={stunts}
+            setCharacterStunts={setStunts}
+            skillList={skillList}
           />
           <button
             type="button"
