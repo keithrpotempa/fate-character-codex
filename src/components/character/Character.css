@@ -11,3 +11,24 @@
   display: flex;
   flex-direction: column;
 }
+
+.stunt-form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.stunt-dropdowns-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.stunt-selector {
+  width: 130px;
+}
+
+.stunt-description {
+  width: 50%;
+  min-height: 100px;
+  border: 1px solid black ;
+}

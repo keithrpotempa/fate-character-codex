@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiManager from "../../../modules/ApiManager";
+import "../Character.css";
 
 const StuntsForm = props => {
   const setCharacterStunts = props.setCharacterStunts;
@@ -116,15 +117,53 @@ const StuntsForm = props => {
       const stunt = stuntList.find(stunt => stunt.id === match.stuntId)
       return (
         <>
-          <span>{stunt.description}</span>
+          <div className="stunt-description">{stunt.description}</div>
         </>
       )
     } else {
       return (
         <>
+          <div className="stunt-description"></div>
         </>
       )
     }
+  }
+
+  const StuntRow = props => {
+    const x = parseInt(props.x)
+    let filter;
+
+    // This is deciding which filter to use, 
+    // based on the row
+    switch (x) {
+      case 1:
+        filter = filter1;
+        break;
+      case 2:
+        filter = filter2;
+        break;
+      case 3:
+        filter = filter3;
+        break;
+      case 4:
+        filter = filter4;
+        break;
+      case 5:
+        filter = filter5;
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <div className="stunt-form-container">
+      <div className="stunt-dropdowns-container">
+        <SkillsDropdown x={x}/>
+        <StuntsDropdown x={x} filter={filter}/>
+      </div>
+      <StuntDescription x={x}/>
+    </div>
+    )
   }
 
   useEffect(() => {
@@ -134,11 +173,11 @@ const StuntsForm = props => {
   return (
     <>
       <h3>Stunts</h3>
-      <p>Filter by skill <SkillsDropdown x="1"/><StuntsDropdown x="1" filter={filter1}/><StuntDescription x="1"/></p>
-      <p>Filter by skill <SkillsDropdown x="2"/><StuntsDropdown x="2" filter={filter2}/><StuntDescription x="2"/></p>
-      <p>Filter by skill <SkillsDropdown x="3"/><StuntsDropdown x="3" filter={filter3}/><StuntDescription x="3"/></p>
-      <p>Filter by skill <SkillsDropdown x="4"/><StuntsDropdown x="4" filter={filter4}/><StuntDescription x="4"/></p>
-      <p>Filter by skill <SkillsDropdown x="5"/><StuntsDropdown x="5" filter={filter5}/><StuntDescription x="5"/></p>
+      <StuntRow x="1"/>
+      <StuntRow x="2"/>
+      <StuntRow x="3"/>
+      <StuntRow x="4"/>
+      <StuntRow x="5"/>
     </>
   )
 }
