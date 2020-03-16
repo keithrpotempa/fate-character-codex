@@ -24,27 +24,44 @@ const StuntsForm = props => {
   }
 
   const handleFieldChange = evt => {
-    console.log("handleFieldChange")
+    const stateToChange = [...characterStunts]
+    const row = parseInt(evt.target.id.split("--")[1])
+    const objectToSave = {
+      row: row,
+      stuntId: parseInt(evt.target.value)
+    }
+    // Finding the item in the array with a row position equal to the select field's
+    const indexToChange = stateToChange.findIndex( obj => obj.row === row );
+    /* Since findIndex returns -1 if it can't find anything, 
+      when we get a -1, we create a new object in the array 
+      Otherwise, change that existing object in state */
+    indexToChange === -1 
+      ? stateToChange.push(objectToSave) 
+      : stateToChange[indexToChange] = objectToSave;
+    setCharacterStunts(stateToChange);
   }
 
   const handleFilter = evt => {
+    // This is deciding which filter to set, 
+    // based on the row of the dropdown used
     const rowNumber = parseInt(evt.target.id.split("--")[1])
+    const valueToSet = parseInt(evt.target.value)
 
     switch (rowNumber) {
       case 1:
-        setFilter1(parseInt(evt.target.value));
+        setFilter1(valueToSet);
         break;
       case 2:
-        setFilter2(parseInt(evt.target.value));
+        setFilter2(valueToSet);
         break;
       case 3:
-        setFilter3(parseInt(evt.target.value));
+        setFilter3(valueToSet);
         break;
       case 4:
-        setFilter4(parseInt(evt.target.value));
+        setFilter4(valueToSet);
         break;
       case 5:
-        setFilter5(parseInt(evt.target.value));
+        setFilter5(valueToSet);
         break;
       default:
         break;
@@ -70,15 +87,16 @@ const StuntsForm = props => {
   } 
 
   const StuntsDropdown = props => {
+    const filteredList = stuntList.filter(stunt => stunt.skillId === props.filter)
+
     return (
       <>
         <select
           className="stunt-selector"
-          id="stunts"
+          id={`stunts--${props.x}`}
           onChange={handleFieldChange}
         >
-          {stuntList.filter(stunt => stunt.skillId === props.filter)
-            .map(stunt => (
+          {filteredList.map(stunt => (
             <option key={stunt.id} value={stunt.id}>
               {stunt.name}
             </option>
@@ -87,6 +105,14 @@ const StuntsForm = props => {
       </>
     )
   }
+
+  // const StuntDescription = props => {
+  //   return (
+  //     <>
+  //       <span style={{display: "none"}}>{}</span>
+  //     </>
+  //   )
+  // }
 
   useEffect(() => {
     getStuntList();
