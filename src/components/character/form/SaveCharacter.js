@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ApiManager from "../../../modules/ApiManager";
 
 const SaveCharacter = props => {
@@ -58,7 +58,6 @@ const SaveCharacter = props => {
     // POSTING ASPECTS
     .then(characterResp => {
       aspects.forEach(aspect => {
-        console.log("inside aspects", characterResp);
         // Keeps from posting blank aspects
         if (aspect.name !== "") {
           const aspectToSave = constructAspect(aspect, characterResp.id)
@@ -70,7 +69,6 @@ const SaveCharacter = props => {
 
     // POSTING SKILLS
     .then(characterResp => {
-      console.log("inside skills", characterResp);
       skills.forEach(skill => {
         const skillToSave = constructSkill(skill, characterResp.id)
         ApiManager.post("characterSkills", skillToSave)
@@ -81,12 +79,14 @@ const SaveCharacter = props => {
     // POSTING STUNTS
     .then(characterResp => {
       stunts.forEach(stunt => {
-        console.log("inside stunts", characterResp);
         const stuntToSave = constructStunt(stunt, characterResp.id)
         ApiManager.post("characterStunts", stuntToSave)
       })  
       return characterResp;
     })
+
+    // REDIRECT TO CHARACTER PAGE
+    .then(props.history.push("/characters"))
   }
 
   // useEffect(() => {}, [])

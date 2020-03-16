@@ -68,6 +68,11 @@ const CharacterSheet = props => {
     return skillGroups;
   }
 
+  const handleDelete = (id) => {
+    ApiManager.delete("characters", id)
+      .then(props.history.push("/characters"))
+  }
+
   useEffect(()=>{
     getCharacter();
     getAspects();
@@ -115,7 +120,7 @@ const CharacterSheet = props => {
             />
           <button
             type="button"
-            onClick={props.handleDelete}
+            onClick={() => handleDelete(id)}
           >
             Delete
           </button>
