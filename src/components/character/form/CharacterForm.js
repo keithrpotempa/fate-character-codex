@@ -10,7 +10,7 @@ const CharacterForm = props => {
   const [character, setCharacter] = useState({name: ""});
   const [characterId, setCharacterId] = useState(0);
   // Seeding a default array of aspects
-  // presently with their types hard coded
+  // presently with their types (currently) hard coded
   const [aspects, setAspects] = useState([
     { name: "", aspectTypeId: 1 },
     { name: "", aspectTypeId: 2 },
@@ -21,11 +21,11 @@ const CharacterForm = props => {
   ])
   const [skills, setSkills] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // TODO: likely have state for all the various attributes of a character
+  // TODO: stunts
 
 
-  // Depeneding on what kind of field is being changed,
-  // the target's value is routed into different states
+  // Note: Most field changes are handled 
+  // by their respective child components
   const handleFieldChange = evt => {
     const stateToChange = {...character};
     stateToChange[evt.target.id] = evt.target.value;
@@ -51,6 +51,9 @@ const CharacterForm = props => {
           saveAspect(constructAspect(aspect))
         }
       }))
+      .then(skills.forEach(skill => {
+        saveSkill(constructSkill(skill))
+      }))
   }
 
   const constructCharacter = () => {
@@ -66,14 +69,21 @@ const CharacterForm = props => {
   }
 
   const constructAspect = aspect => {
-    // console.log("characterId", characterId)
     const aspectToSave = {
       name: aspect.name,
       characterId: characterId,
       aspectTypeId: aspect.aspectTypeId
-      //FIXME: needs aspect type
     }
     return aspectToSave
+  }
+
+  const constructSkill = skill => {
+    const skillToSave = {
+      characterId: characterId,
+      skillId: skill.skillId,
+      skillRating: skill.skillRating
+    }
+    return skillToSave
   }
 
   const saveCharacter = character => {
@@ -83,6 +93,10 @@ const CharacterForm = props => {
 
   const saveAspect = aspect => {
     return ApiManager.post("characterAspects", aspect)
+  }
+
+  const saveSkill = skill => {
+    return ApiManager.post("characterSkills", skill)
   }
 
   useEffect(() => {

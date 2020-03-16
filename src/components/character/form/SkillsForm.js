@@ -21,7 +21,7 @@ const SkillsForm = props => {
     const objectToSave = {
       gridPosition: evt.target.id, 
       skillId: parseInt(evt.target.value),
-      skillRating: evt.target.id.split(":")[0]
+      skillRating: parseInt(evt.target.id.split(":")[0])
     }
     // Finding the item in the array with a grid position equal to the select field's
     const indexToChange = stateToChange.findIndex( obj => obj.gridPosition === evt.target.id );
@@ -34,11 +34,13 @@ const SkillsForm = props => {
     setCharacterSkills(stateToChange);
   }
 
+  // FIXME: changed skill dropdowns get wiped by re-rendering dom, 
+  // though the info is properly saved 
   const SkillsDropdown = props => {
     return (
       <>
         <select
-          className="skill"
+          className="skill-selector"
           id={`${props.x}:${props.y}`}
           onChange={handleFieldChange}
         >
