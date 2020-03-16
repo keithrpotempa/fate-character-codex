@@ -42,6 +42,24 @@ const SkillsForm = props => {
     )
   } 
 
+  const SkillsRow = props => {
+    // Making a grid with x and y 
+    // x is the row, y is the column 
+    // x is also the Skill's rating #
+    const x = parseInt(props.row)
+
+    // TODO: figure out how to loop this so you only write it once
+    return (
+      <p className="skills-x"> <strong>+{x}</strong>
+       <SkillsDropdown x={x} y="1"/> 
+       <SkillsDropdown x={x} y="2"/> 
+       <SkillsDropdown x={x} y="3"/> 
+       <SkillsDropdown x={x} y="4"/>
+       <SkillsDropdown x={x} y="5"/>
+      </p>
+    )
+  }
+
   useEffect(() => {
     getSkillList();
   }, [])
@@ -52,12 +70,13 @@ const SkillsForm = props => {
         <h3>Skills</h3>
         <div>
           {/* Using a classname to determine the "rating" of a particular chosen skill */}
-          <p className="skills-6"> +6 <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/></p>
-          <p className="skills-5"> +5 <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/></p>
-          <p className="skills-4"> +4 <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/></p>
-          <p className="skills-3"> +3 <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/></p>
-          <p className="skills-2"> +2 <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/></p>
-          <p className="skills-1"> +1 <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/> <SkillsDropdown/></p>
+          {/* TODO: figure out how to loop this so you only write it once*/}
+          <SkillsRow row="6"/>
+          <SkillsRow row="5"/>
+          <SkillsRow row="4"/>
+          <SkillsRow row="3"/>
+          <SkillsRow row="2"/>
+          <SkillsRow row="1"/>
         </div>
       </div>
     </>
