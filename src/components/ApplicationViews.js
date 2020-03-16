@@ -7,6 +7,7 @@ import StuntList from "./stunt/StuntList";
 
 import CharacterList from "./character/CharacterList";
 import CharacterSheet from "./character/CharacterSheet";
+import CharacterForm from "./character/form/CharacterForm";
 
 const ApplicationViews = props => {
   // TODO: hasUser & setUser
@@ -22,6 +23,12 @@ const ApplicationViews = props => {
       <Route exact path="/characters" render={props => {
         return <CharacterList {...props}/>
       }}/>
+      <Route 
+        path="/characters/new"
+        render={props => {
+          return <CharacterForm {...props} />;
+        }}
+      />
       <Route
         exact
         path="/characters/:characterId(\d+)"

@@ -25,6 +25,11 @@ const CharacterList = props => {
     return highConcept;
   }
 
+  const handleDelete = (id) => {
+    ApiManager.delete("characters", id)
+      .then(getCharacters)
+  }
+
   useEffect(() => {
     getCharacters();
   }, [])
@@ -33,6 +38,12 @@ const CharacterList = props => {
     <>
       <main>
         <div className="characters-wrapper">
+          <button
+            type="button"
+            onClick={() => {props.history.push("/characters/new")}}
+          >
+            New Character
+          </button>
           <div className="header-container">
             <h1>Characters</h1>
           </div>
@@ -43,6 +54,7 @@ const CharacterList = props => {
                 name={character.name}
                 id={character.id}
                 highConcept={getHighConcept(character)}
+                handleDelete={() => handleDelete(character.id)}
               />
             )}
           </div>
