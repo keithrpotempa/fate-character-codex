@@ -4,12 +4,13 @@ import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
+import SaveCharacter from "./SaveCharacter";
 
 const CharacterForm = props => {
   // All the state for the character form is here, in the parent component
   // but modified by the handleFieldChange functions of the children components
   const [character, setCharacter] = useState({name: ""});
-  const [characterId, setCharacterId] = useState(0);
+
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
   const [aspects, setAspects] = useState([
@@ -23,6 +24,7 @@ const CharacterForm = props => {
   const [skills, setSkills] = useState([]);
   const [skillList, setSkillList] = useState([]);
   const [stunts, setStunts] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   // skillList had to be "lifted" because it is needed by
@@ -43,87 +45,6 @@ const CharacterForm = props => {
     const stateToChange = {...character};
     stateToChange[evt.target.id] = evt.target.value;
     setCharacter(stateToChange)
-  }
-
-  const handleSave = evt => {
-    evt.preventDefault();
-    setIsLoading(true);
-    saveCharacter(constructCharacter(evt))
-      // Setting the assigned character ID in state 
-      // to use in all subsequent api posts
-      .then(resp => {
-        console.log("resp.id", resp.id)
-        setCharacterId(resp.id)
-        // FIXME: for some reason, character ID isn't sticking...
-        console.log("characterId", characterId)
-
-      })
-      .then(aspects.forEach(aspect => {
-        // Keeps from posting blank aspects
-        if (aspect.name !== "") {
-          saveAspect(constructAspect(aspect))
-        }
-      }))
-      .then(skills.forEach(skill => {
-        saveSkill(constructSkill(skill))
-      }))
-      .then(stunts.forEach(stunt => {
-        saveStunt(constructStunt(stunt))
-      }))
-  }
-
-  const constructCharacter = () => {
-    // TODO: Validations
-    const characterToSave = {
-      name: character.name,
-      //TODO: change with active storage
-      userId: 1,
-      created: new Date().toLocaleString(),
-      modified: new Date().toLocaleString()
-    }
-    return characterToSave;
-  }
-
-  const constructAspect = aspect => {
-    const aspectToSave = {
-      name: aspect.name,
-      characterId: characterId,
-      aspectTypeId: aspect.aspectTypeId
-    }
-    return aspectToSave;
-  }
-
-  const constructSkill = skill => {
-    const skillToSave = {
-      characterId: characterId,
-      skillId: skill.skillId,
-      skillRating: skill.skillRating
-    }
-    return skillToSave;
-  }
-
-  const constructStunt = stunt => {
-    const stuntToSave = {
-      characterId: characterId,
-      stuntId: stunt.stuntId,
-    }
-    return stuntToSave;
-  } 
-
-  const saveCharacter = character => {
-    return ApiManager.post("characters", character)
-  }
-
-  const saveAspect = aspect => {
-    return ApiManager.post("characterAspects", aspect)
-  }
-
-  const saveSkill = skill => {
-    return ApiManager.post("characterSkills", skill)
-  }
-
-  const saveStunt = stunt => {
-    return ApiManager.post("characterStunts", stunt)
   }
 
   useEffect(() => {
@@ -159,13 +80,15 @@ const CharacterForm = props => {
             setCharacterStunts={setStunts}
             skillList={skillList}
           />
-          <button
-            type="button"
-            disabled={isLoading}
-            onClick={(evt) => handleSave(evt)}
-          >
-            Save
-          </button>
+          <SaveCharacter 
+            character={character}
+            aspects={aspects}
+            skills={skills}
+            stunts={stunts}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            {...props}
+          />
         </fieldset>
       </form>
     </>
