@@ -106,13 +106,23 @@ const StuntsForm = props => {
     )
   }
 
-  // const StuntDescription = props => {
-  //   return (
-  //     <>
-  //       <span style={{display: "none"}}>{}</span>
-  //     </>
-  //   )
-  // }
+  const StuntDescription = props => {
+    const match = characterStunts.find( obj => obj.row === parseInt(props.x) )
+
+    if (match !== undefined) {
+      const stunt = stuntList.find(stunt => stunt.id === match.stuntId)
+      return (
+        <>
+          <span>{stunt.description}</span>
+        </>
+      )
+    } else {
+      return (
+        <>
+        </>
+      )
+    }
+  }
 
   useEffect(() => {
     getStuntList();
@@ -121,11 +131,11 @@ const StuntsForm = props => {
   return (
     <>
       <h3>Stunts</h3>
-      <p>Filter by skill <SkillsDropdown x="1"/><StuntsDropdown x="1" filter={filter1}/></p>
-      <p>Filter by skill <SkillsDropdown x="2"/><StuntsDropdown x="2" filter={filter2}/></p>
-      <p>Filter by skill <SkillsDropdown x="3"/><StuntsDropdown x="3" filter={filter3}/></p>
-      <p>Filter by skill <SkillsDropdown x="4"/><StuntsDropdown x="4" filter={filter4}/></p>
-      <p>Filter by skill <SkillsDropdown x="5"/><StuntsDropdown x="5" filter={filter5}/></p>
+      <p>Filter by skill <SkillsDropdown x="1"/><StuntsDropdown x="1" filter={filter1}/><StuntDescription x="1"/></p>
+      <p>Filter by skill <SkillsDropdown x="2"/><StuntsDropdown x="2" filter={filter2}/><StuntDescription x="2"/></p>
+      <p>Filter by skill <SkillsDropdown x="3"/><StuntsDropdown x="3" filter={filter3}/><StuntDescription x="3"/></p>
+      <p>Filter by skill <SkillsDropdown x="4"/><StuntsDropdown x="4" filter={filter4}/><StuntDescription x="4"/></p>
+      <p>Filter by skill <SkillsDropdown x="5"/><StuntsDropdown x="5" filter={filter5}/><StuntDescription x="5"/></p>
     </>
   )
 }
