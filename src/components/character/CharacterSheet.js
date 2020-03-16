@@ -25,11 +25,16 @@ const CharacterSheet = props => {
 
   const getSkills = () => {
     ApiManager.getCharacterSkills(id)
-      // Before the skills are sorted into a weird format to output
-      // we extract the rating of will and physique to use later
-      .then(skills => {
-        setWillRating(skills.find( ({skillId}) => skillId === 18).skillRating)
-        setPhysiqueRating(skills.find( ({skillId}) => skillId === 12).skillRating)
+    .then(skills => {
+        // Before the skills are sorted into a weird format to output
+        // we extract the rating of will and physique to use later
+        // If they don't have a rating, consider it to be zero
+        const will = skills.find( ({skillId}) => skillId === 18)
+        will ? setWillRating(will.skillRating) : setWillRating(0)
+
+        const physique = skills.find( ({skillId}) => skillId === 12)
+        physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
+        
         return skills
       })
       .then(makeSkillGroups)

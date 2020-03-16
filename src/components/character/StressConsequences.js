@@ -25,7 +25,7 @@ const StressConsequences = props => {
     }
 
     // TODO: make this DRY-er
-    if (rating < 0) {
+    if (rating <= 0) {
       return (
         <>
           {checkBox(1)}
