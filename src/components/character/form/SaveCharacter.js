@@ -9,8 +9,6 @@ const SaveCharacter = props => {
   const isLoading = props.isLoading;
   const setIsLoading= props.setIsLoading;
 
-  const [characterId, setCharacterId] = useState();
-
   const constructCharacter = () => {
     // TODO: Validations
     const characterToSave = {
@@ -23,7 +21,7 @@ const SaveCharacter = props => {
     return characterToSave;
   }
 
-  const constructAspect = aspect => {
+  const constructAspect = (aspect, characterId) => {
     const aspectToSave = {
       name: aspect.name,
       characterId: characterId,
@@ -32,7 +30,7 @@ const SaveCharacter = props => {
     return aspectToSave;
   }
 
-  const constructSkill = skill => {
+  const constructSkill = (skill, characterId) => {
     const skillToSave = {
       characterId: characterId,
       skillId: skill.skillId,
@@ -41,7 +39,7 @@ const SaveCharacter = props => {
     return skillToSave;
   }
 
-  const constructStunt = stunt => {
+  const constructStunt = (stunt, characterId) => {
     const stuntToSave = {
       characterId: characterId,
       stuntId: stunt.stuntId,
@@ -54,30 +52,41 @@ const SaveCharacter = props => {
     setIsLoading(true);
 
     const char = constructCharacter()
+    // POSTING CHARACTER
     ApiManager.post("characters", char)
-    // Setting the assigned character ID in state 
-    // to use in all subsequent api posts
-    .then(resp => {
-      console.log("resp.id", resp.id)
-      setCharacterId(resp.id)
-      // FIXME: for some reason, character ID isn't sticking...
-      console.log("characterId", characterId)
+
+    // POSTING ASPECTS
+    .then(characterResp => {
+      aspects.forEach(aspect => {
+        console.log("inside aspects", characterResp);
+        // Keeps from posting blank aspects
+        if (aspect.name !== "") {
+          const aspectToSave = constructAspect(aspect, characterResp.id)
+          ApiManager.post("characterAspects", aspectToSave)
+        } 
+      })
+      return characterResp;
     })
-    .then(aspects.forEach(aspect => {
-      // Keeps from posting blank aspects
-      if (aspect.name !== "") {
-        const aspectToSave = constructAspect(aspect)
-        ApiManager.post("characterAspects", aspectToSave)
-      }
-    }))
-    .then(skills.forEach(skill => {
-      const skillToSave = constructSkill(skill)
-      ApiManager.post("characterSkills", skillToSave)
-    }))
-    .then(stunts.forEach(stunt => {
-      const stuntToSave = constructStunt(stunt)
-      ApiManager.post("characterStunts", stuntToSave)
-    }))
+
+    // POSTING SKILLS
+    .then(characterResp => {
+      console.log("inside skills", characterResp);
+      skills.forEach(skill => {
+        const skillToSave = constructSkill(skill, characterResp.id)
+        ApiManager.post("characterSkills", skillToSave)
+      })
+      return characterResp; 
+    })
+
+    // POSTING STUNTS
+    .then(characterResp => {
+      stunts.forEach(stunt => {
+        console.log("inside stunts", characterResp);
+        const stuntToSave = constructStunt(stunt, characterResp.id)
+        ApiManager.post("characterStunts", stuntToSave)
+      })  
+      return characterResp;
+    })
   }
 
   // useEffect(() => {}, [])
