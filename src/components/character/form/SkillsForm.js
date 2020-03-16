@@ -25,7 +25,7 @@ const SkillsForm = props => {
     setCharacterSkills(stateToChange);
   }
 
-  // FIXME: changed skill dropdowns get wiped by re-rendering dom, 
+  // FIXME: dropdowns get wiped by re-rendering dom, 
   // though the info is properly saved 
   const SkillsDropdown = props => {
     return (

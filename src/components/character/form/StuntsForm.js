@@ -67,7 +67,8 @@ const StuntsForm = props => {
         break;
     }
   }
-
+  // FIXME: dropdowns get wiped by re-rendering dom, 
+  // though the info is properly saved 
   const SkillsDropdown = props => {
     return (
       <>
@@ -86,6 +87,8 @@ const StuntsForm = props => {
     )
   } 
 
+  // FIXME: dropdowns get wiped by re-rendering dom, 
+  // though the info is properly saved 
   const StuntsDropdown = props => {
     const filteredList = stuntList.filter(stunt => stunt.skillId === props.filter)
 

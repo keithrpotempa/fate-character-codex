@@ -25,6 +25,8 @@ const CharacterForm = props => {
   const [stunts, setStunts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // skillList had to be "lifted" because it is needed by
+  // both SkillsForm and StuntsForm child components
   const getSkillList = () => {
     return ApiManager.getAll("skills")
       // Hacky way of adding a default / blank value to the list
@@ -65,6 +67,9 @@ const CharacterForm = props => {
       .then(skills.forEach(skill => {
         saveSkill(constructSkill(skill))
       }))
+      .then(stunts.forEach(stunt => {
+        saveStunt(constructStunt(stunt))
+      }))
   }
 
   const constructCharacter = () => {
@@ -85,7 +90,7 @@ const CharacterForm = props => {
       characterId: characterId,
       aspectTypeId: aspect.aspectTypeId
     }
-    return aspectToSave
+    return aspectToSave;
   }
 
   const constructSkill = skill => {
@@ -94,8 +99,16 @@ const CharacterForm = props => {
       skillId: skill.skillId,
       skillRating: skill.skillRating
     }
-    return skillToSave
+    return skillToSave;
   }
+
+  const constructStunt = stunt => {
+    const stuntToSave = {
+      characterId: characterId,
+      stuntId: stunt.stuntId,
+    }
+    return stuntToSave;
+  } 
 
   const saveCharacter = character => {
     return ApiManager.post("characters", character)
@@ -107,6 +120,10 @@ const CharacterForm = props => {
 
   const saveSkill = skill => {
     return ApiManager.post("characterSkills", skill)
+  }
+
+  const saveStunt = stunt => {
+    return ApiManager.post("characterStunts", stunt)
   }
 
   useEffect(() => {
