@@ -2,34 +2,44 @@ import React, { useState, useEffect } from "react";
 import ApiManager from "../../../modules/ApiManager"
 
 const SkillsForm = props => {
-  const characterSkills = props.characterSkills
+  const setCharacterSkills = props.setCharacterSkills;
+  const characterSkills = props.characterSkills;
   const [skillList, setSkillList] = useState([]);
 
   const getSkillList = () => {
     return ApiManager.getAll("skills")
       // Hacky way of adding a default / blank value to the list
       .then(skills => {
-        skills.unshift({id: 0, name: "[Choose Skill]"})
-        return skills
+        skills.unshift({id: 0, name: "[Choose Skill]"});
+        return skills;
       })
       .then(setSkillList);      
   }
 
   const handleFieldChange = evt => {
-    /*{ skillId: 0, skillRating: 0 }*/
-    // Utilize a positional grid: second +1 === "skills-grid--1-2"
-    const stateToChange = [...characterSkills]
-    // FIXME: right now just doing the first skill in the array
-    stateToChange[0] = parseInt(evt.target.value);
-    props.setCharacterSkills(stateToChange)
+    const stateToChange = [...characterSkills];
+    const objectToSave = {
+      gridPosition: evt.target.id, 
+      skillId: parseInt(evt.target.value),
+      skillRating: evt.target.id.split(":")[0]
+    }
+    // Finding the item in the array with a grid position equal to the select field's
+    const indexToChange = stateToChange.findIndex( obj => obj.gridPosition === evt.target.id );
+    /* Since findIndex returns -1 if it can't find anything, 
+      when we get a -1, we create a new object in the array 
+      Otherwise, change that existing object in state */
+    indexToChange === -1 
+      ? stateToChange.push(objectToSave) 
+      : stateToChange[indexToChange] = objectToSave;
+    setCharacterSkills(stateToChange);
   }
 
-  const SkillsDropdown = () => {
+  const SkillsDropdown = props => {
     return (
       <>
         <select
           className="skill"
-          id="skill"
+          id={`${props.x}:${props.y}`}
           onChange={handleFieldChange}
         >
           {skillList.map(skill => (
