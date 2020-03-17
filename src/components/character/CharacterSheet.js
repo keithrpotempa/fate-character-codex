@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../modules/ApiManager";
 import StressConsequences from "./StressConsequences";
 
@@ -69,8 +71,22 @@ const CharacterSheet = props => {
   }
 
   const handleDelete = (id) => {
-    ApiManager.delete("characters", id)
-      .then(props.history.push("/characters"))
+    confirmAlert({
+      title: 'Confirm to submit',
+      message: 'Are you sure to delete this character?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => ApiManager.delete("characters", id)
+            .then(props.history.push("/characters"))
+        },
+        {
+          label: 'No',
+          onClick: null
+        }
+      ]
+    });
+
   }
 
   useEffect(()=>{
