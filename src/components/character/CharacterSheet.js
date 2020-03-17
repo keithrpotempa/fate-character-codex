@@ -70,10 +70,6 @@ const CharacterSheet = props => {
     return skillGroups;
   }
 
-
-  
-  
-  
   const handleDelete = (id) => {
     confirmAlert({
       title: 'Confirm to submit',
