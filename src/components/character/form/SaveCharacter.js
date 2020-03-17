@@ -1,4 +1,6 @@
 import React from "react";
+// import { confirmAlert } from 'react-confirm-alert';
+// import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
 
 const SaveCharacter = props => {
@@ -9,6 +11,7 @@ const SaveCharacter = props => {
   const isLoading = props.isLoading;
   const setIsLoading= props.setIsLoading;
 
+  /* ------------ OBJECT CONSTRUCTORS ------------ */
   const constructCharacter = () => {
     // TODO: Validations
     const characterToSave = {
@@ -47,13 +50,19 @@ const SaveCharacter = props => {
     return stuntToSave;
   } 
 
+  /* ------------ VALIDATIONS ------------ */
+  const validateChar = char => {
+    return char.name === "" ? false : true 
+  }
+  
+  /* ------------ SAVING ------------ */
   const handleSave = evt => {
     evt.preventDefault();
     setIsLoading(true);
 
-    const char = constructCharacter()
     // POSTING CHARACTER
-    ApiManager.post("characters", char)
+    const char = constructCharacter()
+    validateChar(char) ? ApiManager.post("characters", char) : null
 
     // POSTING ASPECTS
     .then(characterResp => {
