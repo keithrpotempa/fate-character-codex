@@ -7,26 +7,35 @@ const SkillsForm = props => {
   // TODO: filter out skills already chosen for future dropdowns
   // const setSkillList = props.setSkillList;
 
+  
+  // FIXME: will need adjusting with multiselector
   const handleFieldChange = evt => {
-    // The "default" [Choose Skill] has an id of 0
-    // so we don't want to ever that
-    if (evt.target.value !== 0) {
-      const stateToChange = [...characterSkills];
-      const objectToSave = {
-        gridPosition: evt.target.id, 
-        skillId: parseInt(evt.target.value),
-        skillRating: parseInt(evt.target.id.split(":")[0])
+    const selected = [...evt.target.options]
+      .filter(o => o.selected)
+      .map(o => o.value)
+    selected.forEach(option => {
+      // The "default" [Choose Skill] has an id of 0
+      // so we don't want to ever that
+      const optionId = parseInt(option)
+      if (optionId !== 0) {
+        const stateToChange = [...characterSkills];
+        const objectToSave = {
+          // FIXME: grid position?
+          gridPosition: "FIXME", 
+          skillId: optionId,
+          skillRating: parseInt(evt.target.id.split(":")[0])
+        }
+        // Finding the item in the array with a grid position equal to the select field's
+        const indexToChange = stateToChange.findIndex( obj => obj.gridPosition === evt.target.id );
+        /* Since findIndex returns -1 if it can't find anything, 
+          when we get a -1, we create a new object in the array 
+          Otherwise, change that existing object in state */
+        indexToChange === -1 
+          ? stateToChange.push(objectToSave) 
+          : stateToChange[indexToChange] = objectToSave;
+        setCharacterSkills(stateToChange);
       }
-      // Finding the item in the array with a grid position equal to the select field's
-      const indexToChange = stateToChange.findIndex( obj => obj.gridPosition === evt.target.id );
-      /* Since findIndex returns -1 if it can't find anything, 
-        when we get a -1, we create a new object in the array 
-        Otherwise, change that existing object in state */
-      indexToChange === -1 
-        ? stateToChange.push(objectToSave) 
-        : stateToChange[indexToChange] = objectToSave;
-      setCharacterSkills(stateToChange);
-    }
+    })
   }
 
   useEffect(() => {
