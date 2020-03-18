@@ -38,11 +38,6 @@ const CharacterForm = props => {
   // both SkillsForm and StuntsForm child components
   const getSkillList = () => {
     return ApiManager.getAll("skills")
-      // Hacky way of adding a default / blank value to the list
-      .then(skills => {
-        skills.unshift({id: 0, name: "[Choose Skill]"});
-        return skills;
-      })
       .then(setSkillList);      
   }
 

@@ -62,6 +62,11 @@ const SaveCharacter = props => {
       }
     }
 
+    // TODO: keep someone from saving a character with duplicate skills
+    // const duplicateSkills = (characterSkills) => {
+
+    // }
+
     if (character.name === "") {
       validationConfirm("Enter a character name")
     } else if (aspects[0].name === "") {

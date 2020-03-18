@@ -5,6 +5,7 @@
       <>
         <select
           className="skill-selector"
+          placeholder="Filter by a skill" 
           id={`${props.x}:${props.y}`}
           onChange={props.handleFieldChange}
         >
