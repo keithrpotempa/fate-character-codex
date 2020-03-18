@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import SkillsRow from "./SkillsRow"
+import React from "react";
+import SkillsMultiSelector from "./SkillsMultiSelector"
 
 const SkillsForm = props => {
   const setCharacterSkills = props.setCharacterSkills;
   const characterSkills = props.characterSkills;
   
-  // FIXME: will need adjusting with multiselector
   // Value comes from the Semantic UI component
   // https://medium.com/@omallek/a-beginners-story-to-using-semantic-ui-react-24002da738e5
   const handleFieldChange = (evt, {name, value}) => {
@@ -16,23 +15,19 @@ const SkillsForm = props => {
     setCharacterSkills(stateToChange);
     };
 
-  useEffect(() => {
-
-  }, [])
-
   return (
     <>
       <div className="skills-container">
         <h3>Skills</h3>
         <div>
-          {/* Using a classname to determine the "rating" of a particular chosen skill */}
-          {/* TODO: figure out how to loop this so you only write it once*/}
-          <SkillsRow row="6" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="5" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="4" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="3" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="2" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="1" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
+          {/* Using this row prop to determine the "rating" of a particular chosen skill */}
+          {/* TODO: figure out how to loop this so you only write it once and can generate more dynamically*/}
+          <SkillsMultiSelector row="6" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="5" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="4" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="3" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="2" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="1" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
         </div>
       </div>
     </>
