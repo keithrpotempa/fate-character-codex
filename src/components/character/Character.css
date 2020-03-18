@@ -27,6 +27,14 @@
   width: 130px;
 }
 
+.skill-multiselector {
+  display: flex; 
+  flex-direction: row;
+  align-items: center;
+  width: 600px;
+  margin: 5px 10px;
+}
+
 .stunt-description {
   width: 50%;
   min-height: 100px;

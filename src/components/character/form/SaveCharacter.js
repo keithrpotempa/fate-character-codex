@@ -32,11 +32,11 @@ const SaveCharacter = props => {
     return aspectToSave;
   }
 
-  const constructSkill = (skill, characterId) => {
+  const constructSkill = (skill, rating, characterId) => {
     const skillToSave = {
       characterId: characterId,
-      skillId: skill.skillId,
-      skillRating: skill.skillRating
+      skillId: parseInt(skill),
+      skillRating: parseInt(rating)
     }
     return skillToSave;
   }
@@ -52,11 +52,27 @@ const SaveCharacter = props => {
   /* ------------ VALIDATIONS ------------ */
   // This should check that required fields are filled before allowing a submit
   const validChar = () => {
+    const skillsAreEmpty = (characterSkills) => {
+      const skillLevels = Object.values(characterSkills)
+      const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
+      if (nonEmptySkillLevels.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    // TODO: keep someone from saving a character with duplicate skills
+    // const duplicateSkills = (characterSkills) => {
+
+    // }
+
     if (character.name === "") {
       validationConfirm("Enter a character name")
     } else if (aspects[0].name === "") {
       validationConfirm("Enter a high aspect")
-    } else if (skills.length === 0) {
+      // const isEmpty = !Object.values(object).some(x => (x !== null && x !== ''));
+    } else if (skillsAreEmpty(skills)) {
       validationConfirm("Choose at least one skill")
     } else {
       return true
@@ -94,28 +110,35 @@ const SaveCharacter = props => {
               ApiManager.post("characterAspects", aspectToSave)
             } 
           })
-          return characterResp;
+          return characterResp.id;
         })
-
+        
         // POSTING SKILLS
-        .then(characterResp => {
-          skills.forEach(skill => {
-            const skillToSave = constructSkill(skill, characterResp.id)
-            ApiManager.post("characterSkills", skillToSave)
-          })
-          return characterResp; 
+        .then(characterId => {
+          for (const property in skills) {
+            const skillsAtRating = skills[property]
+            const rating = property
+            if (skillsAtRating.length > 0) {
+              skillsAtRating.forEach(skill => {
+                const skillToSave = constructSkill(skill, rating, characterId)
+                ApiManager.post("characterSkills", skillToSave)
+              })
+            }
+          }
+          return characterId; 
         })
 
         // POSTING STUNTS
-        .then(characterResp => {
+        .then(characterId => {
           stunts.forEach(stunt => {
-            const stuntToSave = constructStunt(stunt, characterResp.id)
+            const stuntToSave = constructStunt(stunt, characterId)
             ApiManager.post("characterStunts", stuntToSave)
           })  
-          return characterResp;
+          return characterId;
         })
 
         // REDIRECT TO CHARACTER PAGE
+        // FIXME: It redirects before everything has been posted...
         .then(props.history.push("/characters"))
     }
   }

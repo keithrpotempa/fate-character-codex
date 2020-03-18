@@ -10,7 +10,9 @@
     "react-confirm-alert": "^2.6.1",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "semantic-ui-react": "^0.88.2",
+    "yarn": "^1.22.4"
   },
   "scripts": {
     "start": "react-scripts start",

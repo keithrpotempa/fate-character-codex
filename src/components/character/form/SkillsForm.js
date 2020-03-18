@@ -1,51 +1,33 @@
-import React, { useState, useEffect } from "react";
-import SkillsRow from "./SkillsRow"
+import React from "react";
+import SkillsMultiSelector from "./SkillsMultiSelector"
 
 const SkillsForm = props => {
   const setCharacterSkills = props.setCharacterSkills;
   const characterSkills = props.characterSkills;
-  // TODO: filter out skills already chosen for future dropdowns
-  // const setSkillList = props.setSkillList;
-
-  const handleFieldChange = evt => {
-    // The "default" [Choose Skill] has an id of 0
-    // so we don't want to ever that
-    if (evt.target.value !== 0) {
-      const stateToChange = [...characterSkills];
-      const objectToSave = {
-        gridPosition: evt.target.id, 
-        skillId: parseInt(evt.target.value),
-        skillRating: parseInt(evt.target.id.split(":")[0])
-      }
-      // Finding the item in the array with a grid position equal to the select field's
-      const indexToChange = stateToChange.findIndex( obj => obj.gridPosition === evt.target.id );
-      /* Since findIndex returns -1 if it can't find anything, 
-        when we get a -1, we create a new object in the array 
-        Otherwise, change that existing object in state */
-      indexToChange === -1 
-        ? stateToChange.push(objectToSave) 
-        : stateToChange[indexToChange] = objectToSave;
-      setCharacterSkills(stateToChange);
-    }
-  }
-
-  useEffect(() => {
-
-  }, [])
+  
+  // Value comes from the Semantic UI component
+  // https://medium.com/@omallek/a-beginners-story-to-using-semantic-ui-react-24002da738e5
+  const handleFieldChange = (evt, {name, value}) => {
+    const skillIds = value
+    const row = parseInt(name.split("-")[1]);
+    const stateToChange = {...characterSkills}
+    stateToChange[row] = skillIds
+    setCharacterSkills(stateToChange);
+    };
 
   return (
     <>
       <div className="skills-container">
         <h3>Skills</h3>
         <div>
-          {/* Using a classname to determine the "rating" of a particular chosen skill */}
-          {/* TODO: figure out how to loop this so you only write it once*/}
-          <SkillsRow row="6" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="5" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="4" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="3" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="2" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
-          <SkillsRow row="1" skillList={props.skillList} handleFieldChange={handleFieldChange}/>
+          {/* Using this row prop to determine the "rating" of a particular chosen skill */}
+          {/* TODO: figure out how to loop this so you only write it once and can generate more dynamically*/}
+          <SkillsMultiSelector row="6" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="5" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="4" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="3" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="2" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="1" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
         </div>
       </div>
     </>
