@@ -48,6 +48,15 @@ const NavBar = props => {
               Stunts
             </NavLink>
           </li>
+          <li>
+            <NavLink 
+              className="nav-link" 
+              activeClassName="active" 
+              exact to="/login"
+            >
+              Login
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
