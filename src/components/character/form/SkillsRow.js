@@ -10,7 +10,7 @@ const SkillsRow = props => {
   // TODO: figure out how to loop this so you only write it once
   return (
     <div className="skills-x"> <strong>+{x}</strong>
-      <SkillsMultiSelector x={x} skillList={props.skillList} handleFieldChange={props.handleFieldChange}/> 
+      <SkillsMultiSelector row={x} skillList={props.skillList} handleFieldChange={props.handleFieldChange}/> 
     </div>
   )
 }

@@ -13,7 +13,7 @@ const CharacterForm = props => {
 
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
-  const [aspects, setAspects] = useState([
+  const [characterAspects, setCharacterAspects] = useState([
     { name: "", aspectTypeId: 1 },
     { name: "", aspectTypeId: 2 },
     { name: "", aspectTypeId: 3 },    
@@ -21,9 +21,16 @@ const CharacterForm = props => {
     { name: "", aspectTypeId: 3 },
     { name: "", aspectTypeId: 3 }
   ])
-  const [skills, setSkills] = useState([]);
+  const [characterSkills, setCharacterSkills] = useState({
+    6: [],
+    5: [],
+    4: [],
+    3: [],
+    2: [],
+    1: []
+  });
   const [skillList, setSkillList] = useState([]);
-  const [stunts, setStunts] = useState([]);
+  const [characterStunts, setCharacterStunts] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,25 +73,25 @@ const CharacterForm = props => {
             placeholder="Character name"
           />
           <AspectForm 
-            aspects={aspects}
-            setAspects={setAspects}
+            aspects={characterAspects}
+            setAspects={setCharacterAspects}
           />
           <SkillsForm 
             skillList={skillList}
             setSkillList={setSkillList}
-            characterSkills={skills}
-            setCharacterSkills={setSkills}
+            characterSkills={characterSkills}
+            setCharacterSkills={setCharacterSkills}
           />
           <StuntsForm
-            characterStunts={stunts}
-            setCharacterStunts={setStunts}
+            characterStunts={characterStunts}
+            setCharacterStunts={setCharacterStunts}
             skillList={skillList}
           />
           <SaveCharacter 
             character={character}
-            aspects={aspects}
-            skills={skills}
-            stunts={stunts}
+            aspects={characterAspects}
+            skills={characterSkills}
+            stunts={characterStunts}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
             {...props}
