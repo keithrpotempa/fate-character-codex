@@ -10,7 +10,7 @@ import ApiManager from '../../modules/ApiManager';
 // NOTE: THIS IS NOT TRUE AUTHENTICATION
 // It is storing clear text credentials in session storage
 
-const LoginForm = props => {
+const Login = props => {
   const [credentials, setCredentials] = useState({ email: "" });
 
   const handleFieldChange = (evt) => {
@@ -84,4 +84,4 @@ const LoginForm = props => {
   )
 }
 
-export default LoginForm
+export default Login

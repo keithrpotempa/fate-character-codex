@@ -2,17 +2,16 @@ import { Route, Redirect } from "react-router-dom";
 import React from "react";
 
 import SkillList from "./skill/SkillList";
-
 import StuntList from "./stunt/StuntList";
 
 import CharacterList from "./character/CharacterList";
 import CharacterSheet from "./character/CharacterSheet";
 import CharacterForm from "./character/form/CharacterForm";
 
-import LoginForm from "./user/Login"
+import Login from "./user/Login"
+import Register from "./user/Register"
 
 const ApplicationViews = props => {
-  // TODO: hasUser & setUser
   const hasUser = props.hasUser;
   const setUser = props.setUser;
 
@@ -51,7 +50,13 @@ const ApplicationViews = props => {
       <Route 
         path="/login"
         render={props => {
-          return <LoginForm setUser={setUser} {...props} />;
+          return <Login setUser={setUser} {...props} />;
+        }}
+      />
+      <Route 
+        path="/register"
+        render={props => {
+          return <Register setUser={setUser} {...props} />;
         }}
       />
     </>
