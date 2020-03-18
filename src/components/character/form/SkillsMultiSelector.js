@@ -1,5 +1,6 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
+import "../Character.css"
 
 const SkillsMultiSelector = props => {
   const row = props.row
@@ -7,9 +8,11 @@ const SkillsMultiSelector = props => {
   // https://react.semantic-ui.com/modules/dropdown/#types-multiple-selection
   return (
     <>
-      <div className="">
-        <strong>{row}</strong>
-        <Dropdown placeholder='Skills' 
+      <div className="skill-multiselector">
+        <strong>+{row}</strong>
+        <Dropdown 
+          placeholder='Skills' 
+          className="skill-multiselector"
           fluid multiple selection 
           row={row}
           name={`skills-${row}`}
