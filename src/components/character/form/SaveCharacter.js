@@ -52,11 +52,22 @@ const SaveCharacter = props => {
   /* ------------ VALIDATIONS ------------ */
   // This should check that required fields are filled before allowing a submit
   const validChar = () => {
+    const skillsAreEmpty = (characterSkills) => {
+      const skillLevels = Object.values(characterSkills)
+      const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
+      if (nonEmptySkillLevels.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
     if (character.name === "") {
       validationConfirm("Enter a character name")
     } else if (aspects[0].name === "") {
       validationConfirm("Enter a high aspect")
-    } else if (skills.length === 0) {
+      // const isEmpty = !Object.values(object).some(x => (x !== null && x !== ''));
+    } else if (skillsAreEmpty(skills)) {
       validationConfirm("Choose at least one skill")
     } else {
       return true
@@ -122,6 +133,7 @@ const SaveCharacter = props => {
         })
 
         // REDIRECT TO CHARACTER PAGE
+        // FIXME: It redirects before everything has been posted...
         .then(props.history.push("/characters"))
     }
   }
