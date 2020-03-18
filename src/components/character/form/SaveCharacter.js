@@ -13,10 +13,11 @@ const SaveCharacter = props => {
 
   /* ------------ OBJECT CONSTRUCTORS ------------ */
   const constructCharacter = () => {
+    // NOTE: JSON.parse is the reverse of JSON.stringify
+    const user = JSON.parse(sessionStorage.getItem("credentials"));
     const characterToSave = {
       name: character.name,
-      //TODO: change with active storage
-      userId: 1,
+      userId: user.id,
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()
     }

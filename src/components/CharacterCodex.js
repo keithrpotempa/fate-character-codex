@@ -3,8 +3,6 @@ import ApplicationViews from "./ApplicationViews";
 import NavBar from "./nav/NavBar";
 
 const CharacterCodex = () => {
-  // TODO: user auth
-
     // Check if credentials are in session storage returns true/false
     const isAuthenticated = () => sessionStorage.getItem("credentials") !== null;
 

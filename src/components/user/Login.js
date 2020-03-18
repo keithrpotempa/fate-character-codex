@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import ApiManager from '../../modules/ApiManager';
 
 // Layout Theme:
 // https://react.semantic-ui.com/layouts/login
@@ -8,7 +11,7 @@ import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui
 // It is storing clear text credentials in session storage
 
 const LoginForm = props => {
-  const [credentials, setCredentials] = useState({ email: ""});
+  const [credentials, setCredentials] = useState({ email: "" });
 
   const handleFieldChange = (evt) => {
     const stateToChange = { ...credentials };
@@ -18,8 +21,31 @@ const LoginForm = props => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    props.setUser(credentials);
-    props.history.push("/");
+    ApiManager.getUserByEmail(credentials.email)
+      .then(resp => {
+        if (resp.length === 0) {
+          confirmAlert({
+            title: 'Invalid',
+            message: "Email address not found",
+            buttons: [
+              {
+                label: 'Ok',
+                onClick: null
+              }
+            ]
+          });
+        } else {
+          const user = resp[0]
+          const activeUser = {
+            id: user.id,
+            email: user.email,
+            fname: user.fname,
+            lname: user.lname
+          }
+          props.setUser(activeUser);
+          props.history.push("/");
+        }
+      })
   }
 
   return (

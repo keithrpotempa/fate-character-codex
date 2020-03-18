@@ -44,7 +44,7 @@ const ApplicationViews = props => {
         path="/characters/:characterId(\d+)"
         render={props => {
           const characterId = parseInt(props.match.params.characterId);
-          return <CharacterSheet characterId={characterId} hasUser={hasUser} {...props} />;
+          return <CharacterSheet characterId={characterId} {...props} />;
         }}
       />
       {/* -------------------USER------------------- */}
