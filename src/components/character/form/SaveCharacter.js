@@ -32,11 +32,11 @@ const SaveCharacter = props => {
     return aspectToSave;
   }
 
-  const constructSkill = (skill, characterId) => {
+  const constructSkill = (skill, rating, characterId) => {
     const skillToSave = {
       characterId: characterId,
-      skillId: skill.skillId,
-      skillRating: skill.skillRating
+      skillId: parseInt(skill),
+      skillRating: parseInt(rating)
     }
     return skillToSave;
   }
@@ -94,25 +94,31 @@ const SaveCharacter = props => {
               ApiManager.post("characterAspects", aspectToSave)
             } 
           })
-          return characterResp;
+          return characterResp.id;
         })
-
+        
         // POSTING SKILLS
-        .then(characterResp => {
-          skills.forEach(skill => {
-            const skillToSave = constructSkill(skill, characterResp.id)
-            ApiManager.post("characterSkills", skillToSave)
-          })
-          return characterResp; 
+        .then(characterId => {
+          for (const property in skills) {
+            const skillsAtRating = skills[property]
+            const rating = property
+            if (skillsAtRating.length > 0) {
+              skillsAtRating.forEach(skill => {
+                const skillToSave = constructSkill(skill, rating, characterId)
+                ApiManager.post("characterSkills", skillToSave)
+              })
+            }
+          }
+          return characterId; 
         })
 
         // POSTING STUNTS
-        .then(characterResp => {
+        .then(characterId => {
           stunts.forEach(stunt => {
-            const stuntToSave = constructStunt(stunt, characterResp.id)
+            const stuntToSave = constructStunt(stunt, characterId)
             ApiManager.post("characterStunts", stuntToSave)
           })  
-          return characterResp;
+          return characterId;
         })
 
         // REDIRECT TO CHARACTER PAGE
