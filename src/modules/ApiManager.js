@@ -9,6 +9,10 @@ export default {
     return fetch(`${remoteURL}/${dataType}`)
       .then(result => result.json());
   },
+  getUserByEmail(email) {
+    return fetch(`${remoteURL}/users?email=${email}`)
+    .then(result => result.json());
+  },
   getCharacterAspects(id){
     return fetch(`${remoteURL}/characterAspects?characterId=${id}`)
       .then(results => results.json());

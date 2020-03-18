@@ -13,6 +13,7 @@ const CharacterSheet = props => {
   const [stunts, setStunts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
+  const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
   const id = props.characterId;
 
   const getCharacter = () => {
@@ -134,12 +135,15 @@ const CharacterSheet = props => {
               physiqueRating={physiqueRating}
               willRating={willRating}
             />
-          <button
-            type="button"
-            onClick={() => handleDelete(id)}
-          >
-            Delete
-          </button>
+          {character.id === activeUser.id 
+            ? <button
+                type="button"
+                onClick={() => handleDelete(id)}
+              >
+                Delete
+              </button>
+            : null
+          }
           </div>
         </div>
       </main>
