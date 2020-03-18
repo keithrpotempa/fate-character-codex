@@ -49,20 +49,24 @@ const CharacterForm = props => {
     setCharacter(stateToChange)
   }
 
+  const editSetup = () => {
+    // If this is an edit, the following needs to happen:
+    const characterId = props.match.params.characterId
+    // Get the character and put them in state
+    ApiManager.get("characters", characterId)
+      .then(character => setCharacter(character))
+      // Get their aspects and put them in state
+    ApiManager.getCharacterAspects(characterId)
+      .then(aspects => setCharacterAspects(aspects))
+      // TODO: Get their skills and put them in state
+      // TODO: Get their stunts and put them in state
+  }
+
   useEffect(() => {
     getSkillList();
-    // TODO:
-    // If this is an edit, the following needs to happen:
+    // AKA: if this is an edit
     if (props.match.params.characterId) {
-      const characterId = props.match.params.characterId
-      // Get the character and put them in state
-      ApiManager.get("characters", characterId)
-        .then(character => setCharacter(character))
-        // Get their aspects and put them in state
-      ApiManager.getCharacterAspects(characterId)
-        .then(aspects => setCharacterAspects(aspects))
-        // Get their skills and put them in state
-        // Get their stunts and put them in state
+      editSetup();
     }
     setIsLoading(false);
   }, [])
