@@ -14,6 +14,10 @@ const CharacterCard = props => {
           <Link to={`/characters/${props.id}`}>
             <button>Details</button>
           </Link>
+          {/* TODO: only display this if the active user owns it */}
+          <Link to={`/characters/${props.id}/edit`}>
+            <button>Edit</button>
+          </Link>
         </div>
       </div>
     </>

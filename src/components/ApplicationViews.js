@@ -46,6 +46,17 @@ const ApplicationViews = props => {
           return <CharacterSheet characterId={characterId} {...props} />;
         }}
       />
+      <Route
+        path="/characters/:characterId(\d+)/edit"
+        render={props => {
+          // TODO: this also needs to be the user that made this character
+          if (hasUser) {
+            return <CharacterForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
+        }}
+      />
       {/* -------------------USER------------------- */}
       <Route 
         path="/login"

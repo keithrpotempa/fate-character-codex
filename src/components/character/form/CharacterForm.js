@@ -51,6 +51,19 @@ const CharacterForm = props => {
 
   useEffect(() => {
     getSkillList();
+    // TODO:
+    // If this is an edit, the following needs to happen:
+    if (props.match.params.characterId) {
+      const characterId = props.match.params.characterId
+      // Get the character and put them in state
+      ApiManager.get("characters", characterId)
+        .then(character => setCharacter(character))
+        // Get their aspects and put them in state
+      ApiManager.getCharacterAspects(characterId)
+        .then(aspects => setCharacterAspects(aspects))
+        // Get their skills and put them in state
+        // Get their stunts and put them in state
+    }
     setIsLoading(false);
   }, [])
 
@@ -66,6 +79,7 @@ const CharacterForm = props => {
             className="character"
             id="name"
             placeholder="Character name"
+            value={character.name}
           />
           <AspectForm 
             aspects={characterAspects}
