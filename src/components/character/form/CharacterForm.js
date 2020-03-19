@@ -30,7 +30,14 @@ const CharacterForm = props => {
     1: []
   });
   const [skillList, setSkillList] = useState([]);
-  const [characterStunts, setCharacterStunts] = useState([]);
+
+  const [characterStunts, setCharacterStunts] = useState({
+    5: "",
+    4: "",
+    3: "",
+    2: "",
+    1: ""
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,7 +69,16 @@ const CharacterForm = props => {
       .then(skills => setSkillsToEdit(skills))
       // TODO: Get their stunts and put them in state
     ApiManager.getCharacterStunts(characterId)
-      .then(stunts => setCharacterStunts(stunts))
+      .then(stunts => setStuntsToEdit(stunts))
+  }
+
+  const setStuntsToEdit = (stunts) => {
+    const stateToChange = {...characterStunts};
+    // TODO: Make this loop more adaptable to different range of stunt numbers
+    stunts.forEach(function(stunt, index) {
+      stateToChange[ index + 1] = stunt.stuntId.toString();       
+    }) 
+    setCharacterStunts(stateToChange)
   }
 
   const setSkillsToEdit = (skills) => {

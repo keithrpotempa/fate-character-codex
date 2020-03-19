@@ -28,11 +28,11 @@ const StuntRow = props => {
         filter={props.filter}
       />
     </div>
-    <StuntDescription 
+    {/* <StuntDescription 
       x={props.x} 
       characterStunts={props.characterStunts} 
       stuntList={props.stuntList}
-    />
+    /> */}
   </div>
   )
 }
