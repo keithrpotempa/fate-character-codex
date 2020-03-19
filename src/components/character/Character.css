@@ -16,11 +16,18 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
+  margin: 10px;
 }
 
 .stunt-dropdowns-container {
   display: flex;
   flex-direction: column;
+}
+
+.stunt-description {
+  margin: 5px;
+  padding: 5px;
 }
 
 .stunt-selector {
