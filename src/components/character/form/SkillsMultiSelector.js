@@ -4,6 +4,7 @@ import "../Character.css"
 
 const SkillsMultiSelector = props => {
   const row = props.row;
+  const skillsAtRow = props.characterSkills[row]
 
   // See formatting reference:
   // https://react.semantic-ui.com/modules/dropdown/#types-multiple-selection
@@ -18,6 +19,7 @@ const SkillsMultiSelector = props => {
           row={row}
           name={`skills-${row}`}
           id={`skills-${row}`}
+          value={skillsAtRow}
           onChange={props.handleFieldChange}
           options={props.skillList.map(skill => (
             {

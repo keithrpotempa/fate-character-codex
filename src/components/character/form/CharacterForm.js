@@ -76,7 +76,7 @@ const CharacterForm = props => {
   const skillsByRating = (skills, rating) => {
     // Converting the format of the db to the format of the form's state
     const filteredSkills = skills.filter(skill => skill.skillRating === rating)
-    const formattedSkills = filteredSkills.map(skill => skill.skillId)
+    const formattedSkills = filteredSkills.map(skill => skill.skillId.toString())
     return formattedSkills;
   }
 
