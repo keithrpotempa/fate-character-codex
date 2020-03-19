@@ -28,6 +28,10 @@ const StuntRow = props => {
         filter={props.filter}
       />
     </div>
+    <StuntDescription 
+      stunt={props.characterStunts[props.x]} 
+      stuntList={props.stuntList}
+    />
   </div>
   )
 }
