@@ -1,20 +1,26 @@
   import React from "react";
+  import { Dropdown } from 'semantic-ui-react';
+  import "../Character.css"
 
   const SkillsDropdown = props => {
     return (
       <>
-        <select
-          className="skill-selector"
-          placeholder="Filter by a skill" 
-          id={`${props.x}:${props.y}`}
-          onChange={props.handleFieldChange}
-        >
-          {props.skillList.map(skill => (
-            <option key={skill.id} value={skill.id}>
-              {skill.name}
-            </option>
-          ))}
-        </select>
+        <div className="skill-selector">
+          <Dropdown
+            placeholder="Filter by related skill"
+            fluid
+            selection
+            id={`${props.x}:${props.y}`}
+            onChange={props.handleFieldChange}
+            options={props.skillList.map(skill => (
+              {
+                key: `${skill.id}`, 
+                value: `${skill.id}`,
+                text: `${skill.name}`
+              }
+            ))}
+          />
+        </div>
       </>
     )
   } 

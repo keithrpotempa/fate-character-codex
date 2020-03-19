@@ -6,8 +6,8 @@ import SkillsDropDown from "./SkillsDropDown";
 const StuntRow = props => {
   const setFilter = props.setFilter;
 
-  const handleFilter = evt => {
-    const valueToSet = parseInt(evt.target.value)
+  const handleFilter = (evt, {name, value}) => {
+    const valueToSet = parseInt(value)
     setFilter(valueToSet)
   }
 
@@ -28,11 +28,6 @@ const StuntRow = props => {
         filter={props.filter}
       />
     </div>
-    {/* <StuntDescription 
-      x={props.x} 
-      characterStunts={props.characterStunts} 
-      stuntList={props.stuntList}
-    /> */}
   </div>
   )
 }

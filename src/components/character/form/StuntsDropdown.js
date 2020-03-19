@@ -1,5 +1,6 @@
 import React from "react";
 import { Dropdown } from 'semantic-ui-react';
+import "../Character.css"
 
 const StuntsDropdown = props => {
   // Ick
@@ -9,14 +10,7 @@ const StuntsDropdown = props => {
   const setCharacterStunts = props.setCharacterStunts;
   const characterStunts = props.characterStunts;
 
-  // Real hacky way to get the edited stunt values without erroring out
-  // after realizing functions don't work in the value field of a select
-  // FIXME: DOM re-rendering keeps the dropdown locked though
-
   const stuntToEdit = props.characterStunts[props.x]
-
-  // const stuntToEdit = props.characterStunts.length > 0 ? props.characterStunts[props.x - 1] : ""
-  // const stuntIdToEdit = stuntToEdit ? stuntToEdit.stuntId.toString() : ""
 
   const handleFieldChange = (evt, {name, value}) => {
     const stuntId = value;
@@ -28,22 +22,23 @@ const StuntsDropdown = props => {
 
   return (
     <>
-      <Dropdown
-        placeholder="Select Stunt"
-        fluid
-        selection
-        className="stunt-selector"
-        id={`stunts--${props.x}`}
-        onChange={handleFieldChange}
-        value={stuntToEdit}
-        options={stuntList.map(stunt => (
-          {
-            key: `${stunt.id}`, 
-            value: `${stunt.id}`,
-            text: `${stunt.name}`
-          }
-        ))}
-      />
+      <div className="stunt-selector">
+        <Dropdown
+          placeholder="Select Stunt"
+          fluid
+          selection
+          id={`stunts--${props.x}`}
+          onChange={handleFieldChange}
+          value={stuntToEdit}
+          options={stuntList.map(stunt => (
+            {
+              key: `${stunt.id}`, 
+              value: `${stunt.id}`,
+              text: `${stunt.name}`
+            }
+          ))}
+        />
+      </div>
     </>
   )
 }
