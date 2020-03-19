@@ -1,4 +1,5 @@
 import React from "react";
+import { Dropdown } from 'semantic-ui-react';
 
 const StuntsDropdown = props => {
   const stuntList = props.stuntList;
@@ -32,18 +33,22 @@ const StuntsDropdown = props => {
   if (props.filter === "") {
     return (
       <>
-        <select
+        <Dropdown
+          placeholder="Select Stunt"
+          fluid
+          selection
           className="stunt-selector"
           id={`stunts--${props.x}`}
           onChange={handleFieldChange}
           value={stuntIdToEdit}
-        >
-        {stuntList.map(stunt => (
-          <option key={stunt.id} value={stunt.id}>
-            {stunt.name}
-          </option>
-        ))}
-      </select>
+          options={stuntList.map(stunt => (
+            {
+              key: `${stunt.id}`, 
+              value: `${stunt.id}`,
+              text: `${stunt.name}`
+            }
+          ))}
+        />
       </>
     )
   } else {
@@ -67,3 +72,60 @@ const StuntsDropdown = props => {
 }
 
 export default StuntsDropdown;
+
+/*
+
+import React from 'react'
+import { Dropdown } from 'semantic-ui-react'
+
+const friendOptions = [
+  {
+    key: 'Jenny Hess',
+    text: 'Jenny Hess',
+    value: 'Jenny Hess',
+    image: { avatar: true, src: '/images/avatar/small/jenny.jpg' },
+  },
+  {
+    key: 'Elliot Fu',
+    text: 'Elliot Fu',
+    value: 'Elliot Fu',
+    image: { avatar: true, src: '/images/avatar/small/elliot.jpg' },
+  },
+  {
+    key: 'Stevie Feliciano',
+    text: 'Stevie Feliciano',
+    value: 'Stevie Feliciano',
+    image: { avatar: true, src: '/images/avatar/small/stevie.jpg' },
+  },
+  {
+    key: 'Christian',
+    text: 'Christian',
+    value: 'Christian',
+    image: { avatar: true, src: '/images/avatar/small/christian.jpg' },
+  },
+  {
+    key: 'Matt',
+    text: 'Matt',
+    value: 'Matt',
+    image: { avatar: true, src: '/images/avatar/small/matt.jpg' },
+  },
+  {
+    key: 'Justen Kitsune',
+    text: 'Justen Kitsune',
+    value: 'Justen Kitsune',
+    image: { avatar: true, src: '/images/avatar/small/justen.jpg' },
+  },
+]
+
+const DropdownExampleSelection = () => (
+  <Dropdown
+    placeholder='Select Friend'
+    fluid
+    selection
+    options={friendOptions}
+  />
+)
+
+export default DropdownExampleSelection
+
+*/
