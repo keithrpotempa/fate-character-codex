@@ -5,6 +5,12 @@ const StuntsDropdown = props => {
   const setCharacterStunts = props.setCharacterStunts;
   const characterStunts = props.characterStunts;
 
+  // Real hacky way to get the edited stunt values without erroring out
+  // after realizing functions don't work in the value field of a select
+  // FIXME: DOM re-rendering keeps the dropdown locked though
+  const stuntToEdit = props.characterStunts.length > 0 ? props.characterStunts[props.x - 1] : ""
+  const stuntIdToEdit = stuntToEdit ? stuntToEdit.stuntId.toString() : ""
+
   const handleFieldChange = evt => {
     const stateToChange = [...characterStunts]
     const row = parseInt(evt.target.id.split("--")[1])
@@ -30,6 +36,7 @@ const StuntsDropdown = props => {
           className="stunt-selector"
           id={`stunts--${props.x}`}
           onChange={handleFieldChange}
+          value={stuntIdToEdit}
         >
         {stuntList.map(stunt => (
           <option key={stunt.id} value={stunt.id}>

@@ -58,13 +58,14 @@ const CharacterForm = props => {
       // Get their aspects and put them in state
     ApiManager.getCharacterAspects(characterId)
       .then(aspects => setCharacterAspects(aspects))
-      // TODO: Get their skills and put them in state
     ApiManager.getCharacterSkills(characterId)
-      .then(skills => getSkillsToEdit(skills))
+      .then(skills => setSkillsToEdit(skills))
       // TODO: Get their stunts and put them in state
+    ApiManager.getCharacterStunts(characterId)
+      .then(stunts => setCharacterStunts(stunts))
   }
 
-  const getSkillsToEdit = (skills) => {
+  const setSkillsToEdit = (skills) => {
     const stateToChange = {...characterSkills};
     // TODO: Make this loop more adaptable to different range of rating levels
     for (let i = 1; i < 7; i++) {
