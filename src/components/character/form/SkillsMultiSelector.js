@@ -3,7 +3,8 @@ import { Dropdown } from "semantic-ui-react";
 import "../Character.css"
 
 const SkillsMultiSelector = props => {
-  const row = props.row
+  const row = props.row;
+
   // See formatting reference:
   // https://react.semantic-ui.com/modules/dropdown/#types-multiple-selection
   return (

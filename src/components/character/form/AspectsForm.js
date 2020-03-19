@@ -12,7 +12,7 @@ const AspectForm = props => {
 
   // TODO: Refactor these functions (and their uses below) 
   // to be less hackey/weird
-  const findOneAspectByType = (aspects, typeId) => {
+  const findUniqueAspect = (aspects, typeId) => {
     const aspect = aspects.find( ({aspectTypeId}) => aspectTypeId === typeId )
     if (aspect !== undefined) {
       return aspect.name
@@ -21,7 +21,7 @@ const AspectForm = props => {
     }
   }
 
-  const findManyAspectsByType = (aspects, typeId) => {
+  const findGenericAspects = (aspects, typeId) => {
     const aspectList = aspects.filter( ({aspectTypeId}) => aspectTypeId === typeId)
     if (aspectList.length > 0) {
       return aspectList
@@ -31,7 +31,7 @@ const AspectForm = props => {
   }
 
   const genericAspectOrBlank = (index) => {
-    const aspect = findManyAspectsByType(aspects, 3)[index]
+    const aspect = findGenericAspects(aspects, 3)[index]
     if (aspect !== undefined) {
       return aspect.name
     } else {
@@ -50,7 +50,7 @@ const AspectForm = props => {
           className="aspect"
           id="aspect-0"
           placeholder="High Concept"
-          value={findOneAspectByType(aspects, 1)}
+          value={findUniqueAspect(aspects, 1)}
         />
         <input 
           type="text"
@@ -59,7 +59,7 @@ const AspectForm = props => {
           className="aspect"
           id="aspect-1"
           placeholder="Trouble"
-          value={findOneAspectByType(aspects, 2)}
+          value={findUniqueAspect(aspects, 2)}
         />
         <input 
           type="text"

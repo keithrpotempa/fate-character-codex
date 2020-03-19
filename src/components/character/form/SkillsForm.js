@@ -22,16 +22,17 @@ const SkillsForm = props => {
         <div>
           {/* Using this row prop to determine the "rating" of a particular chosen skill */}
           {/* TODO: figure out how to loop this so you only write it once and can generate more dynamically*/}
-          <SkillsMultiSelector row="6" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
-          <SkillsMultiSelector row="5" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
-          <SkillsMultiSelector row="4" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
-          <SkillsMultiSelector row="3" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
-          <SkillsMultiSelector row="2" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
-          <SkillsMultiSelector row="1" skillList={props.skillList} handleFieldChange={handleFieldChange}/> 
+          <SkillsMultiSelector row="6" skillList={props.skillList} handleFieldChange={handleFieldChange} /> 
+          <SkillsMultiSelector row="5" skillList={props.skillList} handleFieldChange={handleFieldChange} /> 
+          <SkillsMultiSelector row="4" skillList={props.skillList} handleFieldChange={handleFieldChange} /> 
+          <SkillsMultiSelector row="3" skillList={props.skillList} handleFieldChange={handleFieldChange} /> 
+          <SkillsMultiSelector row="2" skillList={props.skillList} handleFieldChange={handleFieldChange} /> 
+          <SkillsMultiSelector row="1" skillList={props.skillList} handleFieldChange={handleFieldChange} /> 
         </div>
       </div>
     </>
   )
 }
+
 
 export default SkillsForm;
