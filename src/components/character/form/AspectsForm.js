@@ -1,95 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import AspectInput from "./AspectInput"
+import ApiManager from "../../../modules/ApiManager"
 
 const AspectForm = props => {
   const aspects = props.aspects
+  const [aspectTypes, setAspectTypes] = useState([]);
 
+  // FIXME: issues handling fieldchanges on aspects after edit integration
   const handleFieldChange = evt => {
       const stateToChange = [...aspects]
       // Determining which aspect is being edited: #1-5
       const indexToChange = evt.target.id.split("-")[1]
-      console.log("indexToChange", indexToChange)
-      stateToChange[indexToChange] = evt.target.value;
+      stateToChange[indexToChange] = {
+        name: evt.target.value,
+        aspectTypeId: evt.target.typeId
+      }
       props.setAspects(stateToChange)
   }
 
-  // TODO: Refactor these functions (and their uses below) 
-  // to be less hackey/weird
-  const findUniqueAspect = (aspects, typeId) => {
-    const aspect = aspects.find( ({aspectTypeId}) => aspectTypeId === typeId )
-    if (aspect !== undefined) {
-      return aspect.name
-    } else {
-      return ""
-    }
+  const getAspectTypes = () => {
+    ApiManager.getAll("aspectTypes")
+      .then(setAspectTypes)
   }
 
-  const findGenericAspects = (aspects, typeId) => {
-    const aspectList = aspects.filter( ({aspectTypeId}) => aspectTypeId === typeId)
-    if (aspectList.length > 0) {
-      return aspectList
-    } else {
-      return ""
-    }
-  }
+  useEffect(() => {
+    getAspectTypes();
+  },[])
 
-  const genericAspectOrBlank = (index) => {
-    const aspect = findGenericAspects(aspects, 3)[index]
-    if (aspect !== undefined) {
-      return aspect.name
-    } else {
-      return ""
-    }
-  }
-
+  // TODO: fix up the value to be less hackey
+  // FIXME: issues with saving
   return (
     <>
       <div className="aspects-container">
         <h3>Aspects</h3>
-        <input 
-          type="text"
-          required
-          onChange={handleFieldChange}
-          className="aspect"
-          id="aspect-0"
-          placeholder="High Concept"
-          value={findUniqueAspect(aspects, 1)}
-        />
-        <input 
-          type="text"
-          required
-          onChange={handleFieldChange}
-          className="aspect"
-          id="aspect-1"
-          placeholder="Trouble"
-          value={findUniqueAspect(aspects, 2)}
-        />
-        <input 
-          type="text"
-          required
-          onChange={handleFieldChange}
-          className="aspect"
-          id="aspect-2"
-          placeholder="Aspect"
-          value={genericAspectOrBlank(0)}
-        />
-        <input 
-          type="text"
-          required
-          onChange={handleFieldChange}
-          className="aspect"
-          id="aspect-3"
-          placeholder="Aspect"
-          value={genericAspectOrBlank(1)}
-        />
-        <input 
-          type="text"
-          required
-          onChange={handleFieldChange}
-          className="aspect"
-          id="aspect-4"
-          placeholder="Aspect"
-          value={genericAspectOrBlank(2)}
-        />
+        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="0" typeId="1" aspectTypes={aspectTypes}/>
+        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="1" typeId="2" aspectTypes={aspectTypes}/>
+        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="2" typeId="3" aspectTypes={aspectTypes}/>
+        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="3" typeId="3" aspectTypes={aspectTypes}/>
+        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="4" typeId="3" aspectTypes={aspectTypes}/>
       </div>
     </>
   )

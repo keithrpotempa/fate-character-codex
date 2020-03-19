@@ -24,12 +24,10 @@ const SaveCharacter = props => {
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()
     }
-
-    // TODO: TEST. If this is an edit, we also need the id
     if (isEdit) {
-      characterToSave.id = props.match.params.characterId;
+      characterToSave.id = parseInt(props.match.params.characterId);
+      characterToSave.created = character.created
     }
-
     return characterToSave;
   }
 
@@ -44,7 +42,7 @@ const SaveCharacter = props => {
 
   const constructSkill = (skill, rating, characterId) => {
     const skillToSave = {
-      characterId: characterId,
+      characterId: parseInt(characterId),
       skillId: parseInt(skill),
       skillRating: parseInt(rating)
     }
@@ -64,6 +62,7 @@ const SaveCharacter = props => {
   const validChar = () => {
     const skillsAreEmpty = (characterSkills) => {
       const skillLevels = Object.values(characterSkills)
+      // FIXME: seems like sometimes it's not actually empty?
       const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
       if (nonEmptySkillLevels.length > 0) {
         return false;
@@ -97,63 +96,69 @@ const SaveCharacter = props => {
       ]
     });
   }
-  
+
+  /* ------------ SAVING FUNCTIONS ------------ */
+  const purge = () => {
+    // IF edit, delete everything before starting?
+    if (isEdit) {
+      const userId = props.match.params.characterId;
+      return ApiManager.delete("characters", userId)
+    } else {
+      return character
+    }
+  }
+
+  const saveAspects = (charId) => {
+    aspects.forEach(aspect => {
+      // This keeps blank aspects from being posted
+      if (aspect.name !== "") {
+        const aspectToSave = constructAspect(aspect, charId)
+        ApiManager.post("characterAspects", aspectToSave)
+      } 
+    })
+    return charId;
+  }
+
+  const saveSkills = (charId) => {
+    for (const row in skills) {
+      const skillsAtRating = skills[row]
+      const rating = row
+      if (skillsAtRating.length > 0) {
+        skillsAtRating.forEach(skill => {
+          const skillToSave = constructSkill(skill, rating, charId)
+          ApiManager.post("characterSkills", skillToSave)
+        })
+      }
+    }
+    return charId; 
+  }
+
+  const saveStunts = (charId) => {
+    for (const row in stunts) {
+      const stunt = stunts[row]
+      const stuntToSave = constructStunt(stunt, charId)
+      ApiManager.post("characterStunts", stuntToSave)
+    }  
+    return charId;
+  }
+
   /* ------------ SAVING ------------ */
+  // FIXME: consistently crashes json server
+  // requests coming in too fast?
   const handleSave = evt => {
     evt.preventDefault();
-
     // SAVING CHARACTER
     const char = constructCharacter()
     if (validChar(char)) {
       setIsLoading(true);
-      isEdit 
-        ? ApiManager.update("characters", char)
-        : ApiManager.post("characters", char)
-         // SAVING ASPECTS
-          .then(characterResp => {
-            aspects.forEach(aspect => {
-              // This keeps blank aspects from being posted
-              if (aspect.name !== "") {
-                const aspectToSave = constructAspect(aspect, characterResp.id)
-                isEdit
-                  ? ApiManager.update("characterAspects", aspectToSave)
-                  : ApiManager.post("characterAspects", aspectToSave)
-              } 
-            })
-            return characterResp.id;
-          })
-        
-        // SAVING SKILLS
-        .then(characterId => {
-          for (const property in skills) {
-            const skillsAtRating = skills[property]
-            const rating = property
-            if (skillsAtRating.length > 0) {
-              skillsAtRating.forEach(skill => {
-                const skillToSave = constructSkill(skill, rating, characterId)
-                isEdit
-                  ? ApiManager.update("characterSkills", skillToSave)
-                  : ApiManager.post("characterSkills", skillToSave)
-              })
-            }
-          }
-          return characterId; 
-        })
-
-        // SAVING STUNTS
-        .then(characterId => {
-          stunts.forEach(stunt => {
-            const stuntToSave = constructStunt(stunt, characterId)
-            isEdit
-              ? ApiManager.update("characterStunts", stuntToSave)
-              : ApiManager.post("characterStunts", stuntToSave)
-          })  
-          return characterId;
-        })
-
-        // REDIRECT TO CHARACTER PAGE
-        // FIXME: It redirects before everything has been posted...
-        .then(props.history.push("/characters"))
+      purge()
+        .then(resp => {
+            // Not updating if everything is deleted
+            ApiManager.post("characters", char)
+              .then(resp => saveAspects(resp.id))
+              .then(saveSkills)
+              .then(saveStunts)
+        }).then(props.history.push("/characters"))
     }
   }
 

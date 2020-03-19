@@ -64,7 +64,7 @@ const CharacterForm = props => {
       .then(character => setCharacter(character))
       // Get their aspects and put them in state
     ApiManager.getCharacterAspects(characterId)
-      .then(aspects => setCharacterAspects(aspects))
+      .then(aspects => setAspectsToEdit(aspects))
     ApiManager.getCharacterSkills(characterId)
       .then(skills => setSkillsToEdit(skills))
       // TODO: Get their stunts and put them in state
@@ -72,13 +72,18 @@ const CharacterForm = props => {
       .then(stunts => setStuntsToEdit(stunts))
   }
 
-  const setStuntsToEdit = (stunts) => {
-    const stateToChange = {...characterStunts};
-    // TODO: Make this loop more adaptable to different range of stunt numbers
-    stunts.forEach(function(stunt, index) {
-      stateToChange[ index + 1] = stunt.stuntId.toString();       
-    }) 
-    setCharacterStunts(stateToChange)
+  const setAspectsToEdit = (aspects) => {
+    const stateToChange = [...characterAspects];
+    // TODO: Make this loop more adaptable to different range of rating levels
+    for (let i = 0; i < 7; i++) {
+      const aspect = aspects[i]
+      console.log(aspect)
+      if (aspect) {
+        console.log(stateToChange[i])
+        stateToChange[i] = {name: aspect.name, aspectTypeId: aspect.aspectTypeId}
+      }
+    } 
+    setCharacterAspects(stateToChange)
   }
 
   const setSkillsToEdit = (skills) => {
@@ -88,6 +93,15 @@ const CharacterForm = props => {
       stateToChange[i] = skillsByRating(skills, i)
     } 
     setCharacterSkills(stateToChange)
+  }
+
+  const setStuntsToEdit = (stunts) => {
+    const stateToChange = {...characterStunts};
+    // TODO: Make this loop more adaptable to different range of stunt numbers
+    stunts.forEach(function(stunt, index) {
+      stateToChange[ index + 1] = stunt.stuntId.toString();       
+    }) 
+    setCharacterStunts(stateToChange)
   }
 
   const skillsByRating = (skills, rating) => {

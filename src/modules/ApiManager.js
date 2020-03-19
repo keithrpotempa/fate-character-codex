@@ -42,6 +42,11 @@ export default {
       method: "DELETE"
     }).then(result => result.json());
   },
+  deleteByCharacterId(dataType, charId) {
+    return fetch(`${remoteURL}/${dataType}?characterId=${charId}`, {
+      method: "DELETE"
+    }).then(result => result.json());
+  },
   post(dataType, objectToPost) {
     return fetch(`${remoteURL}/${dataType}`, {
       method: "POST",
