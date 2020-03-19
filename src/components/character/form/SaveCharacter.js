@@ -3,12 +3,15 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
 
+// TODO: CONFIGURE SAVE ON EDIT
+
 const SaveCharacter = props => {
   const character = props.character;
   const aspects = props.aspects;
   const skills = props.skills;
   const stunts = props.stunts;
   const isLoading = props.isLoading;
+  const isEdit = props.match.params.characterId ? true : false;
   const setIsLoading= props.setIsLoading;
 
   /* ------------ OBJECT CONSTRUCTORS ------------ */
@@ -21,6 +24,12 @@ const SaveCharacter = props => {
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()
     }
+
+    // TODO: TEST. If this is an edit, we also need the id
+    if (isEdit) {
+      characterToSave.id = props.match.params.characterId;
+    }
+
     return characterToSave;
   }
 
@@ -64,15 +73,11 @@ const SaveCharacter = props => {
     }
 
     // TODO: keep someone from saving a character with duplicate skills
-    // const duplicateSkills = (characterSkills) => {
-
-    // }
 
     if (character.name === "") {
       validationConfirm("Enter a character name")
     } else if (aspects[0].name === "") {
       validationConfirm("Enter a high aspect")
-      // const isEmpty = !Object.values(object).some(x => (x !== null && x !== ''));
     } else if (skillsAreEmpty(skills)) {
       validationConfirm("Choose at least one skill")
     } else {
@@ -97,24 +102,28 @@ const SaveCharacter = props => {
   const handleSave = evt => {
     evt.preventDefault();
 
-    // POSTING CHARACTER
+    // SAVING CHARACTER
     const char = constructCharacter()
     if (validChar(char)) {
       setIsLoading(true);
-      ApiManager.post("characters", char)
-        // POSTING ASPECTS
-        .then(characterResp => {
-          aspects.forEach(aspect => {
-            // This keeps blank aspects from being posted
-            if (aspect.name !== "") {
-              const aspectToSave = constructAspect(aspect, characterResp.id)
-              ApiManager.post("characterAspects", aspectToSave)
-            } 
+      isEdit 
+        ? ApiManager.update("characters", char)
+        : ApiManager.post("characters", char)
+         // SAVING ASPECTS
+          .then(characterResp => {
+            aspects.forEach(aspect => {
+              // This keeps blank aspects from being posted
+              if (aspect.name !== "") {
+                const aspectToSave = constructAspect(aspect, characterResp.id)
+                isEdit
+                  ? ApiManager.update("characterAspects", aspectToSave)
+                  : ApiManager.post("characterAspects", aspectToSave)
+              } 
+            })
+            return characterResp.id;
           })
-          return characterResp.id;
-        })
         
-        // POSTING SKILLS
+        // SAVING SKILLS
         .then(characterId => {
           for (const property in skills) {
             const skillsAtRating = skills[property]
@@ -122,18 +131,22 @@ const SaveCharacter = props => {
             if (skillsAtRating.length > 0) {
               skillsAtRating.forEach(skill => {
                 const skillToSave = constructSkill(skill, rating, characterId)
-                ApiManager.post("characterSkills", skillToSave)
+                isEdit
+                  ? ApiManager.update("characterSkills", skillToSave)
+                  : ApiManager.post("characterSkills", skillToSave)
               })
             }
           }
           return characterId; 
         })
 
-        // POSTING STUNTS
+        // SAVING STUNTS
         .then(characterId => {
           stunts.forEach(stunt => {
             const stuntToSave = constructStunt(stunt, characterId)
-            ApiManager.post("characterStunts", stuntToSave)
+            isEdit
+              ? ApiManager.update("characterStunts", stuntToSave)
+              : ApiManager.post("characterStunts", stuntToSave)
           })  
           return characterId;
         })

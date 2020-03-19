@@ -13,21 +13,21 @@ const StuntRow = props => {
 
   return (
     <div className="stunt-form-container">
-    <div className="stunt-dropdowns-container">
-      <SkillsDropDown 
-        x={props.x} 
-        handleFieldChange={handleFilter} 
-        skillList={props.skillList}
-      />
-      <StuntsDropdown 
-        x={props.x} 
-        stuntList={props.stuntList} 
-        setStuntList={props.setStuntList} 
-        characterStunts={props.characterStunts} 
-        setCharacterStunts={props.setCharacterStunts} 
-        filter={props.filter}
-      />
-    </div>
+      <div className="stunt-dropdowns-container">
+        <SkillsDropDown 
+          x={props.x} 
+          handleFieldChange={handleFilter} 
+          skillList={props.skillList}
+        />
+        <StuntsDropdown 
+          x={props.x} 
+          stuntList={props.stuntList} 
+          setStuntList={props.setStuntList} 
+          characterStunts={props.characterStunts} 
+          setCharacterStunts={props.setCharacterStunts} 
+          filter={props.filter}
+        />
+      </div>
     <StuntDescription 
       stunt={props.characterStunts[props.x]} 
       stuntList={props.stuntList}

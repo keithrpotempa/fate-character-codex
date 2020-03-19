@@ -6,7 +6,9 @@ const AspectForm = props => {
   const handleFieldChange = evt => {
       const stateToChange = [...aspects]
       // Determining which aspect is being edited: #1-5
-      stateToChange[evt.target.id.split("-")[1]].name = evt.target.value;
+      const indexToChange = evt.target.id.split("-")[1]
+      console.log("indexToChange", indexToChange)
+      stateToChange[indexToChange] = evt.target.value;
       props.setAspects(stateToChange)
   }
 
