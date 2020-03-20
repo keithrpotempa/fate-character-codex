@@ -30,7 +30,14 @@ const CharacterForm = props => {
     1: []
   });
   const [skillList, setSkillList] = useState([]);
-  const [characterStunts, setCharacterStunts] = useState([]);
+
+  const [characterStunts, setCharacterStunts] = useState({
+    5: "",
+    4: "",
+    3: "",
+    2: "",
+    1: ""
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,8 +56,67 @@ const CharacterForm = props => {
     setCharacter(stateToChange)
   }
 
+  /* ------------------ EDIT RELATED ------------------  */
+  const editSetup = () => {
+    // If this is an edit, the following needs to happen:
+    const characterId = props.match.params.characterId
+    // Get the character and put them in state
+    ApiManager.get("characters", characterId)
+      .then(character => setCharacter(character))
+      // Get their aspects and put them in state
+    ApiManager.getCharacterAspects(characterId)
+      .then(aspects => setAspectsToEdit(aspects))
+    ApiManager.getCharacterSkills(characterId)
+      .then(skills => setSkillsToEdit(skills))
+    ApiManager.getCharacterStunts(characterId)
+      .then(stunts => setStuntsToEdit(stunts))
+  }
+
+  const setAspectsToEdit = (aspects) => {
+    const stateToChange = [...characterAspects];
+    // TODO: Make this loop more adaptable to different range of rating levels
+    for (let i = 0; i < 7; i++) {
+      const aspect = aspects[i]
+      if (aspect) {
+        stateToChange[i] = {name: aspect.name, aspectTypeId: aspect.aspectTypeId}
+      }
+    } 
+    setCharacterAspects(stateToChange)
+  }
+
+  const setSkillsToEdit = (skills) => {
+    const stateToChange = {...characterSkills};
+    // TODO: Make this loop more adaptable to different range of rating levels
+    for (let i = 1; i < 7; i++) {
+      stateToChange[i] = skillsByRating(skills, i)
+    } 
+    setCharacterSkills(stateToChange)
+  }
+
+  const setStuntsToEdit = (stunts) => {
+    const stateToChange = {...characterStunts};
+    // TODO: Make this loop more adaptable to different range of stunt numbers
+    stunts.forEach(function(stunt, index) {
+      stateToChange[ index + 1] = stunt.stuntId.toString();       
+    }) 
+    setCharacterStunts(stateToChange)
+  }
+
+  const skillsByRating = (skills, rating) => {
+    // Converting the format of the db to the format of the form's state
+    const filteredSkills = skills.filter(skill => skill.skillRating === rating)
+    const formattedSkills = filteredSkills.map(skill => skill.skillId.toString())
+    return formattedSkills;
+  }
+
+  /* ------------------ ------------------  */
+
   useEffect(() => {
     getSkillList();
+    // AKA: if this is an edit
+    if (props.match.params.characterId) {
+      editSetup();
+    }
     setIsLoading(false);
   }, [])
 
@@ -66,6 +132,7 @@ const CharacterForm = props => {
             className="character"
             id="name"
             placeholder="Character name"
+            value={character.name}
           />
           <AspectForm 
             aspects={characterAspects}

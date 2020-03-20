@@ -1,62 +1,46 @@
 import React from "react";
+import { Dropdown } from 'semantic-ui-react';
+import "../Character.css"
 
 const StuntsDropdown = props => {
-  const stuntList = props.stuntList;
+  // Ick
+  const stuntList = props.filter === "" 
+    ? props.stuntList 
+    : props.stuntList.filter(stunt => stunt.skillId === props.filter);
   const setCharacterStunts = props.setCharacterStunts;
   const characterStunts = props.characterStunts;
 
-  const handleFieldChange = evt => {
-    const stateToChange = [...characterStunts]
-    const row = parseInt(evt.target.id.split("--")[1])
-    const objectToSave = {
-      row: row,
-      stuntId: parseInt(evt.target.value)
-    }
-    // Finding the item in the array with a row position equal to the select field's
-    const indexToChange = stateToChange.findIndex( obj => obj.row === row );
-    /* Since findIndex returns -1 if it can't find anything, 
-      when we get a -1, we create a new object in the array 
-      Otherwise, change that existing object in state */
-    indexToChange === -1 
-      ? stateToChange.push(objectToSave) 
-      : stateToChange[indexToChange] = objectToSave;
+  const stuntToEdit = props.characterStunts[props.x]
+
+  const handleFieldChange = (evt, {name, value}) => {
+    const stuntId = value;
+    const row = props.x;
+    const stateToChange = {...characterStunts}
+    stateToChange[row] = stuntId
     setCharacterStunts(stateToChange);
   }
 
-  if (props.filter === "") {
-    return (
-      <>
-        <select
-          className="stunt-selector"
+  return (
+    <>
+      <div className="stunt-selector">
+        <Dropdown
+          placeholder="Select Stunt"
+          fluid
+          selection
           id={`stunts--${props.x}`}
           onChange={handleFieldChange}
-        >
-        {stuntList.map(stunt => (
-          <option key={stunt.id} value={stunt.id}>
-            {stunt.name}
-          </option>
-        ))}
-      </select>
-      </>
-    )
-  } else {
-    const filteredList = stuntList.filter(stunt => stunt.skillId === props.filter)
-    return (
-      <>
-        <select
-          className="stunt-selector"
-          id={`stunts--${props.x}`}
-          onChange={handleFieldChange}
-        >
-          {filteredList.map(stunt => (
-            <option key={stunt.id} value={stunt.id}>
-              {stunt.name}
-            </option>
+          value={stuntToEdit}
+          options={stuntList.map(stunt => (
+            {
+              key: `${stunt.id}`, 
+              value: `${stunt.id}`,
+              text: `${stunt.name}`
+            }
           ))}
-        </select>
-      </>
-    )
-  }
+        />
+      </div>
+    </>
+  )
 }
 
 export default StuntsDropdown;

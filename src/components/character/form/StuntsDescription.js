@@ -2,23 +2,15 @@ import React from "react";
 
 const StuntDescription = props => {
   const stuntList = props.stuntList;
-  const characterStunts = props.characterStunts;
-  const match = characterStunts.find( obj => obj.row === parseInt(props.x) )
+  const selectedStunt = props.stunt;
+  const stuntToDisplay = stuntList.find(stunt => stunt.id === parseInt(selectedStunt))
+  const stuntDescription = stuntToDisplay ? stuntToDisplay.description : "" 
 
-  if (match !== undefined) {
-    const stunt = stuntList.find(stunt => stunt.id === match.stuntId)
-    return (
-      <>
-        <div className="stunt-description">{stunt.description}</div>
-      </>
-    )
-  } else {
-    return (
-      <>
-        <div className="stunt-description"></div>
-      </>
-    )
-  }
+  return (
+    <>
+      <div className="stunt-description">{stuntDescription}</div>
+    </>
+  )
 }
 
 export default StuntDescription;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../modules/ApiManager";
@@ -87,7 +88,6 @@ const CharacterSheet = props => {
         }
       ]
     });
-
   }
 
   useEffect(()=>{
@@ -135,15 +135,23 @@ const CharacterSheet = props => {
               physiqueRating={physiqueRating}
               willRating={willRating}
             />
-          {character.id === activeUser.id 
-            ? <button
-                type="button"
-                onClick={() => handleDelete(id)}
-              >
-                Delete
-              </button>
-            : null
-          }
+            {/* Conditionally rendering these buttons 
+              if the user created this character */}
+            {character.userId === activeUser.id 
+              ? <Link to={`/characters/${id}/edit`}>
+                  <button>Edit</button>
+                </Link>
+              : null
+            }
+            {character.userId === activeUser.id 
+              ? <button
+                  type="button"
+                  onClick={() => handleDelete(id)}
+                >
+                  Delete
+                </button>
+              : null
+            }
           </div>
         </div>
       </main>

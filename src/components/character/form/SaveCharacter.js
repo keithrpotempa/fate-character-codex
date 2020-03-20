@@ -9,6 +9,7 @@ const SaveCharacter = props => {
   const skills = props.skills;
   const stunts = props.stunts;
   const isLoading = props.isLoading;
+  const isEdit = props.match.params.characterId ? true : false;
   const setIsLoading= props.setIsLoading;
 
   /* ------------ OBJECT CONSTRUCTORS ------------ */
@@ -20,6 +21,10 @@ const SaveCharacter = props => {
       userId: user.id,
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()
+    }
+    if (isEdit) {
+      characterToSave.id = parseInt(props.match.params.characterId);
+      characterToSave.created = character.created
     }
     return characterToSave;
   }
@@ -35,17 +40,17 @@ const SaveCharacter = props => {
 
   const constructSkill = (skill, rating, characterId) => {
     const skillToSave = {
-      characterId: characterId,
+      characterId: parseInt(characterId),
       skillId: parseInt(skill),
       skillRating: parseInt(rating)
     }
     return skillToSave;
   }
 
-  const constructStunt = (stunt, characterId) => {
+  const constructStunt = (stuntId, characterId) => {
     const stuntToSave = {
-      characterId: characterId,
-      stuntId: stunt.stuntId,
+      characterId: parseInt(characterId),
+      stuntId: parseInt(stuntId),
     }
     return stuntToSave;
   } 
@@ -64,15 +69,11 @@ const SaveCharacter = props => {
     }
 
     // TODO: keep someone from saving a character with duplicate skills
-    // const duplicateSkills = (characterSkills) => {
-
-    // }
 
     if (character.name === "") {
       validationConfirm("Enter a character name")
     } else if (aspects[0].name === "") {
       validationConfirm("Enter a high aspect")
-      // const isEmpty = !Object.values(object).some(x => (x !== null && x !== ''));
     } else if (skillsAreEmpty(skills)) {
       validationConfirm("Choose at least one skill")
     } else {
@@ -92,55 +93,74 @@ const SaveCharacter = props => {
       ]
     });
   }
-  
+
+  /* ------------ SAVING FUNCTIONS ------------ */
+  // Made this an async function to allow it to have a .then after
+  async function purge() {
+    // IF edit, delete everything before starting?
+    if (isEdit) {
+      const userId = props.match.params.characterId;
+      return ApiManager.delete("characters", userId)
+    } else {
+      return character
+    }
+  }
+
+  const saveAspects = (charId) => {
+    aspects.forEach(aspect => {
+      // This keeps blank aspects from being posted
+      if (aspect.name !== "") {
+        const aspectToSave = constructAspect(aspect, charId)
+        ApiManager.post("characterAspects", aspectToSave)
+      } 
+    })
+    return charId;
+  }
+
+  const saveSkills = (charId) => {
+    for (const row in skills) {
+      const skillsAtRating = skills[row]
+      const rating = row
+      if (skillsAtRating.length > 0) {
+        skillsAtRating.forEach(skill => {
+          const skillToSave = constructSkill(skill, rating, charId)
+          ApiManager.post("characterSkills", skillToSave)
+        })
+      }
+    }
+    return charId; 
+  }
+
+  const saveStunts = (charId) => {
+    for (const row in stunts) {
+      // Only build and post if there's 
+      // actually a stunt selected on that row
+      if (stunts[row]) {
+        const stuntId = stunts[row]
+        const stuntToSave = constructStunt(stuntId, charId)
+        ApiManager.post("characterStunts", stuntToSave)
+      }
+    }  
+    return charId;
+  }
+
   /* ------------ SAVING ------------ */
   const handleSave = evt => {
     evt.preventDefault();
-
-    // POSTING CHARACTER
+    // SAVING CHARACTER
     const char = constructCharacter()
     if (validChar(char)) {
       setIsLoading(true);
-      ApiManager.post("characters", char)
-        // POSTING ASPECTS
-        .then(characterResp => {
-          aspects.forEach(aspect => {
-            // This keeps blank aspects from being posted
-            if (aspect.name !== "") {
-              const aspectToSave = constructAspect(aspect, characterResp.id)
-              ApiManager.post("characterAspects", aspectToSave)
-            } 
-          })
-          return characterResp.id;
+      purge()
+        .then(resp => {
+            // Not updating if everything is deleted
+            ApiManager.post("characters", char)
+              .then(resp => saveAspects(resp.id))
+              .then(saveSkills)
+              .then(saveStunts)
+              // FIXME: this push is failing to render the newly saved char
+              .then(props.history.push("/characters"))
         })
-        
-        // POSTING SKILLS
-        .then(characterId => {
-          for (const property in skills) {
-            const skillsAtRating = skills[property]
-            const rating = property
-            if (skillsAtRating.length > 0) {
-              skillsAtRating.forEach(skill => {
-                const skillToSave = constructSkill(skill, rating, characterId)
-                ApiManager.post("characterSkills", skillToSave)
-              })
-            }
-          }
-          return characterId; 
-        })
-
-        // POSTING STUNTS
-        .then(characterId => {
-          stunts.forEach(stunt => {
-            const stuntToSave = constructStunt(stunt, characterId)
-            ApiManager.post("characterStunts", stuntToSave)
-          })  
-          return characterId;
-        })
-
-        // REDIRECT TO CHARACTER PAGE
-        // FIXME: It redirects before everything has been posted...
-        .then(props.history.push("/characters"))
     }
   }
 
