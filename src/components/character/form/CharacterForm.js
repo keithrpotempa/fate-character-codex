@@ -77,9 +77,7 @@ const CharacterForm = props => {
     // TODO: Make this loop more adaptable to different range of rating levels
     for (let i = 0; i < 7; i++) {
       const aspect = aspects[i]
-      console.log(aspect)
       if (aspect) {
-        console.log(stateToChange[i])
         stateToChange[i] = {name: aspect.name, aspectTypeId: aspect.aspectTypeId}
       }
     } 

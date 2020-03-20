@@ -140,7 +140,6 @@ const SaveCharacter = props => {
       if (stunts[row]) {
         const stunt = stunts[row]
         const stuntToSave = constructStunt(stunt, charId)
-        console.log(stuntToSave)
         ApiManager.post("characterStunts", stuntToSave)
       }
     }  
