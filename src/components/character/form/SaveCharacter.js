@@ -51,8 +51,8 @@ const SaveCharacter = props => {
 
   const constructStunt = (stunt, characterId) => {
     const stuntToSave = {
-      characterId: characterId,
-      stuntId: stunt.stuntId,
+      characterId: parseInt(characterId),
+      stuntId: parseInt(stunt),
     }
     return stuntToSave;
   } 
@@ -135,9 +135,14 @@ const SaveCharacter = props => {
 
   const saveStunts = (charId) => {
     for (const row in stunts) {
-      const stunt = stunts[row]
-      const stuntToSave = constructStunt(stunt, charId)
-      ApiManager.post("characterStunts", stuntToSave)
+      // Only build and post if there's 
+      // actually a stunt selected on that row
+      if (stunts[row]) {
+        const stunt = stunts[row]
+        const stuntToSave = constructStunt(stunt, charId)
+        console.log(stuntToSave)
+        ApiManager.post("characterStunts", stuntToSave)
+      }
     }  
     return charId;
   }

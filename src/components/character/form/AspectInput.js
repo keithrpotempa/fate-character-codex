@@ -13,6 +13,7 @@ const AspectInput = props => {
     <>
       <input 
         type="text"
+        key={`aspect-${index}`}
         required
         onChange={props.handleFieldChange}
         className="aspect"

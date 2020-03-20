@@ -14,7 +14,7 @@
             onChange={props.handleFieldChange}
             options={props.skillList.map(skill => (
               {
-                key: `${skill.id}`, 
+                key: `skill-${skill.id}--row-${props.x}`, 
                 value: `${skill.id}`,
                 text: `${skill.name}`
               }
