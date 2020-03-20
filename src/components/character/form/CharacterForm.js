@@ -97,7 +97,9 @@ const CharacterForm = props => {
     const stateToChange = {...characterStunts};
     // TODO: Make this loop more adaptable to different range of stunt numbers
     stunts.forEach(function(stunt, index) {
-      stateToChange[ index + 1] = stunt.stuntId.toString();       
+      if (stunt.stuntId !== "0") {
+        return stateToChange[ index + 1] = stunt.stuntId.toString();       
+      }
     }) 
     setCharacterStunts(stateToChange)
   }
