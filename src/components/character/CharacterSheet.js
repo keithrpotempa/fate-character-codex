@@ -41,6 +41,7 @@ const CharacterSheet = props => {
           // we extract the rating of will and physique to use later
           // If they don't have a rating, consider it to be zero
           const will = rawSkills.find( ({skillId}) => skillId === 18)
+          // TODO: change to if/else
           will ? setWillRating(will.skillRating) : setWillRating(0)
 
           const physique = rawSkills.find( ({skillId}) => skillId === 12)
