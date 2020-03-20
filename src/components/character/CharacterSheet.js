@@ -8,7 +8,14 @@ import StressConsequences from "./StressConsequences";
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
   const [aspects, setAspects] = useState([]);
-  const [skillGroups, setSkillGroups] = useState([]);
+  const [skills, setSkills] = useState({
+    6: [],
+    5: [],
+    4: [],
+    3: [],
+    2: [],
+    1: []
+  });
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
   const [stunts, setStunts] = useState([]);
@@ -29,20 +36,18 @@ const CharacterSheet = props => {
 
   const getSkills = () => {
     ApiManager.getCharacterSkills(id)
-    .then(skills => {
-        // Before the skills are sorted into a weird format to output
-        // we extract the rating of will and physique to use later
-        // If they don't have a rating, consider it to be zero
-        const will = skills.find( ({skillId}) => skillId === 18)
-        will ? setWillRating(will.skillRating) : setWillRating(0)
+      .then(rawSkills => {
+          // Before the skills are sorted into a weird format to output
+          // we extract the rating of will and physique to use later
+          // If they don't have a rating, consider it to be zero
+          const will = rawSkills.find( ({skillId}) => skillId === 18)
+          will ? setWillRating(will.skillRating) : setWillRating(0)
 
-        const physique = skills.find( ({skillId}) => skillId === 12)
-        physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
-        
-        return skills
+          const physique = rawSkills.find( ({skillId}) => skillId === 12)
+          physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
+          return rawSkills
       })
-      .then(makeSkillGroups)
-      .then(setSkillGroups)
+      .then(setFormattedSkills)
   }
 
   const getStunts = () => {
@@ -50,26 +55,34 @@ const CharacterSheet = props => {
       .then(setStunts);
   }
 
-  const makeSkillGroups = (skills) => {
-    // Sort the skills so that the highest rating is at the top
-    skills = skills.sort((a,b) =>  b.skillRating - a.skillRating)
-    // Seed/start the skillGroups array with the char's highest skill rating
-    const skillGroups = [{rating: skills[0].skillRating, skills: []}]
-    /* 
-      Loop over every skill the character has;
-      if there's a matching group, 
-      place it in that group's skills array, 
-      otherwise, start a new group. 
-    */
-    skills.forEach(skill => {
-      const skillName = skill.skill.name;
-      const skillRating = skill.skillRating;
-      const matchingGroup = skillGroups.find( ({rating}) => rating === skillRating)
-      matchingGroup 
-        ? matchingGroup.skills.push(skillName) 
-        : skillGroups.push({rating: skillRating, skills: [skillName]})
-    })
-    return skillGroups;
+  // FIXME: Skill groups not working; change to dict
+  const setFormattedSkills = (rawSkills) => {
+    const stateToChange = {...skills};
+    // TODO: Make this loop more adaptable to different range of rating levels
+    for (let i = 1; i < 7; i++) {
+      stateToChange[i] = skillsByRating(rawSkills, i)
+    } 
+    setSkills(stateToChange)
+  }
+
+  const skillsByRating = (rawSkills, rating) => {
+    // Converting the format of the db to the format of the form's state
+    const filteredSkills = rawSkills.filter(skill => skill.skillRating === rating)
+    const formattedSkills = filteredSkills.map(skill => skill.skill.name)
+    return formattedSkills;
+  }
+
+  const SkillLi = (skillRow, rating) => {
+    return (
+      <>
+        {skillRow.length > 0
+          ? <li key={"skillRating-" + rating}>
+              <strong>+{rating}:</strong> {skillRow.join(", ")}
+            </li>  
+          : <></>
+        }
+      </>
+      )
   }
 
   const handleDelete = (id) => {
@@ -116,11 +129,16 @@ const CharacterSheet = props => {
               </ul>
               <p><strong>Skills</strong></p>
               <ul>
-                {skillGroups.map(group => 
-                  <li key={"skillRating-" + group.rating}>
-                    <strong>+{group.rating}:</strong> {group.skills.join(", ")}
-                  </li>  
-                )}
+                {/* Take the keys of the skills dict (AKA their ratings)
+                  and map them [6,5,4], then use that array 
+                  to get that rating's array of skills 
+                  via square bracket notation
+                */}
+                {Object.keys(skills)
+                  // Sort the skills so that the highest rating is at the top
+                  .sort((a,b) =>  b - a)
+                  .map(rating => SkillLi(skills[rating], rating))
+                }
               </ul>
             </div>
             <p><strong>Stunts</strong></p>
@@ -139,7 +157,7 @@ const CharacterSheet = props => {
               if the user created this character */}
             {character.userId === activeUser.id 
               ? <Link to={`/characters/${id}/edit`}>
-                  <button>Edit</button>
+                  <button disabled={isLoading} >Edit</button>
                 </Link>
               : null
             }
@@ -147,6 +165,7 @@ const CharacterSheet = props => {
               ? <button
                   type="button"
                   onClick={() => handleDelete(id)}
+                  disabled={isLoading}
                 >
                   Delete
                 </button>
