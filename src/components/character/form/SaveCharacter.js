@@ -49,10 +49,10 @@ const SaveCharacter = props => {
     return skillToSave;
   }
 
-  const constructStunt = (stunt, characterId) => {
+  const constructStunt = (stuntId, characterId) => {
     const stuntToSave = {
       characterId: parseInt(characterId),
-      stuntId: parseInt(stunt),
+      stuntId: parseInt(stuntId),
     }
     return stuntToSave;
   } 
@@ -107,7 +107,8 @@ const SaveCharacter = props => {
       return character
     }
   }
-
+  
+  // FIXME: saving type3 aspects multiple times...
   const saveAspects = (charId) => {
     aspects.forEach(aspect => {
       // This keeps blank aspects from being posted
@@ -138,8 +139,8 @@ const SaveCharacter = props => {
       // Only build and post if there's 
       // actually a stunt selected on that row
       if (stunts[row]) {
-        const stunt = stunts[row]
-        const stuntToSave = constructStunt(stunt, charId)
+        const stuntId = stunts[row]
+        const stuntToSave = constructStunt(stuntId, charId)
         ApiManager.post("characterStunts", stuntToSave)
       }
     }  
