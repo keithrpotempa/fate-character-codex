@@ -56,6 +56,7 @@ const CharacterForm = props => {
     setCharacter(stateToChange)
   }
 
+  /* ------------------ EDIT RELATED ------------------  */
   const editSetup = () => {
     // If this is an edit, the following needs to happen:
     const characterId = props.match.params.characterId
@@ -67,7 +68,6 @@ const CharacterForm = props => {
       .then(aspects => setAspectsToEdit(aspects))
     ApiManager.getCharacterSkills(characterId)
       .then(skills => setSkillsToEdit(skills))
-      // TODO: Get their stunts and put them in state
     ApiManager.getCharacterStunts(characterId)
       .then(stunts => setStuntsToEdit(stunts))
   }
@@ -108,6 +108,8 @@ const CharacterForm = props => {
     const formattedSkills = filteredSkills.map(skill => skill.skillId.toString())
     return formattedSkills;
   }
+
+  /* ------------------ ------------------  */
 
   useEffect(() => {
     getSkillList();

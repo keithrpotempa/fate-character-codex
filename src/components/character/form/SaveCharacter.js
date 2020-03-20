@@ -3,8 +3,6 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
 
-// TODO: CONFIGURE SAVE ON EDIT
-
 const SaveCharacter = props => {
   const character = props.character;
   const aspects = props.aspects;
@@ -62,7 +60,6 @@ const SaveCharacter = props => {
   const validChar = () => {
     const skillsAreEmpty = (characterSkills) => {
       const skillLevels = Object.values(characterSkills)
-      // FIXME: seems like sometimes it's not actually empty?
       const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
       if (nonEmptySkillLevels.length > 0) {
         return false;
@@ -98,7 +95,8 @@ const SaveCharacter = props => {
   }
 
   /* ------------ SAVING FUNCTIONS ------------ */
-  const purge = () => {
+  // Made this an async function to allow it to have a .then after
+  async function purge() {
     // IF edit, delete everything before starting?
     if (isEdit) {
       const userId = props.match.params.characterId;
@@ -107,8 +105,7 @@ const SaveCharacter = props => {
       return character
     }
   }
-  
-  // FIXME: saving type3 aspects multiple times...
+
   const saveAspects = (charId) => {
     aspects.forEach(aspect => {
       // This keeps blank aspects from being posted
@@ -148,8 +145,6 @@ const SaveCharacter = props => {
   }
 
   /* ------------ SAVING ------------ */
-  // FIXME: consistently crashes json server
-  // requests coming in too fast?
   const handleSave = evt => {
     evt.preventDefault();
     // SAVING CHARACTER
@@ -163,7 +158,9 @@ const SaveCharacter = props => {
               .then(resp => saveAspects(resp.id))
               .then(saveSkills)
               .then(saveStunts)
-        }).then(props.history.push("/characters"))
+              // FIXME: this push is failing to render the newly saved char
+              .then(props.history.push("/characters"))
+        })
     }
   }
 

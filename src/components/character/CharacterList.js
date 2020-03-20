@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { confirmAlert } from 'react-confirm-alert';
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
 
 const CharacterList = props => {
   const [characters, setCharacters] = useState([]);
+  const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
 
   const getCharacters = () => {
     return ApiManager.getAllEmbed("characters", "characterAspects")
@@ -26,8 +28,21 @@ const CharacterList = props => {
   }
 
   const handleDelete = (id) => {
-    ApiManager.delete("characters", id)
-      .then(getCharacters)
+    confirmAlert({
+      title: 'Confirm to submit',
+      message: 'Are you sure to delete this character?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => ApiManager.delete("characters", id)
+            .then(getCharacters)
+        },
+        {
+          label: 'No',
+          onClick: null
+        }
+      ]
+    });
   }
 
   useEffect(() => {
@@ -51,10 +66,10 @@ const CharacterList = props => {
             {characters.map(character => 
               <CharacterCard
                 key={character.id}
-                name={character.name}
-                id={character.id}
+                character={character}
                 highConcept={getHighConcept(character)}
                 handleDelete={() => handleDelete(character.id)}
+                activeUser={activeUser}
               />
             )}
           </div>
