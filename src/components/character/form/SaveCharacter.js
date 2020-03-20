@@ -158,8 +158,8 @@ const SaveCharacter = props => {
               .then(resp => saveAspects(resp.id))
               .then(saveSkills)
               .then(saveStunts)
-              // FIXME: this push is failing to render the newly saved char
-              .then(props.history.push("/characters"))
+              // FIXME: this push is failing to render the newly saved char    
+              .then(() => props.history.push("/characters"))
         })
     }
   }

@@ -122,7 +122,7 @@ const CharacterSheet = props => {
               <p><strong>Aspects</strong></p>
               <ul>
                 {aspects.map(aspect =>
-                  <li key={"aspect-" + aspect.id}>
+                  <li key={`aspect-${aspect.id}`}>
                     {aspect.name}
                   </li>
                 )}
