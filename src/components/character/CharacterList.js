@@ -8,7 +8,7 @@ const CharacterList = props => {
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
 
   const getCharacters = () => {
-    return ApiManager.getAllEmbed("characters", "characterAspects")
+    ApiManager.getAllEmbed("characters", "characterAspects")
       .then(setCharacters)
   }
 

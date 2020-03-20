@@ -16,12 +16,7 @@ const StuntsForm = props => {
 
   const getStuntList = () => {
     return ApiManager.getAll("stunts")
-    // Hacky way of adding a default / blank value to the list
-    .then(stunts => {
-      stunts.unshift({id: 0, name: "[Choose Stunt]"});
-      return stunts;
-    })
-    .then(setStuntList); 
+      .then(setStuntList); 
   }
 
   useEffect(() => {

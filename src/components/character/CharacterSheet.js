@@ -76,7 +76,7 @@ const CharacterSheet = props => {
     return (
       <>
         {skillRow.length > 0
-          ? <li key={"skillRating-" + rating}>
+          ? <li key={`skillRating-${rating}`}>
               <strong>+{rating}:</strong> {skillRow.join(", ")}
             </li>  
           : <></>
@@ -144,7 +144,7 @@ const CharacterSheet = props => {
             <p><strong>Stunts</strong></p>
             <ul>
               {stunts.map(stunt => 
-                <li key={"stunt-" + stunt.stunt.id }>
+                <li key={`stunt-${stunt.stunt.id}`}>
                   <strong>{stunt.stunt.name}:</strong> {stunt.stunt.description}
                 </li>
               )}
