@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Card, Button, Icon } from "semantic-ui-react"
 import "./Character.css";
 
 const CharacterCard = props => {
@@ -8,32 +9,30 @@ const CharacterCard = props => {
 
   return (
     <>
-      <div className="card">
-        <div className="card-content character-card">
-          <h3>
-            {character.name}, {props.highConcept}
-          </h3>
-          <Link to={`/characters/${character.id}`}>
-            <button>Details</button>
-          </Link>
-          {/* Conditionally rendering these buttons 
-              if the user created this character */}
-          {activeUser.id === character.userId
-            ? <Link to={`/characters/${character.id}/edit`}>
-                <button>Edit</button>
-              </Link> 
-            : null
-          }
-          {activeUser.id === character.userId
-            ? <button
+      <Card 
+        href={`/characters/${character.id}`}
+        header={character.name}
+        description={props.highConcept}
+        extra={
+          /* Conditionally rendering these buttons 
+          if the user created this character */
+          activeUser.id === character.userId
+          ? <>  
+            <button className="ui button"
                 onClick={props.handleDelete}
               >
-                Delete
+              <Icon fitted className="trash alternate outline"/>
+            </button>
+            <Link to={`/characters/${character.id}/edit`}>
+              <button className="ui button">
+                <Icon fitted className="edit outline"/>
               </button>
-            : null
-          }
-        </div>
-      </div>
+            </Link> 
+          </>
+          : <></>
+        }
+      />
+
     </>
   )
 }
