@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
+import { Card, Container, Button, Divider, Grid, Label, List, Icon, Segment } from "semantic-ui-react"
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../modules/ApiManager";
 import StressConsequences from "./StressConsequences";
@@ -76,9 +77,10 @@ const CharacterSheet = props => {
     return (
       <>
         {skillRow.length > 0
-          ? <li key={`skillRating-${rating}`}>
-              <strong>+{rating}:</strong> {skillRow.join(", ")}
-            </li>  
+          ? <List.Item key={`skillRating-${rating}`}>
+              <strong>+{rating}:</strong>
+              {skillRow.map(skill => <Label>{skill}</Label>)}
+            </List.Item>  
           : <></>
         }
       </>
@@ -113,42 +115,61 @@ const CharacterSheet = props => {
 
   return (
     <>
-      <main>
-        <div className="card">
-          <div className="card-content">
-            <p><strong>Name:</strong> {character.name}</p>
-            <div>
-              {/* TOFIX: className="flex-row" */}
-              <p><strong>Aspects</strong></p>
-              <ul>
-                {aspects.map(aspect =>
-                  <li key={`aspect-${aspect.id}`}>
-                    {aspect.name}
-                  </li>
-                )}
-              </ul>
-              <p><strong>Skills</strong></p>
-              <ul>
-                {/* Take the keys of the skills dict (AKA their ratings)
-                  and map them [6,5,4], then use that array 
-                  to get that rating's array of skills 
-                  via square bracket notation
-                */}
-                {Object.keys(skills)
-                  // Sort the skills so that the highest rating is at the top
-                  .sort((a,b) =>  b - a)
-                  .map(rating => SkillLi(skills[rating], rating))
-                }
-              </ul>
-            </div>
-            <p><strong>Stunts</strong></p>
-            <ul>
+      <Container text>
+            <Divider horizontal>
+              <h4>ID</h4>
+            </Divider>
+              <p><strong>Name:</strong> {character.name}</p>
+
+              <Segment basic placeholder>
+              <Grid columns={2} relaxed='very' stackable>
+                <Grid.Column>
+                  {/* TOFIX: className="flex-row" */}
+                  <Divider horizontal>
+                    <h4>Aspects</h4>
+                  </Divider>
+                  <List celled>
+                    {aspects.map(aspect =>
+                      <List.Item 
+                        key={`aspect-${aspect.id}`}
+                        content={aspect.name}
+                        // meta={aspect.aspectTypeId}
+                      />
+                    )}
+                  </List>
+                </Grid.Column>
+                <Grid.Column verticalAlign='middle'>
+                  <Divider horizontal>
+                    <h4>Skills</h4>
+                  </Divider>
+                  <List>
+                    {/* Take the keys of the skills dict (AKA their ratings)
+                      and map them [6,5,4], then use that array 
+                      to get that rating's array of skills 
+                      via square bracket notation
+                    */}
+                    {Object.keys(skills)
+                      // Sort the skills so that the highest rating is at the top
+                      .sort((a,b) =>  b - a)
+                      .map(rating => SkillLi(skills[rating], rating))
+                    }
+                  </List>
+                </Grid.Column>
+              </Grid>
+            </Segment>
+
+
+                <Divider horizontal>
+                  <h4>Stunts</h4>
+                </Divider>
+            <Card.Group basic>
               {stunts.map(stunt => 
-                <li key={`stunt-${stunt.stunt.id}`}>
-                  <strong>{stunt.stunt.name}:</strong> {stunt.stunt.description}
-                </li>
+                <Card key={`stunt-${stunt.stunt.id}`}
+                header={stunt.stunt.name}
+                description={stunt.stunt.description}
+                />
               )}
-            </ul>
+            </Card.Group>
             <StressConsequences
               physiqueRating={physiqueRating}
               willRating={willRating}
@@ -156,24 +177,24 @@ const CharacterSheet = props => {
             {/* Conditionally rendering these buttons 
               if the user created this character */}
             {character.userId === activeUser.id 
-              ? <Link to={`/characters/${id}/edit`}>
-                  <button disabled={isLoading} >Edit</button>
-                </Link>
-              : null
+              ? <>
+                  <Link to={`/characters/${id}/edit`}>
+                    <Button disabled={isLoading} >
+                      <Icon fitted className="edit outline"/>
+                    </Button>
+                  </Link>
+                  <Button
+                    className="ui button"
+                    type="button"
+                    onClick={() => handleDelete(id)}
+                    disabled={isLoading}
+                  >
+                    <Icon fitted className="trash alternate outline"/>
+                  </Button>
+                </>
+              : <></>
             }
-            {character.userId === activeUser.id 
-              ? <button
-                  type="button"
-                  onClick={() => handleDelete(id)}
-                  disabled={isLoading}
-                >
-                  Delete
-                </button>
-              : null
-            }
-          </div>
-        </div>
-      </main>
+      </Container>
     </>
   )
 }
