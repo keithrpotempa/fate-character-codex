@@ -24,7 +24,7 @@ const ConsequenceInputs = props => {
 
   return (
     <>
-        <p><strong>Consequences</strong></p>
+        <p><strong>CONSEQUENCES</strong></p>
         <Grid stackable>
           <Grid.Column width={6}>
             {extraInputs("physical")}

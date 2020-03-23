@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
-import { Card, Container, Button, Divider, Grid, Label, List, Icon, Segment } from "semantic-ui-react"
+import { Container, Button, Divider, Grid, Icon, Segment } from "semantic-ui-react"
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
 
@@ -114,7 +114,7 @@ const CharacterSheet = props => {
         {/* Conditionally rendering these buttons 
           if the user created this character */}
         {character.userId === activeUser.id 
-          ? <>
+          ? <div className="flex-end">
               <Link to={`/characters/${id}/edit`}>
                 <Button disabled={isLoading} >
                   <Icon fitted className="edit outline"/>
@@ -128,7 +128,7 @@ const CharacterSheet = props => {
               >
                 <Icon fitted className="trash alternate outline"/>
               </Button>
-            </>
+            </div>
           : <></>
         }
       </Container>

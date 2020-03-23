@@ -16,6 +16,11 @@ main {
   color: var(--fate-blue)
 }
 
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .skills-wrapper {
   display: flex;
   justify-content: center;

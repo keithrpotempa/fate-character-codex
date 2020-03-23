@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "semantic-ui-react";
+import { Checkbox, List } from "semantic-ui-react";
 
 const StressBoxes = props => {
   const stressType = props.stressType;
@@ -20,29 +20,29 @@ const StressBoxes = props => {
 
   return (
     <>
-    <h4> {stressType} </h4>
+    <h4> {stressType.toUpperCase()} STRESS </h4>
      {rating <= 0 
-      ? <>
-          {checkBox(1)}
-          {checkBox(2)}
-        </>
+      ? <List horizontal>
+          <List.Item>{checkBox(1)}</List.Item>
+          <List.Item>{checkBox(2)}</List.Item>
+        </List>
       : <></>
      } 
      {rating === 1 || rating === 2 
-      ? <>
-          {checkBox(1)}
-          {checkBox(2)}
-          {checkBox(3)}
-        </>
+      ? <List horizontal>
+          <List.Item>{checkBox(1)}</List.Item>
+          <List.Item>{checkBox(2)}</List.Item>
+          <List.Item>{checkBox(3)}</List.Item>
+        </List>
       : <></>
      }
      {rating >= 3
-      ? <>
-          {checkBox(1)}
-          {checkBox(2)}
-          {checkBox(3)}
-          {checkBox(4)}
-        </>
+      ? <List horizontal>
+          <List.Item>{checkBox(1)}</List.Item>
+          <List.Item>{checkBox(2)}</List.Item>
+          <List.Item>{checkBox(3)}</List.Item>
+          <List.Item>{checkBox(4)}</List.Item>
+        </List>
       : <></>
      }
     </>

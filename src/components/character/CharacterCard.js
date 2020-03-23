@@ -18,7 +18,7 @@ const CharacterCard = props => {
           /* Conditionally rendering these buttons 
           if the user created this character */
           activeUser.id === character.userId
-          ? <>  
+          ? <div className="flex-end">  
             <Button className="ui button"
                 onClick={props.handleDelete}
               >
@@ -29,7 +29,7 @@ const CharacterCard = props => {
                 <Icon fitted className="edit outline"/>
               </Button>
             </Link> 
-          </>
+          </div>
           : <></>
         }
       />

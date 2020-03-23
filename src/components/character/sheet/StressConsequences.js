@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Segment } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import StressBoxes from "./StressBoxes";
 import ConsequenceInputs from "./ConsequenceInputs";
 import "../Character.css";
@@ -27,32 +27,5 @@ const StressConsequences = props => {
     </>
   )
 }
-
-/*
-
-      <div className="flex-rows">
-          <div className="stress-container">
-            <p><strong>Physical Stress</strong></p>
-            <div className="stress-boxes-container">
-              <StressBoxes stressType="physical" skillRating={physiqueRating}/>
-            </div>
-          </div>
-          <div className="stress-container">
-            <p><strong>Mental Stress</strong></p>
-            <div className="stress-boxes-container">
-              <StressBoxes stressType="mental" skillRating={willRating}/>
-            </div>
-          </div>
-          <div className="stress-container">
-            <div className="consequences-container">
-              <ConsequenceInputs 
-                willRating={willRating} 
-                physiqueRating={physiqueRating}
-              />
-            </div>
-          </div>
-      </div>
-
-*/
 
 export default StressConsequences
