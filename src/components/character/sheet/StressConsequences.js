@@ -1,5 +1,5 @@
 import React from "react";
-import "./Character.css"
+import "../Character.css"
 
 const StressConsequences = props => {
   const physiqueRating = props.physiqueRating;
