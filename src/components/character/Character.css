@@ -7,6 +7,19 @@
   flex-direction: column;
 }
 
+.characters-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.characters-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 1170px;
+}
+
 .skills-container {
   display: flex;
   flex-direction: column;
