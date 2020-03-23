@@ -1,4 +1,8 @@
-small {
+blue {
+  background-color: #1b75bc
+}
+
+/* small {
   font-size: 75%;
 }
 
@@ -41,4 +45,4 @@ nav .container li {
 
 .nav-link:hover {
   color: maroon;
-}
+} */
