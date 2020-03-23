@@ -1,6 +1,19 @@
+:root {
+  --fate-blue: #1b75bc;
+}
+
 main {
   display: flex;
   justify-content: center;
+}
+
+.footer {
+  margin-top: 5rem;
+  background-color:lightgray;
+}
+
+.title {
+  color: var(--fate-blue)
 }
 
 .skills-wrapper {
@@ -13,8 +26,8 @@ main {
 .header-container {
   display:flex;
   justify-content: center;
-  border: 2px solid #dedede;
-  border-radius: 5px;
+  /* border: 2px solid #dedede; */
+  /* border-radius: 5px; */
   padding: 10px;
   margin: 5px 0;
 }

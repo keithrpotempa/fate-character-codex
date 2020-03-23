@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ApplicationViews from "./ApplicationViews";
 import NavBar from "./nav/NavBar";
+import Footer from "./footer/Footer"
 
 const CharacterCodex = () => {
     // Check if credentials are in session storage returns true/false
@@ -23,6 +24,7 @@ const CharacterCodex = () => {
     <>
       <NavBar hasUser={hasUser} clearUser={clearUser}/>
       <ApplicationViews hasUser={hasUser} setUser={setUser}/>
+      <Footer/>
     </>
   );
 }

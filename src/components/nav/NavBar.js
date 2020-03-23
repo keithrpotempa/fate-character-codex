@@ -1,7 +1,8 @@
 import React, {useState } from "react";
 import { withRouter } from "react-router-dom";
 import { Menu, Segment } from 'semantic-ui-react'
-import "./NavBar.css";
+import "../../App.css";
+import "./NavBar.css"
 
 const NavBar = props => {
   const [activeItem, setActiveItem] = useState('home')
@@ -31,30 +32,34 @@ const NavBar = props => {
   }
 
   return (
-    <Segment>
-      <h1>Fate Character Codex</h1>
-      <Menu inverted className="blue">
-        {MenuItem("home")}
-        {MenuItem("characters")}
-        {MenuItem("skills")}
-        {MenuItem("stunts")}
-        {hasUser 
-          ? <Menu.Item
-              name='logout'
-              to={"/logout"}
-              link={true}
-              active={activeItem === 'logout'}
-              onClick={handleLogout}
-            /> 
-          : <Menu.Item
-              name='login'
-              to={"/login"}
-              link={true}
-              active={activeItem === 'login'}
-              onClick={handleItemClick}
-            /> 
-        }
-      </Menu>
+    <Segment basic>
+      <div className="header-container">
+        <h1 className="title">Fate Character Codex</h1>
+      </div>
+      <div className="navbar-container">
+        <Menu inverted compact size="small" color="blue">
+          {MenuItem("home")}
+          {MenuItem("characters")}
+          {MenuItem("skills")}
+          {MenuItem("stunts")}
+          {hasUser 
+            ? <Menu.Item
+                name='logout'
+                to={"/logout"}
+                link={true}
+                active={activeItem === 'logout'}
+                onClick={handleLogout}
+              /> 
+            : <Menu.Item
+                name='login'
+                to={"/login"}
+                link={true}
+                active={activeItem === 'login'}
+                onClick={handleItemClick}
+              /> 
+          }
+        </Menu>
+      </div>
     </Segment>
   )
 }
