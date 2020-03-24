@@ -40,7 +40,7 @@ This project utilizes the following:
 1. Semantic HTML
 1. [Valid HTML5](https://validator.w3.org/)
 
-## Database Diagram
+## (MVP) Database Diagram
 ![ERD](./FCC_FE_MVP_ERD.png)
 
 ## Local Setup
