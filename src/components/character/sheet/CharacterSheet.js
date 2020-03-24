@@ -9,6 +9,7 @@ import StressConsequences from "./StressConsequences";
 import CharacterAspects from "./CharacterAspects";
 import CharacterSkills from "./CharacterSkills";
 import CharacterStunts from "./CharacterStunts";
+import CharacterMeta from "./CharacterMeta";
 
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
@@ -131,6 +132,7 @@ const CharacterSheet = props => {
             </div>
           : <></>
         }
+        <CharacterMeta character={character} userId={character.userId}/>
       </Container>
     </>
   )
