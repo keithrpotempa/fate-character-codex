@@ -7,6 +7,13 @@
   justify-content: center;
 } */
 
+.header-container {
+  display:flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px 0;
+}
+
 .footer {
   margin-top: 5rem;
   background-color:lightgray;

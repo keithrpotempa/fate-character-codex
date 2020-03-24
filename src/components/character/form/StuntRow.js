@@ -14,8 +14,6 @@ const StuntRow = props => {
 
   return (
     <>
-      {/* <div className="stunt-form-container">*/}
-      {/*   <div className="stunt-dropdowns-container"> */}
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column>

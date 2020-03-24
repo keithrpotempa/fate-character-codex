@@ -1,42 +1,6 @@
-.stress-container {
-  margin: 10px;
-}
-
-.aspects-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.characters-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.characters-wrapper {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 1170px;
-}
-
-.skills-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.stunt-form-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: top;
-  margin: 10px;
-}
-
 .skill-multiselector {
   display: flex; 
   flex-direction: row;
   align-items: center;
-  /* width: 600px; */
   margin: 5px 0px 5px 10px;
-}
+} 

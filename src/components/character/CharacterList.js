@@ -9,7 +9,7 @@ const CharacterList = props => {
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
 
   const getCharacters = () => {
-    ApiManager.getAllEmbed("characters", "characterAspects")
+    ApiManager.getCharacterList()
       .then(setCharacters)
   }
 
@@ -52,34 +52,30 @@ const CharacterList = props => {
 
   return (
     <>
-      <main>
-        {/* <div className="characters-wrapper"> */}
-        <Container text>
-          <Button
-            type="button"
-            onClick={() => {props.history.push("/characters/new")}}
-          >
-            <Icon className="add user"></Icon>
-          </Button>
-          <div className="header-container">
-            <h1>Characters</h1>
-          </div>
-          <div className="characters-container">
-            <Card.Group itemsPerRow={3}>
-              {characters.map(character => 
-                <CharacterCard
-                  key={character.id}
-                  character={character}
-                  highConcept={getHighConcept(character)}
-                  handleDelete={() => handleDelete(character.id)}
-                  activeUser={activeUser}
-                />
-              )}
-            </Card.Group>
-          </div>
-        </Container>
-        {/* </div> */}
-      </main>
+      <Container text>
+        <Button
+          type="button"
+          onClick={() => {props.history.push("/characters/new")}}
+        >
+          <Icon className="add user"></Icon>
+        </Button>
+        <div className="header-container">
+          <h1>Characters</h1>
+        </div>
+        <div>
+          <Card.Group itemsPerRow={3}>
+            {characters.map(character => 
+              <CharacterCard
+                key={character.id}
+                character={character}
+                highConcept={getHighConcept(character)}
+                handleDelete={() => handleDelete(character.id)}
+                activeUser={activeUser}
+              />
+            )}
+          </Card.Group>
+        </div>
+      </Container>
     </>
   )
 }

@@ -39,14 +39,13 @@ const AspectForm = props => {
   // TODO: fix up the value to be less hackey
   return (
     <>
-      <div className="aspects-container">
-        <h3>Aspects</h3>
+      <>
         <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="0" typeId="1" aspectTypes={aspectTypes}/>
         <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="1" typeId="2" aspectTypes={aspectTypes}/>
         <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="2" typeId="3" aspectTypes={aspectTypes}/>
         <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="3" typeId="3" aspectTypes={aspectTypes}/>
         <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="4" typeId="3" aspectTypes={aspectTypes}/>
-      </div>
+      </>
     </>
   )
 }
