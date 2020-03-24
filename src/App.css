@@ -1,6 +1,31 @@
-main {
+:root {
+  --fate-blue: #1b75bc;
+}
+
+/* main {
   display: flex;
   justify-content: center;
+} */
+
+.header-container {
+  display:flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+.footer {
+  margin-top: 5rem;
+  background-color:lightgray;
+}
+
+.title {
+  color: var(--fate-blue)
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .skills-wrapper {
@@ -8,15 +33,6 @@ main {
   justify-content: center;
   flex-direction: column;
   width: 1170px;
-}
-
-.header-container {
-  display:flex;
-  justify-content: center;
-  border: 2px solid #dedede;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 5px 0;
 }
 
 .card-content {
@@ -33,10 +49,6 @@ main {
 
 /* Came default */
 
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -49,14 +61,16 @@ main {
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  /* background-color: #282c34; */
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 10px;
+  margin: 10px 0;
 }
 
 .App-link {

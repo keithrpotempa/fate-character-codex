@@ -1,4 +1,5 @@
 import React from "react";
+import { Grid } from "semantic-ui-react";
 import StuntsDropdown from "./StuntsDropdown";
 import StuntDescription from "./StuntsDescription";
 import SkillsDropDown from "./SkillsDropDown";
@@ -12,27 +13,33 @@ const StuntRow = props => {
   }
 
   return (
-    <div className="stunt-form-container">
-      <div className="stunt-dropdowns-container">
-        <SkillsDropDown 
-          x={props.x} 
-          handleFieldChange={handleFilter} 
-          skillList={props.skillList}
-        />
-        <StuntsDropdown 
-          x={props.x} 
-          stuntList={props.stuntList} 
-          setStuntList={props.setStuntList} 
-          characterStunts={props.characterStunts} 
-          setCharacterStunts={props.setCharacterStunts} 
-          filter={props.filter}
-        />
-      </div>
-    <StuntDescription 
-      stunt={props.characterStunts[props.x]} 
-      stuntList={props.stuntList}
-    />
-  </div>
+    <>
+      <Grid columns={2}>
+        <Grid.Row>
+          <Grid.Column>
+            <SkillsDropDown 
+              x={props.x} 
+              handleFieldChange={handleFilter} 
+              skillList={props.skillList}
+            />
+            <StuntsDropdown 
+              x={props.x} 
+              stuntList={props.stuntList} 
+              setStuntList={props.setStuntList} 
+              characterStunts={props.characterStunts} 
+              setCharacterStunts={props.setCharacterStunts} 
+              filter={props.filter}
+            />
+          </Grid.Column>
+          <Grid.Column>
+            <StuntDescription 
+              stunt={props.characterStunts[props.x]} 
+              stuntList={props.stuntList}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </>
   )
 }
 

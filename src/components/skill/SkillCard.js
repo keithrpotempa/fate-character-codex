@@ -1,5 +1,6 @@
 import React from "react";
-import "./Skill.css";
+import { Card } from "semantic-ui-react";
+// import "./Skill.css";
 
 const SkillCard = props => {
   const name = props.skill.name;
@@ -7,16 +8,14 @@ const SkillCard = props => {
 
   return (
     <>
-      <div className="card">
-        <div className="card-content skill-card">
-          <p>
-            <strong>{name}</strong>
-          </p>
-          <p>
-            <a href={url}>Link</a>
-          </p>
-        </div>
-      </div>
+      <Card
+        raised
+        header={name}
+        // The following safely open a new tab
+        href={url} 
+        target="_blank" 
+        rel="noopener"
+      />
     </>
   )
 }

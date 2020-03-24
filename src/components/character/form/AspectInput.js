@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "semantic-ui-react";
 
 const AspectInput = props => {
   const index = props.index;
@@ -12,7 +13,7 @@ const AspectInput = props => {
 
   return (
     <>
-      <input 
+      <Input 
         type="text"
         key={`aspect-${index}`}
         required

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Card, Container } from "semantic-ui-react"
 import ApiManager from "../../modules/ApiManager";
 import SkillCard from "./SkillCard"
 
@@ -16,21 +17,19 @@ const SkillList = props => {
 
   return (
     <>
-      <main>
-        <div className="skills-wrapper">
-          <div className="header-container">
-            <h1>Skills</h1>
-          </div>
-          <div className="skills-container">
-            {skills.map(skill => 
-              <SkillCard
-                key={skill.id}
-                skill={skill}
-              />  
-            )}
-          </div>
+      <Container text>
+        <div className="header-container">
+          <h1>Skills</h1>
         </div>
-      </main>
+        <Card.Group stackable itemsPerRow={4}>
+          {skills.map(skill => 
+            <SkillCard
+              key={skill.id}
+              skill={skill}
+            />  
+          )}
+        </Card.Group>
+      </Container>
     </>
   )
 }

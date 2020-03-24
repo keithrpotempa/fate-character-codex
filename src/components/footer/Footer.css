@@ -1,0 +1,31 @@
+/* Fixed footer in React */
+/*https://dev.to/letsbsocial1/flexbox-sticky-footer-and-react-e1h*/
+
+:root {
+  --space: 1.5em 0;
+  --space: 2em 0;
+}
+
+.Site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.Site-content {
+  flex: 1 0 auto;
+  padding: var(--space) var(--space) 0;
+  width: 100%;
+} 
+
+.Site-content:after {
+  content: '\00a0';
+  display: block;
+  margin-top: var(--space);
+  height: 0;
+  visibility: hidden;
+}
+
+.footer {
+  padding: 30px 0px
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { confirmAlert } from 'react-confirm-alert';
+import { Card, Button, Icon, Container } from "semantic-ui-react"
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
 
@@ -8,7 +9,7 @@ const CharacterList = props => {
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
 
   const getCharacters = () => {
-    ApiManager.getAllEmbed("characters", "characterAspects")
+    ApiManager.getCharacterList()
       .then(setCharacters)
   }
 
@@ -51,19 +52,22 @@ const CharacterList = props => {
 
   return (
     <>
-      <main>
-        <div className="characters-wrapper">
-          <button
-            type="button"
-            onClick={() => {props.history.push("/characters/new")}}
-          >
-            New Character
-          </button>
-          <div className="header-container">
-            <h1>Characters</h1>
-          </div>
-          <div className="characters-container">
-            {characters.map(character => 
+      <Container text>
+        <Button
+          type="button"
+          onClick={() => {props.history.push("/characters/new")}}
+        >
+          <Icon className="add user"></Icon>
+        </Button>
+        <div className="header-container">
+          <h1>Characters</h1>
+        </div>
+        <div>
+          {/* Sorting characters alphabetically
+          https://stackoverflow.com/a/45544166*/}
+          <Card.Group itemsPerRow={3}>
+            {characters.sort((a,b) => a.name.localeCompare(b.name))
+              .map(character => 
               <CharacterCard
                 key={character.id}
                 character={character}
@@ -72,9 +76,9 @@ const CharacterList = props => {
                 activeUser={activeUser}
               />
             )}
-          </div>
+          </Card.Group>
         </div>
-      </main>
+      </Container>
     </>
   )
 }

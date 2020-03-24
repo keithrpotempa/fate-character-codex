@@ -1,49 +1,11 @@
-.stress-container {
-  margin: 10px;
-}
-
-.aspects-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.skills-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.stunt-form-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 10px;
-}
-
-.stunt-dropdowns-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.stunt-description {
-  margin: 5px;
-  padding: 5px;
-}
-
-.stunt-selector {
-  width: 250px;
-}
-
 .skill-multiselector {
   display: flex; 
   flex-direction: row;
   align-items: center;
-  width: 600px;
-  margin: 5px 10px;
-}
+  margin: 5px 0px 5px 10px;
+} 
 
-.stunt-description {
-  width: 50%;
-  min-height: 100px;
-  border: 1px solid black ;
+.metadata {
+  color: gray;
+  padding: 30px 0px;
 }

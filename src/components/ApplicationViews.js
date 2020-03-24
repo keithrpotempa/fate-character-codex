@@ -5,7 +5,7 @@ import SkillList from "./skill/SkillList";
 import StuntList from "./stunt/StuntList";
 
 import CharacterList from "./character/CharacterList";
-import CharacterSheet from "./character/CharacterSheet";
+import CharacterSheet from "./character/sheet/CharacterSheet";
 import CharacterForm from "./character/form/CharacterForm";
 
 import Login from "./user/Login"

@@ -1,8 +1,12 @@
-import React from "react";
-import { NavLink, withRouter } from "react-router-dom";
-import "./NavBar.css";
+import React, {useState } from "react";
+import { withRouter } from "react-router-dom";
+import { Menu, Segment } from 'semantic-ui-react'
+import "../../App.css";
+import "./NavBar.css"
 
 const NavBar = props => {
+  const [activeItem, setActiveItem] = useState('home')
+
   const hasUser = props.hasUser;
 
   const handleLogout = () => {
@@ -10,13 +14,63 @@ const NavBar = props => {
     props.history.push('/');
   }
 
+  const handleItemClick = (e, { name, to }) => {
+    setActiveItem(name)
+    props.history.push(to)
+  }
+
+  const MenuItem = name => {
+    return (
+      <Menu.Item
+      name={name}
+      link={true}
+      to={`/${name}`}
+      active={activeItem === name}
+      onClick={handleItemClick}
+    />
+    )
+  }
+
+  return (
+    <Segment basic>
+      <div className="header-container">
+        <h1 className="title">Fate Character Codex</h1>
+      </div>
+      <div className="navbar-container">
+        <Menu inverted size="huge" color="blue">
+          {MenuItem("home")}
+          {MenuItem("characters")}
+          {MenuItem("skills")}
+          {MenuItem("stunts")}
+          {hasUser 
+            ? <Menu.Item
+                name='logout'
+                to={"/logout"}
+                link={true}
+                active={activeItem === 'logout'}
+                onClick={handleLogout}
+              /> 
+            : <Menu.Item
+                name='login'
+                to={"/login"}
+                link={true}
+                active={activeItem === 'login'}
+                onClick={handleItemClick}
+              /> 
+          }
+        </Menu>
+      </div>
+    </Segment>
+  )
+}
+
+/*
+const NavBar = props => {
+
+
   return (
     <header>
-      <h1 className="site-title">
-        Fate Core Character Codex
-        <br />
-        <small>Make and find Fate Core PCs, NPCs, and creatures</small>
-      </h1>
+
       <nav>
         <ul className="container">
           <li>
@@ -75,5 +129,6 @@ const NavBar = props => {
     </header>
   )
 }
+*/
 
 export default withRouter(NavBar);

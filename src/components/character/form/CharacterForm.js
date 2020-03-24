@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container, Divider, Form } from "semantic-ui-react";
 import "../Character.css";
 import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
@@ -124,44 +125,50 @@ const CharacterForm = props => {
 
   return (
     <>
-      <form>
-        <fieldset>
-          <label htmlFor="characterName">Name</label>
-          <input 
-            type="text"
-            required
-            onChange={handleFieldChange}
-            className="character"
-            id="name"
-            placeholder="Character name"
-            value={character.name}
-          />
-          <AspectForm 
-            aspects={characterAspects}
-            setAspects={setCharacterAspects}
-          />
-          <SkillsForm 
-            skillList={skillList}
-            setSkillList={setSkillList}
-            characterSkills={characterSkills}
-            setCharacterSkills={setCharacterSkills}
-          />
-          <StuntsForm
-            characterStunts={characterStunts}
-            setCharacterStunts={setCharacterStunts}
-            skillList={skillList}
-          />
-          <SaveCharacter 
-            character={character}
-            aspects={characterAspects}
-            skills={characterSkills}
-            stunts={characterStunts}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-            {...props}
-          />
-        </fieldset>
-      </form>
+      <Container text>
+        <Form>
+          <Divider horizontal><h4>ID</h4></Divider>
+          <Form.Field>
+            <label htmlFor="characterName">Name</label>
+            <Form.Input 
+              type="text"
+              required
+              onChange={handleFieldChange}
+              className="character"
+              id="name"
+              placeholder="Character name"
+              value={character.name}
+            />
+            <Divider horizontal><h4>ASPECTS</h4></Divider>
+            <AspectForm 
+              aspects={characterAspects}
+              setAspects={setCharacterAspects}
+            />
+            <Divider horizontal><h4>SKILLS</h4></Divider>
+            <SkillsForm 
+              skillList={skillList}
+              setSkillList={setSkillList}
+              characterSkills={characterSkills}
+              setCharacterSkills={setCharacterSkills}
+            />
+            <Divider horizontal><h4>STUNTS</h4></Divider>
+            <StuntsForm
+              characterStunts={characterStunts}
+              setCharacterStunts={setCharacterStunts}
+              skillList={skillList}
+            />
+            <SaveCharacter 
+              character={character}
+              aspects={characterAspects}
+              skills={characterSkills}
+              stunts={characterStunts}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              {...props}
+            />
+          </Form.Field>
+        </Form>
+      </Container>
     </>
   )
 
