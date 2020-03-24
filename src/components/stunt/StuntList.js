@@ -21,8 +21,11 @@ const StuntList = props => {
         <div className="header-container">
           <h1>Stunts</h1>
         </div>
+        {/* Sorting the stunts alphabetically
+          https://stackoverflow.com/a/45544166*/}
         <Card.Group itemsPerRow={2}>
-          {stunts.map(stunt => 
+          {stunts.sort((a,b) => a.name.localeCompare(b.name))
+            .map(stunt => 
             <StuntCard
               key={stunt.id}
               stunt={stunt}

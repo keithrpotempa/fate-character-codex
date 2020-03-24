@@ -63,8 +63,11 @@ const CharacterList = props => {
           <h1>Characters</h1>
         </div>
         <div>
+          {/* Sorting characters alphabetically
+          https://stackoverflow.com/a/45544166*/}
           <Card.Group itemsPerRow={3}>
-            {characters.map(character => 
+            {characters.sort((a,b) => a.name.localeCompare(b.name))
+              .map(character => 
               <CharacterCard
                 key={character.id}
                 character={character}
