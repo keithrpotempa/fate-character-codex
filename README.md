@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Fate Character Codex
 
-## Available Scripts
+A [Nashville Software School C38](https://github.com/nss-day-cohort-38) front-end capstone project by [Keith Potempa](https://github.com/keithrpotempa)
 
-In the project directory, you can run:
+## Overview 
 
-### `npm start`
+In this site, users can create, store, and view characters for [Fate Core](https://www.evilhat.com/home/fate-core/) a [tabletop roleplaying game](https://en.wikipedia.org/wiki/Tabletop_role-playing_game) by [Evil Hat Productions](https://www.evilhat.com).
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Use Case
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Creating characters in Fate is a [simple process](https://fate-srd.com/fate-core/character-creation) (at least compared to many other ttrpgs), so the publisher does not produce extensive libraries or resources of characters for use by players / game masters. This lack of accessible resources contributes to the preparation time and overall accessibility of the game. 
 
-### `npm test`
+Players can use Fate Character Codex to:
+ - efficiently create player characters (PCs) for multiple campaigns
+ - manage changes to those characters throughout campaign play
+ - track stress and consequences during a session
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Game Masters can use Fate Character Codex to:
+- efficiently create non-player characters (NPCs) and creatures
+- find NPCs and creatures created by other users to instantly use in their own games
+- track stress and consequences to those characters/creatures during a session
 
-### `npm run build`
+## React Technologies Used
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This project utilizes the following:
+* This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+* [Semantic UI](https://semantic-ui.com/) for buttons, cards, containers, data-tooltips, dividers, dropdowns, forms, grids, icons, inputs, items, labels,lists, etc.
+* [React Confirm Alert](https://www.npmjs.com/package/react-confirm-alert) for confirm alerts
+* [React Router](https://reacttraining.com/react-router/) for page routing
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Other Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. React: hooks, state, props, routes, components, modules
+1. API calls with: POST, PUT, PATCH, DELETE, and GET (with expand, embed)
+1. Javascript: functions, objects, arrays, mapping
+1. Persistent data storage with JSON Server
+1. Github Scrum workflow
+1. CSS styling
+1. Modular code
+1. Semantic HTML
+1. [Valid HTML5](https://validator.w3.org/)
 
-### `npm run eject`
+## (MVP) Database Diagram
+![ERD](./FCC_FE_MVP_ERD.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Local Setup
+If you would like to test this code locally, you can follow these steps to get started:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. `git clone git@github.com:keithrpotempa/fate-character-codex.git`
+1. `cd` into the directory it creates
+1. `npm install` to build dependencies
+1. `npm start` to run the application in development mode
+1. start the json server in a new tab: `json-server -p 8200 api/database.json`
+1. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+(*) **Note: this app does not use true authentication.** There are no passwords used to login, and all credentials are saved in clear text on the JSON database. Do not use any sensitive information. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

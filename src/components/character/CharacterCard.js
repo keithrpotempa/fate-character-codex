@@ -12,7 +12,7 @@ const CharacterCard = props => {
     <>
       <Card 
         raised
-        href={`/characters/${character.id}`}
+        // href={`/characters/${character.id}`}
         header={character.name}
         description={props.highConcept}
         meta={`by: ${user.email}`}
@@ -20,20 +20,36 @@ const CharacterCard = props => {
           /* Conditionally rendering these buttons 
           if the user created this character */
           activeUser && activeUser.id === user.id
-          ? <div className="flex-end">  
+          ? <div className="flex-end">
+            <Link to={`/characters/${character.id}`}>
+              <Button 
+                className="ui button"
+              >
+                <Icon fitted className="file outline"/>
+              </Button>
+            </Link>  
             <Button className="ui button"
                 onClick={props.handleDelete}
               >
               <Icon fitted className="trash alternate outline"/>
             </Button>
-            <Button 
-              className="ui button"
-              onClick={() => props.history.push(`/characters/${character.id}/edit`)}
-            >
-              <Icon fitted className="edit outline"/>
-            </Button>
+            <Link to={`/characters/${character.id}/edit`}>
+              <Button 
+                className="ui button"
+              >
+                <Icon fitted className="edit outline"/>
+              </Button>
+            </Link>
           </div>
-          : <></>
+          : <div className="flex-end">
+            <Link to={`/characters/${character.id}`}>
+              <Button 
+                className="ui button"
+              >
+                <Icon fitted className="file outline"/>
+              </Button>
+            </Link>  
+          </div>
         }
       />
 
