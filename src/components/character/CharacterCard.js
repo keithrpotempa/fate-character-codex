@@ -26,11 +26,12 @@ const CharacterCard = props => {
               >
               <Icon fitted className="trash alternate outline"/>
             </Button>
-            <Link to={`/characters/${character.id}/edit`}>
-              <Button className="ui button">
-                <Icon fitted className="edit outline"/>
-              </Button>
-            </Link> 
+            <Button 
+              className="ui button"
+              onClick={() => props.history.push(`/characters/${character.id}/edit`)}
+            >
+              <Icon fitted className="edit outline"/>
+            </Button>
           </div>
           : <></>
         }

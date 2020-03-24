@@ -37,7 +37,7 @@ const NavBar = props => {
         <h1 className="title">Fate Character Codex</h1>
       </div>
       <div className="navbar-container">
-        <Menu inverted compact size="small" color="blue">
+        <Menu inverted size="huge" color="blue">
           {MenuItem("home")}
           {MenuItem("characters")}
           {MenuItem("skills")}

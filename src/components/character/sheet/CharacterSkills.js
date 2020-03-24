@@ -1,22 +1,9 @@
 import React from "react";
 import { Divider, List, Label } from "semantic-ui-react";
+import CharacterSkillRow from "./CharacterSkillRow"
 
 const CharacterSkills = props => {
   const skills = props.skills;
-
-  const SkillLi = (skillRow, rating) => {
-    return (
-      <>
-        {skillRow.length > 0
-          ? <List.Item key={`skillRating-${rating}`}>
-              <strong>+{rating}:</strong>
-              {skillRow.map(skill => <Label key={`skillLabel-${skill}`}>{skill}</Label>)}
-            </List.Item>  
-          : <></>
-        }
-      </>
-      )
-  }
 
   return (
     <>
@@ -32,8 +19,11 @@ const CharacterSkills = props => {
         {Object.keys(skills)
           // Sort the skills so that the highest rating is at the top
           .sort((a,b) =>  b - a)
-          .map(rating => SkillLi(skills[rating], rating))
-        }
+          .map(rating => 
+            <CharacterSkillRow 
+              skillRow={skills[rating]}
+              rating={rating}
+            />)}
       </List>
     </>
   )
