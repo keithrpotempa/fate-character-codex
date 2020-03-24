@@ -22,9 +22,17 @@ const CharacterCodex = () => {
 
   return (
     <>
-      <NavBar hasUser={hasUser} clearUser={clearUser}/>
-      <ApplicationViews hasUser={hasUser} setUser={setUser}/>
-      <Footer/>
+      <div className="App Site">
+          <div className="Site-content">
+            <div className="App-header">
+              <NavBar hasUser={hasUser} clearUser={clearUser}/>
+            </div>
+            <div className="main">
+              <ApplicationViews hasUser={hasUser} setUser={setUser}/>
+            </div>
+          </div>
+        <Footer/>
+      </div>
     </>
   );
 }

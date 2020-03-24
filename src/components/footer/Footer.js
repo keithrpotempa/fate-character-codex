@@ -1,5 +1,6 @@
 import React from "react"
 import { Container } from "semantic-ui-react"
+import "./Footer.css"
 
 const Footer = props => {
   return (
