@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "semantic-ui-react";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
@@ -168,13 +169,15 @@ const SaveCharacter = props => {
 
   return (
     <>
-      <button
-        type="button"
-        disabled={isLoading}
-        onClick={(evt) => handleSave(evt)}
-      >
-        Save
-      </button>
+      <div className="flex-end">
+        <Button
+          type="button"
+          disabled={isLoading}
+          onClick={(evt) => handleSave(evt)}
+        >
+          Save
+        </Button>
+      </div>
     </>
   )
 }

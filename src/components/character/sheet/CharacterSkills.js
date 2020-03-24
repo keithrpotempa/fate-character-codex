@@ -10,7 +10,7 @@ const CharacterSkills = props => {
         {skillRow.length > 0
           ? <List.Item key={`skillRating-${rating}`}>
               <strong>+{rating}:</strong>
-              {skillRow.map(skill => <Label key={skill.id}>{skill}</Label>)}
+              {skillRow.map(skill => <Label key={`skillLabel-${skill}`}>{skill}</Label>)}
             </List.Item>  
           : <></>
         }

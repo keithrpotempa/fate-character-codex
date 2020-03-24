@@ -11,7 +11,7 @@ const StressConsequences = props => {
   return (
     <>
       <Grid columns={2} stackable>
-        <Grid.Row stretch>
+        <Grid.Row stretched>
           <Grid.Column width={4}>
               <StressBoxes stressType="physical" skillRating={physiqueRating}/>
               <StressBoxes stressType="mental" skillRating={willRating}/>

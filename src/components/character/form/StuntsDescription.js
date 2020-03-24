@@ -1,4 +1,5 @@
 import React from "react";
+import { Form } from "semantic-ui-react";
 
 const StuntDescription = props => {
   const stuntList = props.stuntList;
@@ -8,7 +9,12 @@ const StuntDescription = props => {
 
   return (
     <>
-      <div className="stunt-description">{stuntDescription}</div>
+      <Form.Field
+        control="textarea"
+        readOnly
+        className="stunt-description"
+        value={stuntDescription}
+      />
     </>
   )
 }

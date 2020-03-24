@@ -22,7 +22,7 @@ const CharacterStunts = props => {
         <Divider horizontal>
           <h4>Stunts</h4>
         </Divider>
-        <Item.Group basic>
+        <Item.Group>
           {stunts.map(stunt => 
             <Item key={`stunt-${stunt.stunt.id}`}
             header={stunt.stunt.name}
