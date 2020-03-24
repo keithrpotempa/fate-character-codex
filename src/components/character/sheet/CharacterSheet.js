@@ -113,7 +113,7 @@ const CharacterSheet = props => {
         />
         {/* Conditionally rendering these buttons 
           if the user created this character */}
-        {character.userId === activeUser.id 
+        {activeUser && character.userId === activeUser.id 
           ? <div className="flex-end">
               <Link to={`/characters/${id}/edit`}>
                 <Button disabled={isLoading} >

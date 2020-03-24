@@ -17,7 +17,7 @@ const CharacterCard = props => {
         extra={
           /* Conditionally rendering these buttons 
           if the user created this character */
-          activeUser.id === character.userId
+          activeUser && activeUser.id === character.userId
           ? <div className="flex-end">  
             <Button className="ui button"
                 onClick={props.handleDelete}
