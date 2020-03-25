@@ -12,11 +12,13 @@ const CharacterAspects = props => {
       </Divider>
       <List celled>
         {aspects.map(aspect =>
-          <List.Item 
-            key={`aspect-${aspect.id}`}
-            content={aspect.name}
-            // meta={aspect.aspectTypeId}
-          />
+          aspect.name !== ""
+          ? <List.Item 
+              key={`aspect-${aspect.id}`}
+              content={aspect.name}
+              // meta={aspect.aspectTypeId}
+            />
+          : <></>
         )}
       </List>
     </>

@@ -14,6 +14,9 @@ const SheetPreview = props => {
   const physiqueRating = props.physiqueRating;
   const willRating = props.willRating;
 
+  // If it's a preview in the middle of a save:
+  // get the names of all the skills & names/descriptions stunts
+
   return (
     <>
       <Divider horizontal>

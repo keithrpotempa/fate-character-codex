@@ -6,7 +6,8 @@ import "../Character.css";
 const StuntsForm = props => {
   const setCharacterStunts = props.setCharacterStunts;
   const characterStunts = props.characterStunts;
-  const [stuntList, setStuntList] = useState([]);
+  const stuntList = props.stuntList;
+  const setStuntList = props.setStuntList;
 
   const [filter1, setFilter1] = useState("");
   const [filter2, setFilter2] = useState("");
@@ -14,13 +15,9 @@ const StuntsForm = props => {
   const [filter4, setFilter4] = useState("");
   const [filter5, setFilter5] = useState("");
 
-  const getStuntList = () => {
-    return ApiManager.getAll("stunts")
-      .then(setStuntList); 
-  }
-
+  // FIXME: ??
   useEffect(() => {
-    getStuntList();
+  
   }, [filter1, filter2, filter3, filter4, filter5])
 
   // TODO: Make this DRY

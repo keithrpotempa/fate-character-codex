@@ -6,16 +6,19 @@ import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
 import SaveCharacter from "./SaveCharacter";
-import SheetPreview from "../sheet/SheetPreview";
+import SheetReview from "./SheetReview";
 import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
 
 const MainForm = props => {
   /* ------------------ STATES ------------------*/
   const [isLoading, setIsLoading] = useState(true);
+  const [step, setStep] = useState(1);
+
+  const [skillList, setSkillList] = useState([]);
+  const [stuntList, setStuntList] = useState([]);
 
   const [character, setCharacter] = useState({name: ""});
-  const [step, setStep] = useState(1);
 
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
@@ -44,16 +47,19 @@ const MainForm = props => {
     2: "",
     1: ""
   });
-  /* ------------------  ------------------*/
 
-  // skillList had to be "lifted" because it is needed by
-  // both SkillsForm and StuntsForm child components
+
+  /* ------------------ GETS & STATE SETS  ------------------*/
   const getSkillList = () => {
     return ApiManager.getAll("skills")
       .then(setSkillList);      
   }
 
-  const [skillList, setSkillList] = useState([]);
+  const getStuntList = () => {
+    return ApiManager.getAll("stunts")
+      .then(setStuntList); 
+  }
+
 
   // Note: Most field changes are handled 
   // by their respective child components
@@ -65,7 +71,7 @@ const MainForm = props => {
   }
 
   const handleItemClick = (evt, {index}) => {
-    setStep(index)
+    setStep(index);
   }
 
   // Helpful links:
@@ -94,26 +100,27 @@ const MainForm = props => {
           characterStunts={characterStunts}
           setCharacterStunts={setCharacterStunts}
           skillList={skillList}
+          stuntList={stuntList}
+          setStuntList={setStuntList}
         />
       case 5:
         return <>
             <Divider horizontal><h1>Review and Save</h1></Divider>
-            <SheetPreview
+            <SheetReview
               character={character}
               aspects={characterAspects}
               skills={characterSkills}
               stunts={characterStunts}
-              //FIXME:
-              physiqueRating={0}
-              willRating={0}
+              skillList={skillList}
+              stuntList={stuntList}
             />
         </>
     }
   }
 
-  // TODO: isLoading?
   useEffect(() => {
     getSkillList();
+    getStuntList();
     // AKA: if this is an edit
     if (props.match.params.characterId) {
       ApiManager.get("characters", props.match.params.characterId)
