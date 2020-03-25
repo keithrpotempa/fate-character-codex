@@ -1,4 +1,5 @@
 import React from "react";
+import { Divider } from "semantic-ui-react";
 import SkillsMultiSelector from "./SkillsMultiSelector"
 
 const SkillsForm = props => {
@@ -17,6 +18,7 @@ const SkillsForm = props => {
 
   return (
     <>
+      <Divider horizontal><h2>SKILLS</h2></Divider>
       {/* Using this row prop to determine the "rating" of a particular chosen skill */}
       {/* TODO: figure out how to loop this so you only write it once and can generate more dynamically*/}
       <SkillsMultiSelector row="6" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 

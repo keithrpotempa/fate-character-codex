@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ApiManager from "../../../modules/ApiManager";
+import { Divider } from "semantic-ui-react";
+
 import StuntRow from "./StuntRow";
 import "../Character.css";
 
@@ -23,6 +24,7 @@ const StuntsForm = props => {
   // TODO: Make this DRY
   return (
     <>
+      <Divider horizontal><h2>SKILLS</h2></Divider>
       <p>(choose a skill to filter by)</p>
       <StuntRow 
         x="1" 

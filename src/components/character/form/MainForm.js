@@ -65,7 +65,6 @@ const MainForm = props => {
   // by their respective child components
   const handleFieldChange = evt => {
     const stateToChange = {...character};
-    console.log(stateToChange)
     stateToChange[evt.target.id] = evt.target.value;
     setCharacter(stateToChange)
   }
@@ -132,9 +131,6 @@ const MainForm = props => {
   return (
     <>
       <Container>
-        <Divider horizontal>
-          <h1>CHARACTER FORM</h1>
-        </Divider>
         <Grid columns={2}>
           <Grid.Column width={3}>
             <Menu inverted pointing compact vertical 
@@ -173,7 +169,11 @@ const MainForm = props => {
               />
             </Menu>
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column width={10}>
+            <Divider horizontal>
+              <h1>CHARACTER FORM</h1>
+            </Divider>
+            {/* Renders the form for whatever step we're on */}
             {renderStep()}
             {/* Don't render a "previous button on step 1 */}
             {step !== 1

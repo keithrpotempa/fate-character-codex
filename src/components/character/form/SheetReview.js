@@ -11,11 +11,10 @@ const SheetReview = props => {
   const stunts = props.stunts;
   const skillList = props.skillList;
   const stuntList = props.stuntList;
-  // TODO: GET THIS INFO HERE AND PASS IT ON AS PROPS
-  // const physiqueRating = props.physiqueRating;
-  // const willRating = props.willRating;
+  
+  const [willRating, setWillRating] = useState();
+  const [physiqueRating, setPhysiqueRating] = useState();
 
-  // TODO: pass on skills and stunts as names/descriptions
   const [characterSkillNames, setCharacterSkillNames] = useState({
     6: [],
     5: [],
@@ -27,21 +26,27 @@ const SheetReview = props => {
 
   const [characterStuntDetails, setCharacterStuntDetails] = useState([]);
 
+  // Converting the skillId to names for SheetPreview purposes
   const getSkillNames = () => {
     const stateToChange = {...characterSkillNames};
-    // Converting the skillId to names for preview purposes
     // TODO: Make this loop more adaptable to different range of rating levels
     for (let i = 1; i < 7; i++) {
-      stateToChange[i] = skills[i].map(skillId => {
-        return skillList.find(skill => skillId === skill.id).name
-      })
+      // Skipping over skill ratings that are empty
+      if (skills[i].length > 0) {
+        // Mapping over every skill rating's array and: 
+        stateToChange[i] = skills[i].map(characterSkillId => {
+          // Finding a match in ids between api skill list and character skill
+          // returning that skill's name
+          return skillList.find( ({id}) => id === characterSkillId).name
+        })
+      }
     } 
     setCharacterSkillNames(stateToChange)
   }
 
+  // Converting the stuntId to name & description for SheetPreview purposes
   const getStuntNames = () => {
     const stateToChange = [...characterStuntDetails];
-    // Converting the stuntId to name & description for preview purposes
     // TODO: Make this loop more adaptable to different range of rating levels
     for (let i = 0; i < 5; i++) {
       const stuntMatch = stuntList.find(stunt => parseInt(stunts[i+1]) === stunt.id)
@@ -52,14 +57,31 @@ const SheetReview = props => {
         stateToChange[i] = {stunt: stuntMatch}
       }
     }
-    console.log(stateToChange)
     setCharacterStuntDetails(stateToChange)
   }
 
+  // This function is used to get the rating of will and physique
+  // for the purposes of determining stress in the SheetPreview
+  const getSkillRating = (skillId) => {
+    // Start at zero, so if there's no match
+    // then it defaults to zero
+    let skillRating = 0;
+    for (let i = 1; i < 7; i++) {
+      const match = skills[i].find(skill => skill === skillId)
+      // If there is a match, set the skill rating
+      // to the index (the rating of the match)
+      if (match) {
+        skillRating = i;
+      }
+    }
+    return skillRating
+  }
 
   useEffect(() => {
     getSkillNames();
     getStuntNames();
+    setWillRating(getSkillRating("18"))
+    setPhysiqueRating(getSkillRating("12"))
   }, [])
 
   return (
@@ -68,6 +90,8 @@ const SheetReview = props => {
       aspects={aspects}
       skills={characterSkillNames}
       stunts={characterStuntDetails}
+      physiqueRating={physiqueRating}
+      willRating={willRating}
     />
   )
 }
