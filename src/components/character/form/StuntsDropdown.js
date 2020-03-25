@@ -22,10 +22,9 @@ const StuntsDropdown = props => {
 
   return (
     <>
-      <div className="stunt-selector">
+      {/* <div className="stunt-selector"> */}
         <Dropdown
           placeholder="Select Stunt"
-          fluid
           selection
           id={`stunts--${props.x}`}
           onChange={handleFieldChange}
@@ -38,7 +37,7 @@ const StuntsDropdown = props => {
             }
           ))}
         />
-      </div>
+      {/* </div> */}
     </>
   )
 }

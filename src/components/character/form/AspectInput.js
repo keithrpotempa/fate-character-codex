@@ -14,6 +14,7 @@ const AspectInput = props => {
   return (
     <>
       <Input 
+        fluid
         type="text"
         key={`aspect-${index}`}
         required

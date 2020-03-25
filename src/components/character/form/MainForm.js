@@ -10,13 +10,53 @@ import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
 
 const MainForm = props => {
+  /* ------------------ STATES ------------------*/
   const [character, setCharacter] = useState({name: ""});
   const [step, setStep] = useState(1);
+
+  // Seeding a default array of aspects
+  // presently with their types (currently) hard coded
+  const [characterAspects, setCharacterAspects] = useState([
+    { name: "", aspectTypeId: 1 },
+    { name: "", aspectTypeId: 2 },
+    { name: "", aspectTypeId: 3 },    
+    { name: "", aspectTypeId: 3 },
+    { name: "", aspectTypeId: 3 },
+    { name: "", aspectTypeId: 3 }
+  ])
+
+  const [characterSkills, setCharacterSkills] = useState({
+    6: [],
+    5: [],
+    4: [],
+    3: [],
+    2: [],
+    1: []
+  });
+
+  const [characterStunts, setCharacterStunts] = useState({
+    5: "",
+    4: "",
+    3: "",
+    2: "",
+    1: ""
+  });
+  /* ------------------  ------------------*/
+
+  // skillList had to be "lifted" because it is needed by
+  // both SkillsForm and StuntsForm child components
+  const getSkillList = () => {
+    return ApiManager.getAll("skills")
+      .then(setSkillList);      
+  }
+
+  const [skillList, setSkillList] = useState([]);
 
   // Note: Most field changes are handled 
   // by their respective child components
   const handleFieldChange = evt => {
     const stateToChange = {...character};
+    console.log(stateToChange)
     stateToChange[evt.target.id] = evt.target.value;
     setCharacter(stateToChange)
   }
@@ -25,16 +65,33 @@ const MainForm = props => {
     setStep(index)
   }
 
+  // Helpful links:
+  // https://www.digitalocean.com/community/tutorials/how-to-create-multistep-forms-with-react-and-semantic-ui
   const renderStep = () => {
     switch(step){
       default: 
-        return <CharacterId character={character}/>
+        return <CharacterId 
+          character={character} 
+          handleFieldChange={handleFieldChange}
+        />
       case 2: 
-        return <p> Aspect Form </p>
+        return <AspectForm
+          aspects={characterAspects}
+          setAspects={setCharacterAspects}
+        />
       case 3: 
-        return <p> Skills Form </p>
+        return <SkillsForm 
+          skillList={skillList}
+          setSkillList={setSkillList}
+          characterSkills={characterSkills}
+          setCharacterSkills={setCharacterSkills}
+        />
       case 4: 
-        return <p> Stunts Form </p>
+        return <StuntsForm
+          characterStunts={characterStunts}
+          setCharacterStunts={setCharacterStunts}
+          skillList={skillList}
+        />
       case 5:
         return <p> Review and Save Character </p>
     }
@@ -42,6 +99,7 @@ const MainForm = props => {
 
   // TODO: isLoading?
   useEffect(() => {
+    getSkillList();
     // AKA: if this is an edit
     if (props.match.params.characterId) {
       ApiManager.get("characters", props.match.params.characterId)
@@ -95,7 +153,7 @@ const MainForm = props => {
           </Grid.Column>
           <Grid.Column>
             {renderStep()}
-            {/* Don't render a previous button on step 1 */}
+            {/* Don't render a "previous button on step 1 */}
             {step !== 1
               ? <Button
                   type="button"
@@ -106,13 +164,23 @@ const MainForm = props => {
                 </Button>
               : <></>
             }
-            <Button
-              type="button"
-              // disabled={isLoading}
-              onClick={() => setStep(step+1)}
-            >
-            Next
-          </Button>
+            {/* If it's the last step, change the button to "submit" */}
+            {step !== 5
+              ? <Button
+                  type="button"
+                  // disabled={isLoading}
+                  onClick={() => setStep(step+1)}
+                >
+                Next
+              </Button>
+              : <Button
+                  type="button"
+                  // disabled={isLoading}
+                  onClick={() => setStep(step+1)}
+                >
+                Submit
+              </Button>
+            }
           </Grid.Column>
         </Grid>
       </Container>

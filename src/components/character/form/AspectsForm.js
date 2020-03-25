@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Divider } from "semantic-ui-react";
 import AspectInput from "./AspectInput"
 import ApiManager from "../../../modules/ApiManager"
 
@@ -39,13 +40,12 @@ const AspectForm = props => {
   // TODO: fix up the value to be less hackey
   return (
     <>
-      <>
-        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="0" typeId="1" aspectTypes={aspectTypes}/>
-        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="1" typeId="2" aspectTypes={aspectTypes}/>
-        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="2" typeId="3" aspectTypes={aspectTypes}/>
-        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="3" typeId="3" aspectTypes={aspectTypes}/>
-        <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="4" typeId="3" aspectTypes={aspectTypes}/>
-      </>
+      <Divider horizontal><h2>ASPECTS</h2></Divider>
+      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="0" typeId="1" aspectTypes={aspectTypes}/>
+      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="1" typeId="2" aspectTypes={aspectTypes}/>
+      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="2" typeId="3" aspectTypes={aspectTypes}/>
+      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="3" typeId="3" aspectTypes={aspectTypes}/>
+      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="4" typeId="3" aspectTypes={aspectTypes}/>
     </>
   )
 }
