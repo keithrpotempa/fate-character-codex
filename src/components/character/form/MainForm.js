@@ -6,6 +6,7 @@ import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
 import SaveCharacter from "./SaveCharacter";
+import SheetPreview from "../sheet/SheetPreview";
 import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
 
@@ -93,7 +94,18 @@ const MainForm = props => {
           skillList={skillList}
         />
       case 5:
-        return <p> Review and Save Character </p>
+        return <>
+            <Divider horizontal><h1>Review and Save</h1></Divider>
+            <SheetPreview
+              character={character}
+              aspects={characterAspects}
+              skills={characterSkills}
+              stunts={characterStunts}
+              //FIXME:
+              physiqueRating={0}
+              willRating={0}
+            />
+        </>
     }
   }
 
