@@ -12,6 +12,8 @@ import { Menu } from 'semantic-ui-react'
 
 const MainForm = props => {
   /* ------------------ STATES ------------------*/
+  const [isLoading, setIsLoading] = useState(true);
+
   const [character, setCharacter] = useState({name: ""});
   const [step, setStep] = useState(1);
 
@@ -117,6 +119,7 @@ const MainForm = props => {
       ApiManager.get("characters", props.match.params.characterId)
         .then(character => setCharacter(character))
     }
+    setIsLoading(false);
   }, [])
 
   return (
@@ -185,13 +188,15 @@ const MainForm = props => {
                 >
                 Next
               </Button>
-              : <Button
-                  type="button"
-                  // disabled={isLoading}
-                  onClick={() => setStep(step+1)}
-                >
-                Submit
-              </Button>
+              : <SaveCharacter
+                  character={character}
+                  aspects={characterAspects}
+                  skills={characterSkills}
+                  stunts={characterStunts}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  {...props}
+                />
             }
           </Grid.Column>
         </Grid>

@@ -169,15 +169,13 @@ const SaveCharacter = props => {
 
   return (
     <>
-      <div className="flex-end">
-        <Button
-          type="button"
-          disabled={isLoading}
-          onClick={(evt) => handleSave(evt)}
-        >
-          Save
-        </Button>
-      </div>
+      <Button
+        type="button"
+        disabled={isLoading}
+        onClick={(evt) => handleSave(evt)}
+      >
+        Save
+      </Button>
     </>
   )
 }
