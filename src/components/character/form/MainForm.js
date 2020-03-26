@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Divider, Grid } from "semantic-ui-react";
+import { confirmAlert } from 'react-confirm-alert';
 import "../Character.css";
 import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
@@ -74,14 +75,129 @@ const MainForm = props => {
   }
 
   const handleItemClick = (evt, {index}) => {
-    setStep(index);
+    if (validStep()) {
+      setStep(index);
+    }
   }
 
+  const handleButtonClick = (evt, {value}) => {
+    // User cannot move forward unless the current fields
+    // are valid. But they can move backwards.
+    if (value === "next") {
+      if (validStep()) {
+        setStep(step+1)
+      }
+    } else if (value === "previous") {
+      setStep(step-1)
+    }
+  }
+
+  /* ------------------ VALIDATIONS  ------------------*/
+  // TODO: these are duplicated here and in SaveCharacter
+
+  const validationConfirm = (message) => {
+    confirmAlert({
+      title: 'Required Field',
+      message: message,
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: null
+        }
+      ]
+    });
+  }
+
+  const validStep = () => {
+    switch(step) {
+      default:
+      case 1:
+        if (character.name === "") {
+          validationConfirm("Enter a character name")
+          return false
+        } else {
+          return true
+        }
+      case 2: 
+        if (characterAspects[0].name === "") {
+          validationConfirm("Enter a High Concept aspect")
+          return false
+        } else {
+          return true
+        }
+      case 3: 
+        if (skillsAreEmpty()) {
+          validationConfirm("Choose at least one skill")
+          return false
+        } else if (duplicateSkills().length > 0) {
+          validationConfirm("You cannot have any duplicate skills")
+          return false
+        } else {
+          return true
+        }
+      case 4: 
+        if (duplicateStunts().length > 0) {
+          validationConfirm("You cannot have any duplicate stunts")
+          return false
+        } else {
+          return true
+        }
+    }
+  }
+
+  const skillsAreEmpty = () => {
+    const skillLevels = Object.values(characterSkills)
+    const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
+    if (nonEmptySkillLevels.length > 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const duplicateSkills = () => {
+    const skillLevels = Object.values(characterSkills)
+    const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
+    // Flatteing using the ES6 spread operator:
+    // https://www.jstips.co/en/javascript/flattening-multidimensional-arrays-in-javascript/
+    const allSkills = [].concat(...nonEmptySkillLevels);
+    // Finding duplicates in an array:
+    // https://stackoverflow.com/a/840808
+    const sortedSkills = allSkills.slice().sort();
+    let duplicates = [];
+    for (let i = 0; i < sortedSkills.length - 1; i++) {
+      if (sortedSkills[i+1] === sortedSkills[i]) {
+        duplicates.push(sortedSkills[i]);
+      }
+    }
+    return duplicates;
+  }
+
+  const duplicateStunts = () => {
+    const stuntRows = Object.values(characterStunts)
+    const nonEmptyStuntRows = stuntRows.filter(stuntRow => stuntRow.length !== 0)
+    // Flatteing using the ES6 spread operator:
+    // https://www.jstips.co/en/javascript/flattening-multidimensional-arrays-in-javascript/
+    const allStunts = [].concat(...nonEmptyStuntRows);
+    // Finding duplicates in an array:
+    // https://stackoverflow.com/a/840808
+    const sortedStunts = allStunts.slice().sort();
+    let duplicates = [];
+    for (let i = 0; i < sortedStunts.length - 1; i++) {
+      if (sortedStunts[i+1] === sortedStunts[i]) {
+        duplicates.push(sortedStunts[i]);
+      }
+    }
+    return duplicates;
+  }
+
+  /* ------------------ RENDERING  ------------------*/
   // Helpful links:
   // https://www.digitalocean.com/community/tutorials/how-to-create-multistep-forms-with-react-and-semantic-ui
   const renderStep = () => {
     switch(step){
       default: 
+      case 1:
         return <CharacterId 
           character={character} 
           handleFieldChange={handleFieldChange}
@@ -195,36 +311,40 @@ const MainForm = props => {
             </Divider>
             {/* Renders the form for whatever step we're on */}
             {renderStep()}
-            {/* Don't render a "previous button on step 1 */}
-            {step !== 1
-              ? <Button
-                  type="button"
-                  // disabled={isLoading}
-                  onClick={() => setStep(step-1)}
-                >
-                  Previous
+            <div className="flex-end">
+              {/* Don't render a "previous button on step 1 */}
+              {step !== 1
+                ? <Button
+                    type="button"
+                    value="previous"
+                    // disabled={isLoading}
+                    onClick={handleButtonClick}
+                  >
+                    Previous
+                  </Button>
+                : <></>
+              }
+              {/* If it's the last step, change the button to "submit" */}
+              {step !== 5
+                ? <Button
+                    type="button"
+                    value="next"
+                    // disabled={isLoading}
+                    onClick={handleButtonClick}
+                  >
+                  Next
                 </Button>
-              : <></>
-            }
-            {/* If it's the last step, change the button to "submit" */}
-            {step !== 5
-              ? <Button
-                  type="button"
-                  // disabled={isLoading}
-                  onClick={() => setStep(step+1)}
-                >
-                Next
-              </Button>
-              : <SaveCharacter
-                  character={character}
-                  aspects={characterAspects}
-                  skills={characterSkills}
-                  stunts={characterStunts}
-                  isLoading={isLoading}
-                  setIsLoading={setIsLoading}
-                  {...props}
-                />
-            }
+                : <SaveCharacter
+                    character={character}
+                    aspects={characterAspects}
+                    skills={characterSkills}
+                    stunts={characterStunts}
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading}
+                    {...props}
+                  />
+              }
+            </div>
           </Grid.Column>
         </Grid>
       </Container>

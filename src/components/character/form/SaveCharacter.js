@@ -57,6 +57,8 @@ const SaveCharacter = props => {
   } 
 
   /* ------------ VALIDATIONS ------------ */
+  // TODO: these are duplicated here and in MainForm
+
   // This should check that required fields are filled before allowing a submit
   const validChar = () => {
     const skillsAreEmpty = (characterSkills) => {
@@ -69,14 +71,16 @@ const SaveCharacter = props => {
       }
     }
 
-    // TODO: keep someone from saving a character with duplicate skills
-
     if (character.name === "") {
       validationConfirm("Enter a character name")
     } else if (aspects[0].name === "") {
-      validationConfirm("Enter a high aspect")
+      validationConfirm("Enter a High Concept aspect")
     } else if (skillsAreEmpty(skills)) {
       validationConfirm("Choose at least one skill")
+    } else if (duplicateSkills().length > 0) {
+      validationConfirm("You cannot have any duplicate skills")
+    } else if (duplicateStunts().length > 0) {
+      validationConfirm("You cannot have any duplicate stunts")
     } else {
       return true
     }
@@ -95,10 +99,47 @@ const SaveCharacter = props => {
     });
   }
 
+  const duplicateSkills = () => {
+    const skillLevels = Object.values(skills)
+    const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
+    // Flatteing using the ES6 spread operator:
+    // https://www.jstips.co/en/javascript/flattening-multidimensional-arrays-in-javascript/
+    const allSkills = [].concat(...nonEmptySkillLevels);
+    // Finding duplicates in an array:
+    // https://stackoverflow.com/a/840808
+    const sortedSkills = allSkills.slice().sort();
+    let duplicates = [];
+    for (let i = 0; i < sortedSkills.length - 1; i++) {
+      if (sortedSkills[i+1] === sortedSkills[i]) {
+        duplicates.push(sortedSkills[i]);
+      }
+    }
+    return duplicates;
+  }
+
+  const duplicateStunts = () => {
+    const stuntRows = Object.values(stunts)
+    const nonEmptyStuntRows = stuntRows.filter(stuntRow => stuntRow.length !== 0)
+    // Flatteing using the ES6 spread operator:
+    // https://www.jstips.co/en/javascript/flattening-multidimensional-arrays-in-javascript/
+    const allStunts = [].concat(...nonEmptyStuntRows);
+    // Finding duplicates in an array:
+    // https://stackoverflow.com/a/840808
+    const sortedStunts = allStunts.slice().sort();
+    let duplicates = [];
+    for (let i = 0; i < sortedStunts.length - 1; i++) {
+      if (sortedStunts[i+1] === sortedStunts[i]) {
+        duplicates.push(sortedStunts[i]);
+      }
+    }
+    return duplicates;
+  }
+
   /* ------------ SAVING FUNCTIONS ------------ */
   // Made this an async function to allow it to have a .then after
   async function purge() {
-    // IF edit, delete everything before starting?
+    // IF edit, delete everything before starting
+    // TODO: figure out a better way?
     if (isEdit) {
       const userId = props.match.params.characterId;
       return ApiManager.delete("characters", userId)
@@ -158,8 +199,7 @@ const SaveCharacter = props => {
             ApiManager.post("characters", char)
               .then(resp => saveAspects(resp.id))
               .then(saveSkills)
-              .then(saveStunts)
-              // FIXME: this push is failing to render the newly saved char    
+              .then(saveStunts) 
               .then(() => props.history.push("/characters"))
         })
     }
