@@ -26,6 +26,10 @@ const ApplicationViews = props => {
         return <StuntList {...props}/>
       }}/>
       {/* -------------------CHARACTER------------------- */}
+      {/* TODO: Make root be something other than characters */}
+      <Route exact path="/" render={props => {
+        return <CharacterList {...props}/>
+      }}/>
       <Route exact path="/characters" render={props => {
         return <CharacterList {...props}/>
       }}/>
