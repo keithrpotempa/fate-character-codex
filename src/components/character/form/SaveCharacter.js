@@ -79,6 +79,8 @@ const SaveCharacter = props => {
       validationConfirm("Choose at least one skill")
     } else if (duplicateSkills().length > 0) {
       validationConfirm("You cannot have any duplicate skills")
+    } else if (duplicateStunts().length > 0) {
+      validationConfirm("You cannot have any duplicate stunts")
     } else {
       return true
     }
@@ -110,6 +112,24 @@ const SaveCharacter = props => {
     for (let i = 0; i < sortedSkills.length - 1; i++) {
       if (sortedSkills[i+1] === sortedSkills[i]) {
         duplicates.push(sortedSkills[i]);
+      }
+    }
+    return duplicates;
+  }
+
+  const duplicateStunts = () => {
+    const stuntRows = Object.values(stunts)
+    const nonEmptyStuntRows = stuntRows.filter(stuntRow => stuntRow.length !== 0)
+    // Flatteing using the ES6 spread operator:
+    // https://www.jstips.co/en/javascript/flattening-multidimensional-arrays-in-javascript/
+    const allStunts = [].concat(...nonEmptyStuntRows);
+    // Finding duplicates in an array:
+    // https://stackoverflow.com/a/840808
+    const sortedStunts = allStunts.slice().sort();
+    let duplicates = [];
+    for (let i = 0; i < sortedStunts.length - 1; i++) {
+      if (sortedStunts[i+1] === sortedStunts[i]) {
+        duplicates.push(sortedStunts[i]);
       }
     }
     return duplicates;
