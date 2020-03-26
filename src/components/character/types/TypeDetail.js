@@ -17,6 +17,7 @@ const TypeDetail = props => {
 
   return (
     <>
+      {/* TODO: URL Link  */}
       <Container text>
         <div className="header-container">
           {/* Having issues with this erroring out before full render */}
