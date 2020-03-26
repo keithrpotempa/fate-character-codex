@@ -24,7 +24,7 @@ const StuntsForm = props => {
   // TODO: Make this DRY
   return (
     <>
-      <Divider horizontal><h2>SKILLS</h2></Divider>
+      <Divider horizontal><h2>STUNTS</h2></Divider>
       <p>(choose a skill to filter by)</p>
       <StuntRow 
         x="1" 

@@ -9,6 +9,7 @@ import SaveCharacter from "./SaveCharacter";
 import SheetReview from "./SheetReview";
 import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
+import EditCharacter from "./EditCharacter";
 
 const MainForm = props => {
   /* ------------------ STATES ------------------*/
@@ -57,6 +58,9 @@ const MainForm = props => {
 
   const getStuntList = () => {
     return ApiManager.getAll("stunts")
+      /* Sorting stunts alphabetically
+        https://stackoverflow.com/a/45544166*/
+      .then(stuntList => stuntList.sort((a, b) => a.name.localeCompare(b.name) ))
       .then(setStuntList); 
   }
 
@@ -131,6 +135,22 @@ const MainForm = props => {
   return (
     <>
       <Container>
+        {/* If this is an edit, render the component that 
+          retrieves all the characters' data */}
+        {props.match.params.characterId
+          ? <EditCharacter 
+            characterId={props.match.params.characterId}
+            setCharacter={setCharacter}
+            characterAspects={characterAspects}
+            setCharacterAspects={setCharacterAspects}
+            characterSkills={characterSkills}
+            setCharacterSkills={setCharacterSkills}
+            characterStunts={characterStunts}
+            setCharacterStunts={setCharacterStunts}
+            setIsLoading={setIsLoading}
+          />
+          : <></>
+        }
         <Grid columns={2}>
           <Grid.Column width={3}>
             <Menu inverted pointing compact vertical 

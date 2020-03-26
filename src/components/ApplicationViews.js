@@ -6,7 +6,7 @@ import StuntList from "./stunt/StuntList";
 
 import CharacterList from "./character/CharacterList";
 import CharacterSheet from "./character/sheet/CharacterSheet";
-// import CharacterForm from "./character/form/CharacterForm";
+import CharacterForm from "./character/form/CharacterForm";
 import MainForm from "./character/form/MainForm";
 
 import Login from "./user/Login"
@@ -62,6 +62,29 @@ const ApplicationViews = props => {
           }
         }}
       />
+      {/* "hidden" views to show the way the form used to work */}
+      <Route
+        path="/characters/oldnew"
+        render={props => {
+          if (hasUser) {
+            return <CharacterForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
+        }}
+      />
+      <Route
+        path="/characters/:characterId(\d+)/oldedit"
+        render={props => {
+          // TODO: this also needs to be the user that made this character
+          if (hasUser) {
+            return <CharacterForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
+        }}
+      />
+      
       {/* -------------------USER------------------- */}
       <Route 
         path="/login"
