@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, TextArea } from "semantic-ui-react";
 
 const StuntDescription = props => {
   const stuntList = props.stuntList;
@@ -9,12 +9,13 @@ const StuntDescription = props => {
 
   return (
     <>
-      <Form.Field
-        control="textarea"
-        readOnly
-        className="stunt-description"
-        value={stuntDescription}
-      />
+      <Form>
+        <TextArea
+          className="stunt-description"
+          rows={8}
+          value={stuntDescription}
+        />
+      </Form>
     </>
   )
 }

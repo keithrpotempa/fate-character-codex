@@ -1,20 +1,9 @@
-import React, { useEffect, useState } from "react";
-import ApiManager from "../../../modules/ApiManager";
+import React from "react";
 import { Divider, List } from "semantic-ui-react";
 
 
 const CharacterAspects = props => {
-  const [aspects, setAspects] = useState([]);
-  const id = props.id;
-
-  const getAspects = () => {
-    ApiManager.getCharacterAspects(id)
-      .then(setAspects);
-  }
-
-  useEffect(()=>{
-    getAspects();
-  }, [])
+  const aspects = props.aspects
 
   return (
     <>
@@ -23,11 +12,13 @@ const CharacterAspects = props => {
       </Divider>
       <List celled>
         {aspects.map(aspect =>
-          <List.Item 
-            key={`aspect-${aspect.id}`}
-            content={aspect.name}
-            // meta={aspect.aspectTypeId}
-          />
+          aspect.name !== ""
+          ? <List.Item 
+              key={`aspect-${aspect.id}`}
+              content={aspect.name}
+              // meta={aspect.aspectTypeId}
+            />
+          : <></>
         )}
       </List>
     </>

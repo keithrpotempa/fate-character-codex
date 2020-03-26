@@ -5,10 +5,9 @@
   const SkillsDropdown = props => {
     return (
       <>
-        <div className="skill-selector">
+        {/* <div className="skill-selector"> */}
           <Dropdown
             placeholder="Filter by related skill"
-            fluid
             selection
             id={`${props.x}:${props.y}`}
             onChange={props.handleFieldChange}
@@ -20,7 +19,7 @@
               }
             ))}
           />
-        </div>
+        {/* </div> */}
       </>
     )
   } 

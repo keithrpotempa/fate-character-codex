@@ -31,7 +31,7 @@ const CharacterForm = props => {
     1: []
   });
   const [skillList, setSkillList] = useState([]);
-
+  const [stuntList, setStuntList] = useState([]);  
   const [characterStunts, setCharacterStunts] = useState({
     5: "",
     4: "",
@@ -47,6 +47,11 @@ const CharacterForm = props => {
   const getSkillList = () => {
     return ApiManager.getAll("skills")
       .then(setSkillList);      
+  }
+
+  const getStuntList = () => {
+    return ApiManager.getAll("stunts")
+      .then(setStuntList); 
   }
 
   // Note: Most field changes are handled 
@@ -127,7 +132,6 @@ const CharacterForm = props => {
     <>
       <Container text>
         <Form>
-          <Divider horizontal><h4>ID</h4></Divider>
           <Form.Field>
             <label htmlFor="characterName">Name</label>
             <Form.Input 
@@ -139,22 +143,20 @@ const CharacterForm = props => {
               placeholder="Character name"
               value={character.name}
             />
-            <Divider horizontal><h4>ASPECTS</h4></Divider>
             <AspectForm 
               aspects={characterAspects}
               setAspects={setCharacterAspects}
             />
-            <Divider horizontal><h4>SKILLS</h4></Divider>
             <SkillsForm 
               skillList={skillList}
               setSkillList={setSkillList}
               characterSkills={characterSkills}
               setCharacterSkills={setCharacterSkills}
             />
-            <Divider horizontal><h4>STUNTS</h4></Divider>
             <StuntsForm
               characterStunts={characterStunts}
               setCharacterStunts={setCharacterStunts}
+              stuntList={stuntList}
               skillList={skillList}
             />
             <SaveCharacter 

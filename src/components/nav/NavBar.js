@@ -38,7 +38,7 @@ const NavBar = props => {
       </div>
       <div className="navbar-container">
         <Menu inverted size="huge" color="blue">
-          {MenuItem("home")}
+          {/* {MenuItem("home")} */}
           {MenuItem("characters")}
           {MenuItem("skills")}
           {MenuItem("stunts")}

@@ -7,6 +7,7 @@ import StuntList from "./stunt/StuntList";
 import CharacterList from "./character/CharacterList";
 import CharacterSheet from "./character/sheet/CharacterSheet";
 import CharacterForm from "./character/form/CharacterForm";
+import MainForm from "./character/form/MainForm";
 
 import Login from "./user/Login"
 import Register from "./user/Register"
@@ -25,6 +26,10 @@ const ApplicationViews = props => {
         return <StuntList {...props}/>
       }}/>
       {/* -------------------CHARACTER------------------- */}
+      {/* TODO: Make root be something other than characters */}
+      <Route exact path="/" render={props => {
+        return <CharacterList {...props}/>
+      }}/>
       <Route exact path="/characters" render={props => {
         return <CharacterList {...props}/>
       }}/>
@@ -32,7 +37,7 @@ const ApplicationViews = props => {
         path="/characters/new"
         render={props => {
           if (hasUser) {
-            return <CharacterForm {...props} />;
+            return <MainForm {...props} />;
           } else {
             return <Redirect to="/login" />;
           }
@@ -51,12 +56,35 @@ const ApplicationViews = props => {
         render={props => {
           // TODO: this also needs to be the user that made this character
           if (hasUser) {
+            return <MainForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
+        }}
+      />
+      {/* "hidden" views to show the way the form used to work */}
+      <Route
+        path="/characters/oldnew"
+        render={props => {
+          if (hasUser) {
             return <CharacterForm {...props} />;
           } else {
             return <Redirect to="/login" />;
           }
         }}
       />
+      <Route
+        path="/characters/:characterId(\d+)/oldedit"
+        render={props => {
+          // TODO: this also needs to be the user that made this character
+          if (hasUser) {
+            return <CharacterForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
+        }}
+      />
+      
       {/* -------------------USER------------------- */}
       <Route 
         path="/login"

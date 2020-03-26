@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "semantic-ui-react";
+import { Form, Grid } from "semantic-ui-react";
 import StuntsDropdown from "./StuntsDropdown";
 import StuntDescription from "./StuntsDescription";
 import SkillsDropDown from "./SkillsDropDown";
@@ -14,14 +14,16 @@ const StuntRow = props => {
 
   return (
     <>
-      <Grid columns={2}>
-        <Grid.Row>
+      <Grid stackable>
+        <Grid.Row columns={2}>
           <Grid.Column>
             <SkillsDropDown 
               x={props.x} 
               handleFieldChange={handleFilter} 
               skillList={props.skillList}
-            />
+              />
+          </Grid.Column>
+          <Grid.Column>
             <StuntsDropdown 
               x={props.x} 
               stuntList={props.stuntList} 
@@ -31,6 +33,8 @@ const StuntRow = props => {
               filter={props.filter}
             />
           </Grid.Column>
+        </Grid.Row>
+        <Grid.Row columns={1}>
           <Grid.Column>
             <StuntDescription 
               stunt={props.characterStunts[props.x]} 

@@ -4,15 +4,12 @@ import { confirmAlert } from 'react-confirm-alert';
 import { Container, Button, Divider, Grid, Icon, Segment } from "semantic-ui-react"
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
-
-import StressConsequences from "./StressConsequences";
-import CharacterAspects from "./CharacterAspects";
-import CharacterSkills from "./CharacterSkills";
-import CharacterStunts from "./CharacterStunts";
 import CharacterMeta from "./CharacterMeta";
+import SheetPreview from "./SheetPreview";
 
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
+  const [aspects, setAspects] = useState([]);
   const [skills, setSkills] = useState({
     6: [],
     5: [],
@@ -23,6 +20,7 @@ const CharacterSheet = props => {
   });
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
+  const [stunts, setStunts] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
   
@@ -32,6 +30,11 @@ const CharacterSheet = props => {
   const getCharacter = () => {
     ApiManager.get("characters", id)
       .then(setCharacter);
+  }
+
+  const getAspects = () => {
+    ApiManager.getCharacterAspects(id)
+      .then(setAspects);
   }
 
   const getSkills = () => {
@@ -66,6 +69,11 @@ const CharacterSheet = props => {
     return formattedSkills;
   }
 
+  const getStunts = () => {
+    ApiManager.getCharacterStunts(id)
+      .then(setStunts);
+  }
+
   const handleDelete = (id) => {
     confirmAlert({
       title: 'Confirm to submit',
@@ -86,53 +94,44 @@ const CharacterSheet = props => {
 
   useEffect(()=>{
     getCharacter();
+    getAspects();
     getSkills();
+    getStunts();
     setIsLoading(false);
   }, [])
 
   return (
     <>
       <Container text>
-        <Divider horizontal>
-          <h4>ID</h4>
-        </Divider>
-        <p><strong>Name:</strong> {character.name}</p>
-        <Segment basic placeholder>
-          <Grid columns={2} relaxed='very' stackable>
-            <Grid.Column>
-              <CharacterAspects id={id}/>
-            </Grid.Column>
-            <Grid.Column verticalAlign='middle'>
-              <CharacterSkills skills={skills}/>
-            </Grid.Column>
-          </Grid>
-        </Segment>
-        <CharacterStunts id={id}/>
-        <StressConsequences
+        <SheetPreview 
+          character={character}
+          aspects={aspects}
+          skills={skills}
+          stunts={stunts}
           physiqueRating={physiqueRating}
           willRating={willRating}
         />
-        {/* Conditionally rendering these buttons 
-          if the user created this character */}
-        {activeUser && character.userId === activeUser.id 
-          ? <div className="flex-end">
-              <Link to={`/characters/${id}/edit`}>
-                <Button disabled={isLoading} >
-                  <Icon fitted className="edit outline"/>
+          {/* Conditionally rendering these buttons 
+            if the user created this character */}
+          {activeUser && character.userId === activeUser.id 
+            ? <div className="flex-end">
+                <Link to={`/characters/${id}/edit`}>
+                  <Button disabled={isLoading} >
+                    <Icon fitted className="edit outline"/>
+                  </Button>
+                </Link>
+                <Button
+                  className="ui button"
+                  type="button"
+                  onClick={() => handleDelete(id)}
+                  disabled={isLoading}
+                >
+                  <Icon fitted className="trash alternate outline"/>
                 </Button>
-              </Link>
-              <Button
-                className="ui button"
-                type="button"
-                onClick={() => handleDelete(id)}
-                disabled={isLoading}
-              >
-                <Icon fitted className="trash alternate outline"/>
-              </Button>
-            </div>
-          : <></>
-        }
-        <CharacterMeta character={character} userId={character.userId}/>
+              </div>
+            : <></>
+          }
+          <CharacterMeta character={character} userId={character.userId}/>
       </Container>
     </>
   )
