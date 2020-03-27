@@ -46,12 +46,15 @@ This project utilizes the following:
 ## Local Setup
 If you would like to test this code locally, you can follow these steps to get started:
 
-1. `git clone git@github.com:keithrpotempa/fate-character-codex.git`
-1. `cd` into the directory it creates
+1. `git clone git@github.com:keithrpotempa/fate-character-codex.git && cd fate-character-codex`
 1. `npm install` to build dependencies
 1. `npm start` to run the application in development mode
-1. start the json server in a new tab: `json-server -p 8200 api/database.json`
-1. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+In a new terminal tab or window, 
+1. `cd` back to the git directory
+1. `mkdir api && cd $_`
+1. `curl -o database.json https://raw.githubusercontent.com/keithrpotempa/fate-character-codex-database-seed/master/database.json`
+1. `json-server -p 5002 database.json`
 
 (*) **Note: this app does not use true authentication.** There are no passwords used to login, and all credentials are saved in clear text on the JSON database. Do not use any sensitive information. 
 
