@@ -20,7 +20,7 @@ const MainForm = props => {
   const [skillList, setSkillList] = useState([]);
   const [stuntList, setStuntList] = useState([]);
 
-  const [character, setCharacter] = useState({name: ""});
+  const [character, setCharacter] = useState({name: "", type: "", subtype: ""});
 
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
@@ -50,6 +50,9 @@ const MainForm = props => {
     1: ""
   });
 
+  const [characterTypeList, setCharacterTypeList] = useState([]);
+  const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
+
 
   /* ------------------ GETS & STATE SETS  ------------------*/
   const getSkillList = () => {
@@ -65,14 +68,17 @@ const MainForm = props => {
       .then(setStuntList); 
   }
 
-
-  // Note: Most field changes are handled 
-  // by their respective child components
-  const handleFieldChange = evt => {
-    const stateToChange = {...character};
-    stateToChange[evt.target.id] = evt.target.value;
-    setCharacter(stateToChange)
+  const getCharacterTypeList = () => {
+    return ApiManager.getAll("characterTypes")
+      .then(setCharacterTypeList)
   }
+
+  const getCharacterSubTypeList = () => {
+    return ApiManager.getAll("characterSubTypes")
+      .then(setCharacterSubTypeList)
+  }
+
+  /* ------------------ EVENT HANDLERS  ------------------*/
 
   const handleItemClick = (evt, {index}) => {
     if (validStep()) {
@@ -200,7 +206,9 @@ const MainForm = props => {
       case 1:
         return <CharacterId 
           character={character} 
-          handleFieldChange={handleFieldChange}
+          setCharacter={setCharacter}
+          characterTypeList={characterTypeList}
+          characterSubTypeList={characterSubTypeList}
         />
       case 2: 
         return <AspectForm
@@ -240,6 +248,8 @@ const MainForm = props => {
   useEffect(() => {
     getSkillList();
     getStuntList();
+    getCharacterTypeList();
+    getCharacterSubTypeList();
     // AKA: if this is an edit
     if (props.match.params.characterId) {
       ApiManager.get("characters", props.match.params.characterId)

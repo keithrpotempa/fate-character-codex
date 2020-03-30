@@ -7,6 +7,9 @@ import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
 import SaveCharacter from "./SaveCharacter";
 
+// DO NOT USE OR EDIT: THIS FORM HAS DEPRECATED
+// This is the old single page form, before it was stepped
+
 const CharacterForm = props => {
   // All the state for the character form is here, in the parent component
   // but modified by the handleFieldChange functions of the children components
