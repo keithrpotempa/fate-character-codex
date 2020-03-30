@@ -34,6 +34,7 @@ const ApplicationViews = props => {
         render={props => {
           return <TypeDetail 
             subTypeId={props.match.params.subTypeId}
+            verbose={true}
             {...props}
           />
       }}/>

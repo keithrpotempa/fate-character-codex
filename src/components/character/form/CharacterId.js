@@ -1,8 +1,22 @@
-import React from "react";
-import { Divider, Dropdown, Form } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Card, Divider, Dropdown, Form } from "semantic-ui-react";
+import ApiManager from "../../../modules/ApiManager";
+import TypeDetail from "../types/TypeDetail";
 
 const CharacterId = props => {
   const character = props.character; 
+  const [characterTypeList, setCharacterTypeList] = useState([]);
+  const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
+  
+  const getCharacterTypeList = () => {
+    return ApiManager.getAll("characterTypes")
+      .then(setCharacterTypeList)
+  }
+
+  const getCharacterSubTypeList = () => {
+    return ApiManager.getAll("characterSubTypes")
+      .then(setCharacterSubTypeList)
+  }
 
   const handleFieldChange = (evt, {name, value}) => {
     const stateToChange = {...character};
@@ -12,11 +26,16 @@ const CharacterId = props => {
     // TODO: this could evade validation if they select PC first,
     // then choose an NPC and leave the subtype blank 
     // (it will still be set to subtype PC)
-    if (value === "1") {
+    if (value === "1" && name === "type") {
       stateToChange["subtype"] = "6";
     }
     props.setCharacter(stateToChange)
   }
+
+  useEffect(() => {
+    getCharacterTypeList();
+    getCharacterSubTypeList();
+  }, [character])
 
   return (
     <>
@@ -42,7 +61,7 @@ const CharacterId = props => {
           id="type"
           placeholder="Character type"
           // value={character.typeId}
-          options={props.characterTypeList.map(type => (
+          options={characterTypeList.map(type => (
             {
               key: `type-${type.id}`,
               value: `${type.id}`,
@@ -63,7 +82,7 @@ const CharacterId = props => {
                 id="subtype"
                 placeholder="Character Subtype"
                 value={character.subtypeId}
-                options={props.characterSubTypeList
+                options={characterSubTypeList
                   .filter(subtype => subtype.characterTypeId === parseInt(character.type))
                   .map(type => (
                   {
@@ -74,6 +93,16 @@ const CharacterId = props => {
                 ))}
               />
         }
+        {
+          character.subtype === ""
+          ? <></>
+          : <TypeDetail 
+              verbose={false}
+              subTypeId={parseInt(character.subtype)}
+            />
+        }
+
+
         
       </Form.Field>
     </>

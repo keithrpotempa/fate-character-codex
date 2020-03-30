@@ -50,10 +50,6 @@ const MainForm = props => {
     1: ""
   });
 
-  const [characterTypeList, setCharacterTypeList] = useState([]);
-  const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
-
-
   /* ------------------ GETS & STATE SETS  ------------------*/
   const getSkillList = () => {
     return ApiManager.getAll("skills")
@@ -66,16 +62,6 @@ const MainForm = props => {
         https://stackoverflow.com/a/45544166*/
       .then(stuntList => stuntList.sort((a, b) => a.name.localeCompare(b.name) ))
       .then(setStuntList); 
-  }
-
-  const getCharacterTypeList = () => {
-    return ApiManager.getAll("characterTypes")
-      .then(setCharacterTypeList)
-  }
-
-  const getCharacterSubTypeList = () => {
-    return ApiManager.getAll("characterSubTypes")
-      .then(setCharacterSubTypeList)
   }
 
   /* ------------------ EVENT HANDLERS  ------------------*/
@@ -210,8 +196,6 @@ const MainForm = props => {
         return <CharacterId 
           character={character} 
           setCharacter={setCharacter}
-          characterTypeList={characterTypeList}
-          characterSubTypeList={characterSubTypeList}
         />
       case 2: 
         return <AspectForm
@@ -251,8 +235,6 @@ const MainForm = props => {
   useEffect(() => {
     getSkillList();
     getStuntList();
-    getCharacterTypeList();
-    getCharacterSubTypeList();
     // AKA: if this is an edit
     if (props.match.params.characterId) {
       ApiManager.get("characters", props.match.params.characterId)
