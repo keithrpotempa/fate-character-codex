@@ -4,7 +4,9 @@ import AspectInput from "./AspectInput"
 import ApiManager from "../../../modules/ApiManager"
 
 const AspectForm = props => {
-  const aspects = props.aspects
+  const aspects = props.aspects;
+  const maxAspects = props.maxAspects;
+  const aspectComment = props.aspectComment;
   const [aspectTypes, setAspectTypes] = useState([]);
 
   const handleFieldChange = evt => {

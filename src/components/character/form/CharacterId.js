@@ -5,6 +5,7 @@ import TypeDetail from "../types/TypeDetail";
 
 const CharacterId = props => {
   const character = props.character; 
+  const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
   const [characterTypeList, setCharacterTypeList] = useState([]);
   const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
   
@@ -18,6 +19,16 @@ const CharacterId = props => {
       .then(setCharacterSubTypeList)
   }
 
+  // Once a character subtype is chosen, 
+  // store all that subtype's details in state
+  // on the parent component (mainform)
+  // to be used by subsequent form components
+  const getCharacterSubtypeDetails = subtypeId => {
+    const subtype = characterSubTypeList
+      .filter(subtype => subtype.id === subtypeId)[0]
+    setCharacterSubTypeDetails(subtype);
+  }
+
   const handleFieldChange = (evt, {name, value}) => {
     const stateToChange = {...character};
     stateToChange[name] = value;
@@ -29,13 +40,17 @@ const CharacterId = props => {
     if (value === "1" && name === "type") {
       stateToChange["subtype"] = "6";
     }
+    if (name === "subtype") {
+      getCharacterSubtypeDetails(parseInt(value))
+    }
     props.setCharacter(stateToChange)
   }
 
   useEffect(() => {
     getCharacterTypeList();
     getCharacterSubTypeList();
-  }, [character])
+    getCharacterSubtypeDetails();
+  }, [])
 
   return (
     <>

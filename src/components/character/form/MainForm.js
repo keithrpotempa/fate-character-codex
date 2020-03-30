@@ -21,6 +21,7 @@ const MainForm = props => {
   const [stuntList, setStuntList] = useState([]);
 
   const [character, setCharacter] = useState({name: "", type: "", subtype: ""});
+  const [characterSubTypeDetails, setCharacterSubTypeDetails] = useState();
 
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
@@ -196,11 +197,14 @@ const MainForm = props => {
         return <CharacterId 
           character={character} 
           setCharacter={setCharacter}
+          setCharacterSubTypeDetails={setCharacterSubTypeDetails}
         />
       case 2: 
         return <AspectForm
           aspects={characterAspects}
           setAspects={setCharacterAspects}
+          maxAspects={characterSubTypeDetails.maxAspects}
+          aspectComment={characterSubTypeDetails.aspectComment}
         />
       case 3: 
         return <SkillsForm 
