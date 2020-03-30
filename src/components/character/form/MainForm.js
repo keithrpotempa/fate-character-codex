@@ -201,6 +201,7 @@ const MainForm = props => {
         />
       case 2: 
         return <AspectForm
+          type={characterSubTypeDetails.name}
           aspects={characterAspects}
           setAspects={setCharacterAspects}
           maxAspects={characterSubTypeDetails.maxAspects}
