@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Divider, Dropdown, Form } from "semantic-ui-react";
+import { Divider, Dropdown, Form } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 import TypeDetail from "../types/TypeDetail";
 
@@ -101,9 +101,6 @@ const CharacterId = props => {
               subTypeId={parseInt(character.subtype)}
             />
         }
-
-
-        
       </Form.Field>
     </>
   )

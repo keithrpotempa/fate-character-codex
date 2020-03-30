@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Container } from "semantic-ui-react";
+import { Card, Container, Icon } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 
 const TypeDetail = props => {
@@ -100,7 +100,11 @@ const TypeDetail = props => {
               </>
             : <></>
           }
-          
+          <div className="flex-end">
+            <a target="_blank" rel="noopener noreferrer" href={subType.url}>
+              <Icon fitted link className="linkify"/>
+            </a>
+          </div>
         </Card.Group>     
       </Container>
     </>
