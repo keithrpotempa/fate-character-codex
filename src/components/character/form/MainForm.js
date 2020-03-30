@@ -121,6 +121,9 @@ const MainForm = props => {
         if (character.name === "") {
           validationConfirm("Enter a character name")
           return false
+        } else if (character.subtype === "") {
+          validationConfirm("Enter a character type & subtype")
+          return false
         } else {
           return true
         }

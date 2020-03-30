@@ -9,6 +9,9 @@ const CharacterId = props => {
     stateToChange[name] = value;
     // If they're a PC, set their subtype for them
     // (there's no subtype for PCs)
+    // TODO: this could evade validation if they select PC first,
+    // then choose an NPC and leave the subtype blank 
+    // (it will still be set to subtype PC)
     if (value === "1") {
       stateToChange["subtype"] = "6";
     }
