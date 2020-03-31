@@ -8,7 +8,7 @@ const CharacterId = props => {
   const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
   const [characterTypeList, setCharacterTypeList] = useState([]);
   const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
-  
+
   const getCharacterTypeList = () => {
     return ApiManager.getAll("characterTypes")
       .then(setCharacterTypeList)
@@ -29,7 +29,13 @@ const CharacterId = props => {
     setCharacterSubTypeDetails(subtype);
   }
 
-  const handleFieldChange = (evt, {name, value}) => {
+  const handleNameFieldChange = (evt, {name, value}) => {
+    const stateToChange = {...character};
+    stateToChange[name] = value;
+    props.setCharacter(stateToChange)
+  }
+
+  const handleTypeFieldChange = (evt, {name, value}) => {
     const stateToChange = {...character};
     stateToChange[name] = value;
     // If they're a PC, set their subtype for them
@@ -37,12 +43,17 @@ const CharacterId = props => {
     // TODO: this could evade validation if they select PC first,
     // then choose an NPC and leave the subtype blank 
     // (it will still be set to subtype PC)
-    if (value === "1" && name === "type") {
+    if (value === "1") {
       stateToChange["subtype"] = "6";
     }
-    if (name === "subtype") {
-      getCharacterSubtypeDetails(parseInt(value))
-    }
+    props.setCharacter(stateToChange)
+  }
+
+  const handleSubTypeFieldChange = (evt, {name, value}) => {
+    const stateToChange = {...character};
+    stateToChange[name] = value;
+    // Set subtype details in state
+    getCharacterSubtypeDetails(parseInt(value))
     props.setCharacter(stateToChange)
   }
 
@@ -60,7 +71,7 @@ const CharacterId = props => {
         <Form.Input 
           type="text"
           required
-          onChange={handleFieldChange}
+          onChange={handleNameFieldChange}
           className="character"
           name="name"
           id="name"
@@ -70,7 +81,7 @@ const CharacterId = props => {
         <Dropdown 
           required
           selection
-          onChange={handleFieldChange}
+          onChange={handleTypeFieldChange}
           className="type"
           name="type"
           id="type"
@@ -91,7 +102,7 @@ const CharacterId = props => {
             : <Dropdown 
                 required
                 selection
-                onChange={handleFieldChange}
+                onChange={handleSubTypeFieldChange}
                 className="subtype"
                 name="subtype"
                 id="subtype"
