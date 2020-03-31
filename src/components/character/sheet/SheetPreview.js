@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Divider, Grid, Segment } from "semantic-ui-react"
+import { Divider, Grid, Segment } from "semantic-ui-react"
 
 import StressConsequences from "./StressConsequences";
 import CharacterAspects from "./CharacterAspects";
@@ -7,36 +7,33 @@ import CharacterSkills from "./CharacterSkills";
 import CharacterStunts from "./CharacterStunts";
 
 const SheetPreview = props => {
-  const character = props.character;
-  const aspects = props.aspects;
-  const skills = props.skills;
-  const stunts = props.stunts;
-  const physiqueRating = props.physiqueRating;
-  const willRating = props.willRating;
-
-  // If it's a preview in the middle of a save:
-  // get the names of all the skills & names/descriptions stunts
+  // This component renders a Character Sheet for:
+  // the character sheet (character detail view)
+  // Review; last stage of creating / editing a character
 
   return (
     <>
       <Divider horizontal>
         <h4>ID</h4>
       </Divider>
-      <p><strong>Name:</strong> {character.name}</p>
+      <p><strong>Name:</strong> {props.character.name}</p>
       <Segment basic placeholder>
         <Grid columns={2} relaxed='very' stackable>
           <Grid.Column>
-            <CharacterAspects aspects={aspects}/>
+            <CharacterAspects aspects={props.aspects}/>
           </Grid.Column>
           <Grid.Column verticalAlign='middle'>
-            <CharacterSkills skills={skills}/>
+            <CharacterSkills skills={props.skills}/>
           </Grid.Column>
         </Grid>
       </Segment>
-      <CharacterStunts stunts={stunts}/>
+      <CharacterStunts stunts={props.stunts}/>
       <StressConsequences
-        physiqueRating={physiqueRating}
-        willRating={willRating}
+        physiqueRating={props.physiqueRating}
+        willRating={props.willRating}
+        stressMax={props.stressMax}
+        bothStressTypes={props.bothStressTypes}
+        type={props.type}
       />
     </>
   )

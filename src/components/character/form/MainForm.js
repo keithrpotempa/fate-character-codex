@@ -239,6 +239,9 @@ const MainForm = props => {
               stunts={characterStunts}
               skillList={skillList}
               stuntList={stuntList}
+              type={characterSubTypeDetails.name}
+              stressMax={characterSubTypeDetails.stressMax}
+              bothStressTypes={characterSubTypeDetails.bothStressTypes}
             />
         </>
     }

@@ -11,6 +11,9 @@ const SheetReview = props => {
   const stunts = props.stunts;
   const skillList = props.skillList;
   const stuntList = props.stuntList;
+  const type = props.type;
+  const bothStressTypes = props.bothStressTypes;
+  const stressMax = props.stressMax;
   
   const [willRating, setWillRating] = useState();
   const [physiqueRating, setPhysiqueRating] = useState();
@@ -85,14 +88,19 @@ const SheetReview = props => {
   }, [])
 
   return (
-    <SheetPreview
-      character={character}
-      aspects={aspects}
-      skills={characterSkillNames}
-      stunts={characterStuntDetails}
-      physiqueRating={physiqueRating}
-      willRating={willRating}
-    />
+    <>
+      <SheetPreview
+        character={character}
+        aspects={aspects}
+        skills={characterSkillNames}
+        stunts={characterStuntDetails}
+        physiqueRating={physiqueRating}
+        willRating={willRating}
+        stressMax={stressMax}
+        bothStressTypes={bothStressTypes}
+        type={type}
+      />
+    </>
   )
 }
 

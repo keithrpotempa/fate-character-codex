@@ -33,18 +33,24 @@ const StuntsForm = props => {
   return (
     <>
       <Divider horizontal><h2>STUNTS</h2></Divider>
-      <Grid columns={2}>
-        <Grid.Column width={10}>
-          <p>(choose a skill to filter by)</p>
-          {createStuntRow()}
-        </Grid.Column>
-        <Grid.Column width={6}>
-          {/* TODO: make this look cleaner on render */}
-          <h3>Stunts for {type}</h3>
-          <p>{stuntComment}</p>
-        </Grid.Column>
-      </Grid>
-      
+        <Grid columns={2}>
+          <Grid.Column width={10}>
+            {/* If a character subtype requires no stunts,
+              do not render the component for them to choose one */}
+            {maxStunts > 0
+              ? <>
+                  <p>(choose a skill to filter by)</p>
+                  {createStuntRow()}
+                </>
+              : <></>
+            }
+          </Grid.Column>
+          <Grid.Column width={6}>
+            {/* TODO: make this look cleaner on render */}
+            <h3>Stunts for {type}</h3>
+            <p>{stuntComment}</p>
+          </Grid.Column>
+        </Grid>
     </>
   )
 }
