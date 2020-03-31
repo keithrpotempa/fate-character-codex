@@ -1,11 +1,11 @@
-import React from "react";
-import { Form, Grid } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Grid } from "semantic-ui-react";
 import StuntsDropdown from "./StuntsDropdown";
 import StuntDescription from "./StuntsDescription";
 import SkillsDropDown from "./SkillsDropDown";
 
 const StuntRow = props => {
-  const setFilter = props.setFilter;
+  const [filter, setFilter] = useState("")
 
   const handleFilter = (evt, {name, value}) => {
     const valueToSet = parseInt(value)
@@ -30,7 +30,7 @@ const StuntRow = props => {
               setStuntList={props.setStuntList} 
               characterStunts={props.characterStunts} 
               setCharacterStunts={props.setCharacterStunts} 
-              filter={props.filter}
+              filter={filter}
             />
           </Grid.Column>
         </Grid.Row>

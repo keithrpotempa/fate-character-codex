@@ -66,15 +66,14 @@ const AspectForm = props => {
     getAspectTypes();
   },[])
 
-  // TODO: fix up the value to be less hackey
   return (
     <>
       <Divider horizontal><h2>ASPECTS</h2></Divider>
       <Grid columns={2}>
-        <Grid.Column>
+        <Grid.Column width={10}>
           {createAspectInputs()}
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column width={6}>
           {/* TODO: make this look cleaner on render */}
           <h3>Aspects for {type}</h3>
           <p>{aspectComment}</p>

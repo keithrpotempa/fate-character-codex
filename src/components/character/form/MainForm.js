@@ -213,6 +213,10 @@ const MainForm = props => {
           setSkillList={setSkillList}
           characterSkills={characterSkills}
           setCharacterSkills={setCharacterSkills}
+          maxSkillRating={characterSubTypeDetails.maxSkillRating}
+          skillRatingComment={characterSubTypeDetails.skillRatingComment}
+          skillChoiceComment={characterSubTypeDetails.skillChoiceComment}
+          type={characterSubTypeDetails.name}
         />
       case 4: 
         return <StuntsForm
@@ -221,6 +225,9 @@ const MainForm = props => {
           skillList={skillList}
           stuntList={stuntList}
           setStuntList={setStuntList}
+          type={characterSubTypeDetails.name}
+          maxStunts={characterSubTypeDetails.maxStunts}
+          stuntComment={characterSubTypeDetails.stuntComment}
         />
       case 5:
         return <>

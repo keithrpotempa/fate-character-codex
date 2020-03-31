@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Divider } from "semantic-ui-react";
+import React from "react";
+import { Divider, Grid } from "semantic-ui-react";
 
 import StuntRow from "./StuntRow";
 import "../Character.css";
@@ -9,72 +9,42 @@ const StuntsForm = props => {
   const characterStunts = props.characterStunts;
   const stuntList = props.stuntList;
   const setStuntList = props.setStuntList;
+  const type = props.type;
+  const maxStunts = props.maxStunts;
+  const stuntComment = props.stuntComment;
 
-  const [filter1, setFilter1] = useState("");
-  const [filter2, setFilter2] = useState("");
-  const [filter3, setFilter3] = useState("");
-  const [filter4, setFilter4] = useState("");
-  const [filter5, setFilter5] = useState("");
+  const createStuntRow = () => {
+    let stuntRows = [];
+    for (let i = 1; i <= maxStunts; i++) {
+      stuntRows.push(
+        <StuntRow 
+          x={`${i}`}  
+          stuntList={stuntList} 
+          setStuntList={setStuntList} 
+          characterStunts={characterStunts} 
+          setCharacterStunts={setCharacterStunts} 
+          skillList={props.skillList}
+        />
+      )
+    }
+    return stuntRows;
+  }
 
-  // FIXME: ??
-  useEffect(() => {
-  
-  }, [filter1, filter2, filter3, filter4, filter5])
-
-  // TODO: Make this DRY
   return (
     <>
       <Divider horizontal><h2>STUNTS</h2></Divider>
-      <p>(choose a skill to filter by)</p>
-      <StuntRow 
-        x="1" 
-        filter={filter1} 
-        setFilter={setFilter1} 
-        stuntList={stuntList} 
-        setStuntList={setStuntList} 
-        characterStunts={characterStunts} 
-        setCharacterStunts={setCharacterStunts} 
-        skillList={props.skillList}
-      />
-      <StuntRow 
-        x="2" 
-        filter={filter2} 
-        setFilter={setFilter2} 
-        stuntList={stuntList} 
-        setStuntList={setStuntList} 
-        characterStunts={characterStunts} 
-        setCharacterStunts={setCharacterStunts} 
-        skillList={props.skillList}
-      />
-      <StuntRow 
-        x="3" 
-        filter={filter3} 
-        setFilter={setFilter3} 
-        stuntList={stuntList} 
-        setStuntList={setStuntList} 
-        characterStunts={characterStunts} 
-        setCharacterStunts={setCharacterStunts} 
-        skillList={props.skillList}
-      />
-      <StuntRow 
-        x="4" 
-        filter={filter4} 
-        setFilter={setFilter4} 
-        stuntList={stuntList} 
-        setStuntList={setStuntList} 
-        characterStunts={characterStunts} 
-        setCharacterStunts={setCharacterStunts} 
-        skillList={props.skillList}
-      />
-      <StuntRow 
-        x="5" 
-        filter={filter5} 
-        setFilter={setFilter5} 
-        stuntList={stuntList} 
-        setStuntList={setStuntList} 
-        characterStunts={characterStunts} 
-        setCharacterStunts={setCharacterStunts} 
-        skillList={props.skillList}/>
+      <Grid columns={2}>
+        <Grid.Column width={10}>
+          <p>(choose a skill to filter by)</p>
+          {createStuntRow()}
+        </Grid.Column>
+        <Grid.Column width={6}>
+          {/* TODO: make this look cleaner on render */}
+          <h3>Stunts for {type}</h3>
+          <p>{stuntComment}</p>
+        </Grid.Column>
+      </Grid>
+      
     </>
   )
 }
