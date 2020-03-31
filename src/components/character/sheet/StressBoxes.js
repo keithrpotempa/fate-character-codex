@@ -7,6 +7,7 @@ const StressBoxes = props => {
   const bothStressTypes = props.bothStressTypes;
   const rating = props.skillRating;
   const stressMax = props.stressMax;
+  const stressComment = props.stressComment;
 
   const makeJSXBoxes = (numberOfBoxes) => {
     let checkboxes = [];
@@ -49,31 +50,55 @@ const StressBoxes = props => {
   
   return (
     <>
-      <h4> 
-        {stressType.toUpperCase()} STRESS 
-        {/* A popup explains the logic behind a character's stress tracks */}
-        <Popup
-          basic
-          trigger={<Icon className="info circle large"/>} 
-          content={
-            <>
-              <p>
-                {type} can have up to {stressMax} stress in a single track.
-              </p>
-              <p>
-                {bothStressTypes === true
-                  ? "They have both physical and mental stress tracks"
-                  : "They have only one generic stress track"
+      {/* If the character's type has no stress, don't render any */}
+      {stressMax > 0 
+        ? <>
+            <h4> 
+              {stressType.toUpperCase()} STRESS 
+              {/* A popup explains the logic behind a character's stress tracks */}
+              <Popup
+                basic
+                trigger={<Icon className="info circle large"/>}
+                header={type} 
+                content={
+                  <>
+                    <p>
+                      {stressComment}
+                    </p>
+                    <p>
+                      {bothStressTypes === true
+                        ? "They have both physical and mental stress tracks"
+                        : "They have only one generic stress track"
+                      }
+                    </p>
+                  </>
                 }
-              </p>
-            </>
-          }
-          className="info circle large"
-          />
-      </h4>
-      <List horizontal>
-        {renderBoxes()}
-      </List>
+                />
+            </h4>
+            <List horizontal>
+              {renderBoxes()}
+            </List>
+          </>
+        // If there's no stress, give some indication why via the stress comment 
+        : <>
+            <h4> 
+              {stressType.toUpperCase()} STRESS 
+              <Popup
+                basic
+                header={type}
+                trigger={<Icon className="question circle large"/>} 
+                content={
+                  <>
+                    <p>
+                      {stressComment}
+                    </p>
+                  </>
+                }
+              />
+            </h4>
+          </>
+      }
+
     </>
   )
 

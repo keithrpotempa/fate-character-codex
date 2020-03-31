@@ -31,9 +31,7 @@ const SheetPreview = props => {
       <StressConsequences
         physiqueRating={props.physiqueRating}
         willRating={props.willRating}
-        stressMax={props.stressMax}
-        bothStressTypes={props.bothStressTypes}
-        type={props.type}
+        characterSubType={props.characterSubType}
       />
     </>
   )

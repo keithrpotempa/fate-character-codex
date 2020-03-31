@@ -5,15 +5,13 @@ import SheetPreview from "../sheet/SheetPreview";
 // run it through the preview
 
 const SheetReview = props => {
+  const characterSubType = props.characterSubType
   const character = props.character;
   const aspects = props.aspects;
   const skills = props.skills;
   const stunts = props.stunts;
   const skillList = props.skillList;
   const stuntList = props.stuntList;
-  const type = props.type;
-  const bothStressTypes = props.bothStressTypes;
-  const stressMax = props.stressMax;
   
   const [willRating, setWillRating] = useState();
   const [physiqueRating, setPhysiqueRating] = useState();
@@ -96,9 +94,7 @@ const SheetReview = props => {
         stunts={characterStuntDetails}
         physiqueRating={physiqueRating}
         willRating={willRating}
-        stressMax={stressMax}
-        bothStressTypes={bothStressTypes}
-        type={type}
+        characterSubType={characterSubType}
       />
     </>
   )
