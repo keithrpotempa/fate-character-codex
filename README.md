@@ -36,6 +36,7 @@ Players and Game Masters can use Fate Character Codex to:
 ## React Technologies Used
 
 This project utilizes the following:
+* Hooks, state, props, routes, components, modules
 * This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 * [Semantic UI](https://semantic-ui.com/) for React component buttons, cards, containers, dividers, dropdowns, forms, grids, icons, inputs, items, labels,lists, etc.
 * [React Confirm Alert](https://www.npmjs.com/package/react-confirm-alert) for confirm alerts
@@ -43,7 +44,6 @@ This project utilizes the following:
 
 ## Other Technologies Used
 
-1. React: hooks, state, props, routes, components, modules
 1. API calls with: POST, PUT, PATCH, DELETE, and GET (with expand, embed)
 1. Javascript: functions, objects, arrays, mapping
 1. Persistent data storage with JSON Server
