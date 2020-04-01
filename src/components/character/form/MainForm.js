@@ -51,6 +51,49 @@ const MainForm = props => {
     1: ""
   });
 
+  // TODO: utilize useReducer instead
+  // https://reactjs.org/docs/hooks-reference.html#usereducer
+  const resetCharacter = () => {
+    setCharacterAspects([
+      { name: "", aspectTypeId: 1 },
+      { name: "", aspectTypeId: 2 },
+      { name: "", aspectTypeId: 3 },    
+      { name: "", aspectTypeId: 3 },
+      { name: "", aspectTypeId: 3 },
+      { name: "", aspectTypeId: 3 }
+    ]);
+    setCharacterSkills({
+      6: [],
+      5: [],
+      4: [],
+      3: [],
+      2: [],
+      1: []
+    });
+    setCharacterStunts({
+      5: "",
+      4: "",
+      3: "",
+      2: "",
+      1: ""
+    })
+  }
+
+  const characterInProgress = () => {
+    if (characterAspects[0].name !== "" 
+        || characterSkills[1].length > 0
+        || characterStunts[1] !== ""
+    ) {
+    console.log("characterAspects[0].name", characterAspects[0].name)
+    console.log("characterSkills[1].length", characterSkills[1].length)
+    console.log("characterStunts[1]", characterStunts[1])
+    return true
+    } else {
+      return false
+    }
+    
+  }
+
   /* ------------------ GETS & STATE SETS  ------------------*/
   const getSkillList = () => {
     return ApiManager.getAll("skills")
@@ -198,6 +241,8 @@ const MainForm = props => {
           character={character} 
           setCharacter={setCharacter}
           setCharacterSubTypeDetails={setCharacterSubTypeDetails}
+          characterInProgress={characterInProgress}
+          resetCharacter={resetCharacter}
         />
       case 2: 
         return <AspectForm

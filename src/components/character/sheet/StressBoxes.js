@@ -1,6 +1,13 @@
 import React from "react";
 import { Checkbox, Icon, List, Popup } from "semantic-ui-react";
 
+/*
+  StressBoxes determines the amount of stress checkboxes 
+  to render on a character's sheet based on:
+  - character's skill rating (physique or will)
+  - character type's max stress
+*/
+
 const StressBoxes = props => {
   const type = props.type;
   const stressType = props.stressType;

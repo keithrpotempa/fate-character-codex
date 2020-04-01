@@ -1,6 +1,13 @@
 import React from "react";
 import { Grid, Icon, Input, Popup } from "semantic-ui-react";
 
+/* 
+  ConsequenceInputs determines the amount of consequence inputs to render
+  on a character sheet based on 
+    - the character's will/physique ratings 
+    - the character type's maxConsequences value
+*/
+
 const ConsequenceInputs = props => {
   const willRating = props.willRating;
   const physiqueRating = props.physiqueRating;
@@ -8,11 +15,6 @@ const ConsequenceInputs = props => {
   const type = props.type;
   const maxConsequence = props.maxConsequence;
   const consequenceComment = props.consequenceComment;
-
-  // TODO: limit max consequences
-  // TODO: include a consequence comment
-
-
 
   // If skill rating is 5+, they also get an extra mild consequence slot 
   const extraInputs = (stressType) => {

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Divider, Dropdown, Form } from "semantic-ui-react";
+import { Divider, Dropdown, Form, Message } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 import TypeDetail from "../types/TypeDetail";
+import CharacterSkills from "../sheet/CharacterSkills";
 
 const CharacterId = props => {
   const character = props.character; 
   const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
+  const resetCharacter = props.resetCharacter;
+  const characterInProgress = props.characterInProgress;
   const [characterTypeList, setCharacterTypeList] = useState([]);
   const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
 
@@ -40,16 +43,19 @@ const CharacterId = props => {
     stateToChange[name] = value;
     // If they're a PC, set their subtype for them
     // (there's no subtype for PCs)
-    // TODO: this could evade validation if they select PC first,
-    // then choose an NPC and leave the subtype blank 
-    // (it will still be set to subtype PC)
+    // Otherwise, wipe any chosen subtype
     if (value === "1") {
       stateToChange["subtype"] = "6";
+    } else {
+      stateToChange["subtype"] = "";
     }
     props.setCharacter(stateToChange)
   }
 
   const handleSubTypeFieldChange = (evt, {name, value}) => {
+    if (characterInProgress()) {
+      resetCharacter();
+    }
     const stateToChange = {...character};
     stateToChange[name] = value;
     // Set subtype details in state
@@ -66,6 +72,18 @@ const CharacterId = props => {
   return (
     <>
       <Divider horizontal><h2>ID</h2></Divider>
+      {/* If they've already entered character information, 
+          warn them about changing character subtype
+        TODO: Make this a confirmation dialogue; that attempt was abandoned */}
+      {characterInProgress() 
+          ? <Message>
+              <Message.Header>Warning</Message.Header>
+              <p>
+                Changing character subtypes clears any character information already entered.
+              </p>
+            </Message>
+          : <></>
+        }
       <Form.Field>
         <label htmlFor="characterName">Name</label>
         <Form.Input 
@@ -86,7 +104,7 @@ const CharacterId = props => {
           name="type"
           id="type"
           placeholder="Character type"
-          // value={character.typeId}
+          value={character.type}
           options={characterTypeList.map(type => (
             {
               key: `type-${type.id}`,
@@ -107,7 +125,7 @@ const CharacterId = props => {
                 name="subtype"
                 id="subtype"
                 placeholder="Character Subtype"
-                value={character.subtypeId}
+                value={character.subtype}
                 options={characterSubTypeList
                   .filter(subtype => subtype.characterTypeId === parseInt(character.type))
                   .map(type => (

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SheetPreview from "../sheet/SheetPreview";
 
-//Sheet Review will format all the information properly to 
-// run it through the preview
+/*Sheet Review formats the information saved in state
+  for a character-in-progress (either edited or created)  
+  and then passes it on to the sheet preview rendering component */
 
 const SheetReview = props => {
   const characterSubType = props.characterSubType
