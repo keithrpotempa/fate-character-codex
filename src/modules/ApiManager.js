@@ -5,6 +5,10 @@ export default {
     return fetch(`${remoteURL}/${dataType}/${id}`)
       .then(result => result.json());
   },
+  getCharacterWithType(id) {
+    return fetch(`${remoteURL}/characters/${id}?_expand=characterSubType`)
+      .then(result => result.json());
+  },
   getAll(dataType) {
     return fetch(`${remoteURL}/${dataType}`)
       .then(result => result.json());

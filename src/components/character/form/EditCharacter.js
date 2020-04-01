@@ -1,21 +1,33 @@
 import React, { useEffect } from "react";
 import ApiManager from "../../../modules/ApiManager";
 
+/*
+  This component is only rendered on the MainForm 
+  if a character is being edited.
+  
+  It retrieves all of that character's data from the
+  database and puts it in state in the format of the form
+*/
+
 const EditCharacter = props => {
   const characterId = props.characterId;
   const setCharacter = props.setCharacter;
+
   const characterAspects = props.characterAspects;
   const setCharacterAspects = props.setCharacterAspects;
+  
   const characterSkills = props.characterSkills;
   const setCharacterSkills = props.setCharacterSkills;
+  
   const characterStunts = props.characterStunts;
   const setCharacterStunts = props.setCharacterStunts;
+  
   const setIsLoading = props.setIsLoading;
 
   const editSetup = () => {
-    // Get alll of the characters' data and put it in state
-    ApiManager.get("characters", characterId)
-      .then(character => setCharacter(character))
+    // Get all of the characters' data and put it in state
+    ApiManager.getCharacterWithType(characterId)
+      .then(character => setCharacterToEdit(character))
     ApiManager.getCharacterAspects(characterId)
       .then(aspects => setAspectsToEdit(aspects))
     ApiManager.getCharacterSkills(characterId)
@@ -23,6 +35,22 @@ const EditCharacter = props => {
     ApiManager.getCharacterStunts(characterId)
       .then(stunts => setStuntsToEdit(stunts))
       .then(() => setIsLoading(false))
+  }
+
+  const setCharacterToEdit = (character) => {
+    console.log(character)   
+    const subtype = character.characterSubTypeId;
+    const type = character.characterSubType.characterTypeId;
+
+    const characterToEdit = {
+      name: character.name, 
+      type: `${type}`, 
+      subtype: `${subtype}`,
+      created: character.created
+    }
+    console.log(characterToEdit)
+
+    setCharacter(characterToEdit);
   }
   
   const setAspectsToEdit = (aspects) => {

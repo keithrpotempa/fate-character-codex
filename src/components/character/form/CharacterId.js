@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Divider, Dropdown, Form, Message } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 import TypeDetail from "../types/TypeDetail";
-import CharacterSkills from "../sheet/CharacterSkills";
 
 const CharacterId = props => {
   const character = props.character; 

@@ -79,21 +79,6 @@ const MainForm = props => {
     })
   }
 
-  const characterInProgress = () => {
-    if (characterAspects[0].name !== "" 
-        || characterSkills[1].length > 0
-        || characterStunts[1] !== ""
-    ) {
-    console.log("characterAspects[0].name", characterAspects[0].name)
-    console.log("characterSkills[1].length", characterSkills[1].length)
-    console.log("characterStunts[1]", characterStunts[1])
-    return true
-    } else {
-      return false
-    }
-    
-  }
-
   /* ------------------ GETS & STATE SETS  ------------------*/
   const getSkillList = () => {
     return ApiManager.getAll("skills")
@@ -130,6 +115,17 @@ const MainForm = props => {
 
   /* ------------------ VALIDATIONS  ------------------*/
   // TODO: these are duplicated here and in SaveCharacter
+
+  const characterInProgress = () => {
+    if (characterAspects[0].name !== "" 
+        || characterSkills[1].length > 0
+        || characterStunts[1] !== ""
+    ) {
+    return true
+    } else {
+      return false
+    }
+  }
 
   const validationConfirm = (message) => {
     confirmAlert({
@@ -293,11 +289,6 @@ const MainForm = props => {
   useEffect(() => {
     getSkillList();
     getStuntList();
-    // AKA: if this is an edit
-    if (props.match.params.characterId) {
-      ApiManager.get("characters", props.match.params.characterId)
-        .then(character => setCharacter(character))
-    }
     setIsLoading(false);
   }, [])
 
@@ -317,6 +308,7 @@ const MainForm = props => {
             characterStunts={characterStunts}
             setCharacterStunts={setCharacterStunts}
             setIsLoading={setIsLoading}
+            setCharacterSubTypeDetails={setCharacterSubTypeDetails}
           />
           : <></>
         }
