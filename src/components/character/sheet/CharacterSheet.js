@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
-import { Container, Button, Divider, Grid, Icon, Segment } from "semantic-ui-react"
+import { Container, Button, Icon} from "semantic-ui-react"
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
 import CharacterMeta from "./CharacterMeta";
@@ -31,7 +31,6 @@ const CharacterSheet = props => {
     ApiManager.getCharacterWithType(id)
       .then(character => {
         setCharacter(character)
-        console.log("character.characterSubType", character.characterSubType)
         setCharacterSubType(character.characterSubType)
       });
   }

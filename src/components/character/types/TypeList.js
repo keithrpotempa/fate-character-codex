@@ -4,6 +4,7 @@ import ApiManager from "../../../modules/ApiManager";
 import SubTypeCard from "./SubTypeCard";
 
 const TypeList = props => {
+  // TODO: a filter / sort by type/subtype bar
   const [typeList, setTypeList] = useState([]);
   const [subTypeList, setSubTypeList] = useState([]);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Divider, Form } from "semantic-ui-react";
+import { Container, Form } from "semantic-ui-react";
 import "../Character.css";
 import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
