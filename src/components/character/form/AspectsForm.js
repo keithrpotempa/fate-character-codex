@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Divider } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import AspectInput from "./AspectInput"
 import ApiManager from "../../../modules/ApiManager"
 
 const AspectForm = props => {
-  const aspects = props.aspects
+  const type = props.type;
+  const aspects = props.aspects;
+  const maxAspects = props.maxAspects;
+  const aspectComment = props.aspectComment;
   const [aspectTypes, setAspectTypes] = useState([]);
 
   const handleFieldChange = evt => {
@@ -33,19 +36,49 @@ const AspectForm = props => {
       .then(setAspectTypes)
   }
 
+  const createAspectInputs = () => {
+    let aspectInputs = [];
+    for (let i = 0; i < maxAspects; i++) {
+      let typeId;
+      // TODO: make aspect type an option
+      // and less hard-coded
+      if (i === 0) {
+        typeId = 1;
+      } else if (i === 1) {
+        typeId = 2;
+      } else if (i > 1) {
+        typeId = 3;
+      }
+      aspectInputs.push(
+        <AspectInput 
+          handleFieldChange={handleFieldChange} 
+          aspects={aspects} 
+          index={i} 
+          typeId={typeId} 
+          aspectTypes={aspectTypes}
+          />
+      )
+    }
+    return aspectInputs;
+  }
+
   useEffect(() => {
     getAspectTypes();
   },[])
 
-  // TODO: fix up the value to be less hackey
   return (
     <>
       <Divider horizontal><h2>ASPECTS</h2></Divider>
-      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="0" typeId="1" aspectTypes={aspectTypes}/>
-      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="1" typeId="2" aspectTypes={aspectTypes}/>
-      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="2" typeId="3" aspectTypes={aspectTypes}/>
-      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="3" typeId="3" aspectTypes={aspectTypes}/>
-      <AspectInput handleFieldChange={handleFieldChange} aspects={aspects} index="4" typeId="3" aspectTypes={aspectTypes}/>
+      <Grid columns={2}>
+        <Grid.Column width={10}>
+          {createAspectInputs()}
+        </Grid.Column>
+        <Grid.Column width={6}>
+          {/* TODO: make this look cleaner on render */}
+          <h3>Aspects for {type}</h3>
+          <p>{aspectComment}</p>
+        </Grid.Column>
+      </Grid>
     </>
   )
 }

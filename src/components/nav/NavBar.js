@@ -40,6 +40,7 @@ const NavBar = props => {
         <Menu inverted size="huge" color="blue">
           {/* {MenuItem("home")} */}
           {MenuItem("characters")}
+          {MenuItem("types")}
           {MenuItem("skills")}
           {MenuItem("stunts")}
           {hasUser 

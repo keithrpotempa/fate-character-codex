@@ -1,8 +1,12 @@
 import React from "react";
-import { Divider } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import SkillsMultiSelector from "./SkillsMultiSelector"
 
 const SkillsForm = props => {
+  const type = props.type;
+  const maxSkillRating = props.maxSkillRating;
+  const skillRatingComment = props.skillRatingComment;
+  const skillChoiceComment = props.skillChoiceComment;
   const setCharacterSkills = props.setCharacterSkills;
   const characterSkills = props.characterSkills;
   
@@ -16,17 +20,38 @@ const SkillsForm = props => {
     setCharacterSkills(stateToChange);
     };
 
+  const createSkillSelectors = () => {
+    let skillSelectors = [];
+    for (let i = 1; i <= maxSkillRating; i++) {
+      /* Using this row prop to determine the "rating" 
+        of a particular chosen skill */
+      skillSelectors.push(
+        <SkillsMultiSelector 
+          row={`${i}`} 
+          skillList={props.skillList} 
+          characterSkills={characterSkills} 
+          handleFieldChange={handleFieldChange} 
+        /> 
+      )
+    }
+    // Reverse the order so the highest skill rating is at the top
+    return skillSelectors.reverse();
+  }
+
   return (
     <>
       <Divider horizontal><h2>SKILLS</h2></Divider>
-      {/* Using this row prop to determine the "rating" of a particular chosen skill */}
-      {/* TODO: figure out how to loop this so you only write it once and can generate more dynamically*/}
-      <SkillsMultiSelector row="6" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 
-      <SkillsMultiSelector row="5" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 
-      <SkillsMultiSelector row="4" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 
-      <SkillsMultiSelector row="3" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 
-      <SkillsMultiSelector row="2" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 
-      <SkillsMultiSelector row="1" skillList={props.skillList} characterSkills={characterSkills} handleFieldChange={handleFieldChange} /> 
+      <Grid columns={2}>
+        <Grid.Column width={10}>
+          {createSkillSelectors()}
+        </Grid.Column>
+        <Grid.Column width={6}>
+          {/* TODO: make this look cleaner on render */}
+          <h3>Skills for {type}</h3>
+          <p>{skillRatingComment}</p>
+          <p>{skillChoiceComment}</p>
+        </Grid.Column>
+      </Grid>
     </>
   )
 }

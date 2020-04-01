@@ -5,6 +5,10 @@ export default {
     return fetch(`${remoteURL}/${dataType}/${id}`)
       .then(result => result.json());
   },
+  getCharacterWithType(id) {
+    return fetch(`${remoteURL}/characters/${id}?_expand=characterSubType`)
+      .then(result => result.json());
+  },
   getAll(dataType) {
     return fetch(`${remoteURL}/${dataType}`)
       .then(result => result.json());
@@ -26,7 +30,11 @@ export default {
       .then(results => results.json())
   },
   getCharacterList() {
-    return fetch(`${remoteURL}/characters?_embed=characterAspects&_expand=user`)
+    return fetch(`${remoteURL}/characters?_embed=characterAspects&_expand=user&_expand=characterSubType`)
+      .then(results => results.json())
+  },
+  getSubTypeDetails(id) {
+    return fetch(`${remoteURL}/characterSubTypes/${id}?_expand=characterType`)
       .then(results => results.json())
   },
   getAllExpand(dataType, expandType) {

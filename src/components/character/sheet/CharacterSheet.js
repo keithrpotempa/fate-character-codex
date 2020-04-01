@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
-import { Container, Button, Divider, Grid, Icon, Segment } from "semantic-ui-react"
+import { Container, Button, Icon} from "semantic-ui-react"
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
 import CharacterMeta from "./CharacterMeta";
@@ -9,6 +9,7 @@ import SheetPreview from "./SheetPreview";
 
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
+  const [characterSubType, setCharacterSubType] = useState({});
   const [aspects, setAspects] = useState([]);
   const [skills, setSkills] = useState({
     6: [],
@@ -21,15 +22,17 @@ const CharacterSheet = props => {
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
   const [stunts, setStunts] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
   
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
   const id = props.characterId;
 
   const getCharacter = () => {
-    ApiManager.get("characters", id)
-      .then(setCharacter);
+    ApiManager.getCharacterWithType(id)
+      .then(character => {
+        setCharacter(character)
+        setCharacterSubType(character.characterSubType)
+      });
   }
 
   const getAspects = () => {
@@ -110,6 +113,7 @@ const CharacterSheet = props => {
           stunts={stunts}
           physiqueRating={physiqueRating}
           willRating={willRating}
+          characterSubType={characterSubType}
         />
           {/* Conditionally rendering these buttons 
             if the user created this character */}

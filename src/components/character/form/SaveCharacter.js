@@ -13,12 +13,14 @@ const SaveCharacter = props => {
   const isEdit = props.match.params.characterId ? true : false;
   const setIsLoading= props.setIsLoading;
 
+  // NOTE: JSON.parse is the reverse of JSON.stringify
+  const user = JSON.parse(sessionStorage.getItem("credentials"));
+
   /* ------------ OBJECT CONSTRUCTORS ------------ */
   const constructCharacter = () => {
-    // NOTE: JSON.parse is the reverse of JSON.stringify
-    const user = JSON.parse(sessionStorage.getItem("credentials"));
     const characterToSave = {
       name: character.name,
+      characterSubTypeId: parseInt(character.subtype),
       userId: user.id,
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()

@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, List, Label } from "semantic-ui-react";
+import { Divider, List } from "semantic-ui-react";
 import CharacterSkillRow from "./CharacterSkillRow"
 
 const CharacterSkills = props => {

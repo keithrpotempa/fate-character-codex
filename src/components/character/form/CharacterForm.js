@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Divider, Form } from "semantic-ui-react";
+import { Container, Form } from "semantic-ui-react";
 import "../Character.css";
 import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
 import SaveCharacter from "./SaveCharacter";
+
+// DO NOT USE OR EDIT: THIS FORM HAS DEPRECATED
+// This is the old single page form, before it was stepped
 
 const CharacterForm = props => {
   // All the state for the character form is here, in the parent component

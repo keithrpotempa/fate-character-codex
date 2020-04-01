@@ -20,7 +20,8 @@ const MainForm = props => {
   const [skillList, setSkillList] = useState([]);
   const [stuntList, setStuntList] = useState([]);
 
-  const [character, setCharacter] = useState({name: ""});
+  const [character, setCharacter] = useState({name: "", type: "", subtype: ""});
+  const [characterSubTypeDetails, setCharacterSubTypeDetails] = useState();
 
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
@@ -50,6 +51,33 @@ const MainForm = props => {
     1: ""
   });
 
+  // TODO: utilize useReducer instead
+  // https://reactjs.org/docs/hooks-reference.html#usereducer
+  const resetCharacter = () => {
+    setCharacterAspects([
+      { name: "", aspectTypeId: 1 },
+      { name: "", aspectTypeId: 2 },
+      { name: "", aspectTypeId: 3 },    
+      { name: "", aspectTypeId: 3 },
+      { name: "", aspectTypeId: 3 },
+      { name: "", aspectTypeId: 3 }
+    ]);
+    setCharacterSkills({
+      6: [],
+      5: [],
+      4: [],
+      3: [],
+      2: [],
+      1: []
+    });
+    setCharacterStunts({
+      5: "",
+      4: "",
+      3: "",
+      2: "",
+      1: ""
+    })
+  }
 
   /* ------------------ GETS & STATE SETS  ------------------*/
   const getSkillList = () => {
@@ -65,14 +93,7 @@ const MainForm = props => {
       .then(setStuntList); 
   }
 
-
-  // Note: Most field changes are handled 
-  // by their respective child components
-  const handleFieldChange = evt => {
-    const stateToChange = {...character};
-    stateToChange[evt.target.id] = evt.target.value;
-    setCharacter(stateToChange)
-  }
+  /* ------------------ EVENT HANDLERS  ------------------*/
 
   const handleItemClick = (evt, {index}) => {
     if (validStep()) {
@@ -95,6 +116,17 @@ const MainForm = props => {
   /* ------------------ VALIDATIONS  ------------------*/
   // TODO: these are duplicated here and in SaveCharacter
 
+  const characterInProgress = () => {
+    if (characterAspects[0].name !== "" 
+        || characterSkills[1].length > 0
+        || characterStunts[1] !== ""
+    ) {
+    return true
+    } else {
+      return false
+    }
+  }
+
   const validationConfirm = (message) => {
     confirmAlert({
       title: 'Required Field',
@@ -114,6 +146,9 @@ const MainForm = props => {
       case 1:
         if (character.name === "") {
           validationConfirm("Enter a character name")
+          return false
+        } else if (character.subtype === "") {
+          validationConfirm("Enter a character type & subtype")
           return false
         } else {
           return true
@@ -200,12 +235,18 @@ const MainForm = props => {
       case 1:
         return <CharacterId 
           character={character} 
-          handleFieldChange={handleFieldChange}
+          setCharacter={setCharacter}
+          setCharacterSubTypeDetails={setCharacterSubTypeDetails}
+          characterInProgress={characterInProgress}
+          resetCharacter={resetCharacter}
         />
       case 2: 
         return <AspectForm
+          type={characterSubTypeDetails.name}
           aspects={characterAspects}
           setAspects={setCharacterAspects}
+          maxAspects={characterSubTypeDetails.maxAspects}
+          aspectComment={characterSubTypeDetails.aspectComment}
         />
       case 3: 
         return <SkillsForm 
@@ -213,6 +254,10 @@ const MainForm = props => {
           setSkillList={setSkillList}
           characterSkills={characterSkills}
           setCharacterSkills={setCharacterSkills}
+          maxSkillRating={characterSubTypeDetails.maxSkillRating}
+          skillRatingComment={characterSubTypeDetails.skillRatingComment}
+          skillChoiceComment={characterSubTypeDetails.skillChoiceComment}
+          type={characterSubTypeDetails.name}
         />
       case 4: 
         return <StuntsForm
@@ -221,6 +266,9 @@ const MainForm = props => {
           skillList={skillList}
           stuntList={stuntList}
           setStuntList={setStuntList}
+          type={characterSubTypeDetails.name}
+          maxStunts={characterSubTypeDetails.maxStunts}
+          stuntComment={characterSubTypeDetails.stuntComment}
         />
       case 5:
         return <>
@@ -232,6 +280,7 @@ const MainForm = props => {
               stunts={characterStunts}
               skillList={skillList}
               stuntList={stuntList}
+              characterSubType={characterSubTypeDetails}
             />
         </>
     }
@@ -240,11 +289,6 @@ const MainForm = props => {
   useEffect(() => {
     getSkillList();
     getStuntList();
-    // AKA: if this is an edit
-    if (props.match.params.characterId) {
-      ApiManager.get("characters", props.match.params.characterId)
-        .then(character => setCharacter(character))
-    }
     setIsLoading(false);
   }, [])
 
@@ -264,6 +308,7 @@ const MainForm = props => {
             characterStunts={characterStunts}
             setCharacterStunts={setCharacterStunts}
             setIsLoading={setIsLoading}
+            setCharacterSubTypeDetails={setCharacterSubTypeDetails}
           />
           : <></>
         }
