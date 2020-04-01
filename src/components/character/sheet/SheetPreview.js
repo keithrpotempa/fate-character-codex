@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Grid, Segment } from "semantic-ui-react"
+import { Divider, Grid, Label, Segment } from "semantic-ui-react"
 
 import StressConsequences from "./StressConsequences";
 import CharacterAspects from "./CharacterAspects";
@@ -16,7 +16,14 @@ const SheetPreview = props => {
       <Divider horizontal>
         <h4>ID</h4>
       </Divider>
-      <p><strong>Name:</strong> {props.character.name}</p>
+      {/* <div className="flex-space-between"> */}
+        <p><strong>Name:</strong> {props.character.name}</p>
+        <Label
+          tag
+          color="blue"
+          content={props.characterSubType.name}
+        />
+      {/* </div> */}
       <Segment basic placeholder>
         <Grid columns={2} relaxed='very' stackable>
           <Grid.Column>

@@ -9,6 +9,7 @@ import SheetPreview from "./SheetPreview";
 
 const CharacterSheet = props => {
   const [character, setCharacter] = useState({});
+  const [characterSubType, setCharacterSubType] = useState({});
   const [aspects, setAspects] = useState([]);
   const [skills, setSkills] = useState({
     6: [],
@@ -21,15 +22,18 @@ const CharacterSheet = props => {
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
   const [stunts, setStunts] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
   
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
   const id = props.characterId;
 
   const getCharacter = () => {
-    ApiManager.get("characters", id)
-      .then(setCharacter);
+    ApiManager.getCharacterWithType(id)
+      .then(character => {
+        setCharacter(character)
+        console.log("character.characterSubType", character.characterSubType)
+        setCharacterSubType(character.characterSubType)
+      });
   }
 
   const getAspects = () => {
@@ -110,6 +114,7 @@ const CharacterSheet = props => {
           stunts={stunts}
           physiqueRating={physiqueRating}
           willRating={willRating}
+          characterSubType={characterSubType}
         />
           {/* Conditionally rendering these buttons 
             if the user created this character */}

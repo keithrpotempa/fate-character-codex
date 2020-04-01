@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Divider, Dropdown, Form, Message } from "semantic-ui-react";
+import { Divider, Dropdown, Form, Label } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 import TypeDetail from "../types/TypeDetail";
 
@@ -58,8 +58,6 @@ const CharacterId = props => {
   }
 
   const handleSubTypeFieldChange = (evt, {name, value}) => {
-    console.log("name", name)
-    console.log("value", value)
     if (characterInProgress()) {
       resetCharacter();
     }
@@ -78,18 +76,6 @@ const CharacterId = props => {
   return (
     <>
       <Divider horizontal><h2>ID</h2></Divider>
-      {/* If they've already entered character information, 
-          warn them about changing character subtype
-        TODO: Make this a confirmation dialogue; that attempt was abandoned */}
-      {characterInProgress() 
-          ? <Message>
-              <Message.Header>Warning</Message.Header>
-              <p>
-                Changing character subtypes clears any character information already entered.
-              </p>
-            </Message>
-          : <></>
-        }
       <Form.Field>
         <label htmlFor="characterName">Name</label>
         <Form.Input 
@@ -102,6 +88,8 @@ const CharacterId = props => {
           placeholder="Character name"
           value={character.name}
         />
+      </Form.Field>
+      <Form.Field>
         <Dropdown 
           required
           selection
@@ -143,15 +131,24 @@ const CharacterId = props => {
                 ))}
               />
         }
-        {
-          character.subtype === ""
-          ? <></>
-          : <TypeDetail 
-              verbose={false}
-              subTypeId={parseInt(character.subtype)}
-            />
-        }
       </Form.Field>
+      {/* If they've already entered character information, 
+        warn them about changing character subtype
+        TODO: Make this a confirmation dialogue; that attempt was abandoned */}
+      {characterInProgress() 
+        ? <Label basic color="red" pointing>
+            Changing character types or subtypes clears any character information already entered.
+          </Label>
+        : <></>
+      }
+      {
+        character.subtype === ""
+        ? <></>
+        : <TypeDetail 
+            verbose={false}
+            subTypeId={parseInt(character.subtype)}
+          />
+      }
     </>
   )
 }
