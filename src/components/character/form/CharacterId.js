@@ -44,14 +44,22 @@ const CharacterId = props => {
     // (there's no subtype for PCs)
     // Otherwise, wipe any chosen subtype
     if (value === "1") {
-      stateToChange["subtype"] = "6";
+      // TODO: make this less dependent on being hard-coded
+      stateToChange["subtype"] = "6"; // 6 is the PC subtype
+      // Force a get of the subtype details:
+      getCharacterSubtypeDetails(6); 
     } else {
+      // If they're changing the character's type, 
+      // clear any chosen subtype info
       stateToChange["subtype"] = "";
+      setCharacterSubTypeDetails({});
     }
     props.setCharacter(stateToChange)
   }
 
   const handleSubTypeFieldChange = (evt, {name, value}) => {
+    console.log("name", name)
+    console.log("value", value)
     if (characterInProgress()) {
       resetCharacter();
     }
