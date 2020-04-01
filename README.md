@@ -8,29 +8,42 @@ In this site, users can create, store, and view characters for [Fate Core](https
 
 ## Use Case
 
-Creating characters in Fate is a [simple process](https://fate-srd.com/fate-core/character-creation) (at least compared to many other ttrpgs), so the publisher does not produce extensive libraries or resources of characters for use by players / game masters. This lack of accessible resources contributes to the preparation time and overall accessibility of the game. 
+Creating characters in Fate is a [simple process](https://fate-srd.com/fate-core/character-creation) (at least compared to many other ttrpgs), so the publisher does not produce extensive libraries or resources of characters for use by players / game masters. This project hopes to provide an accessible resource to efficiently build characters; to help reduce the preparation time and overall accessibility of the game. 
 
-Players can use Fate Character Codex to:
- - efficiently create player characters (PCs) for multiple campaigns
- - manage changes to those characters throughout campaign play
+Players and Game Masters can use Fate Character Codex to:
+ - efficiently create characters of various different types
+ - make decisions during character creation one step at a time, with short, relevant prompts from the rulebooks provided for each step
+ - manage changes to saved characters throughout campaign play
  - track stress and consequences during a session
+ - find characters and creatures created by other users to instantly use in their own games
 
-Game Masters can use Fate Character Codex to:
-- efficiently create non-player characters (NPCs) and creatures
-- find NPCs and creatures created by other users to instantly use in their own games
-- track stress and consequences to those characters/creatures during a session
+## Character Types Supported 
+
+[Fate Core:](https://www.evilhat.com/home/fate-core/)  
+- Player Characters (PCs)
+- Non-Player Characters (NPCs)
+  - Nameless NPCs (Average, Fair, Good)
+  - Supporting NPCs
+  - Main NPC
+
+[Fate Adversary Toolkit:](https://www.evilhat.com/home/fate-adversary-toolkit/) 
+- Enemies
+  - Threats
+  - Hitters
+  - Bosses
+  - Fillers (Average, Fair, Good)
 
 ## React Technologies Used
 
 This project utilizes the following:
+* Hooks, state, props, routes, components, modules
 * This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-* [Semantic UI](https://semantic-ui.com/) for buttons, cards, containers, data-tooltips, dividers, dropdowns, forms, grids, icons, inputs, items, labels,lists, etc.
+* [Semantic UI](https://semantic-ui.com/) for React component buttons, cards, containers, dividers, dropdowns, forms, grids, icons, inputs, items, labels,lists, etc.
 * [React Confirm Alert](https://www.npmjs.com/package/react-confirm-alert) for confirm alerts
 * [React Router](https://reacttraining.com/react-router/) for page routing
 
 ## Other Technologies Used
 
-1. React: hooks, state, props, routes, components, modules
 1. API calls with: POST, PUT, PATCH, DELETE, and GET (with expand, embed)
 1. Javascript: functions, objects, arrays, mapping
 1. Persistent data storage with JSON Server
@@ -40,8 +53,8 @@ This project utilizes the following:
 1. Semantic HTML
 1. [Valid HTML5](https://validator.w3.org/)
 
-## (MVP) Database Diagram
-![ERD](./FCC_FE_MVP_ERD.png)
+## Entity Relationship Diagram
+![ERD](./FCC_FE_ERD.png)
 
 ## Local Setup
 If you would like to test this code locally, you can follow these steps to get started:
