@@ -18,18 +18,20 @@ Players and Game Masters can use Fate Character Codex to:
  - find characters and creatures created by other users to instantly use in their own games
 
 ## Character Types Supported 
+
 [Fate Core:](https://www.evilhat.com/home/fate-core/)  
 - Player Characters (PCs)
 - Non-Player Characters (NPCs)
-- - Nameless NPCs (Average, Fair, Good)
-- - Supporting NPCs
-- - Main NPC
+  - Nameless NPCs (Average, Fair, Good)
+  - Supporting NPCs
+  - Main NPC
+
 [Fate Adversary Toolkit:](https://www.evilhat.com/home/fate-adversary-toolkit/) 
 - Enemies
-- - Threats
-- - Hitters
-- - Bosses
-- - Fillers (Average, Fair, Good)
+  - Threats
+  - Hitters
+  - Bosses
+  - Fillers (Average, Fair, Good)
 
 ## React Technologies Used
 
@@ -51,7 +53,7 @@ This project utilizes the following:
 1. Semantic HTML
 1. [Valid HTML5](https://validator.w3.org/)
 
-## (MVP) Database Diagram
+## Entity Relationship Diagram
 ![ERD](./FCC_FE_ERD.png)
 
 ## Local Setup
