@@ -24,6 +24,7 @@ const StuntsDropdown = props => {
     <>
       {/* <div className="stunt-selector"> */}
         <Dropdown
+          clearable
           placeholder="Select Stunt"
           selection
           id={`stunts--${props.x}`}

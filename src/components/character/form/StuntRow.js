@@ -8,8 +8,14 @@ const StuntRow = props => {
   const [filter, setFilter] = useState("")
 
   const handleFilter = (evt, {name, value}) => {
-    const valueToSet = parseInt(value)
-    setFilter(valueToSet)
+    // Blank values (from utilizing the clearable x)
+    // set the filter back to its default state
+    if (!value) {
+      setFilter("")
+    } else {
+      const valueToSet = parseInt(value)
+      setFilter(valueToSet)
+    }
   }
 
   return (

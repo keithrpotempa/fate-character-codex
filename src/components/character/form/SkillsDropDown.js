@@ -7,6 +7,7 @@
       <>
         {/* <div className="skill-selector"> */}
           <Dropdown
+            clearable
             placeholder="Filter by related skill"
             selection
             id={`${props.x}:${props.y}`}

@@ -30,7 +30,7 @@ export default {
       .then(results => results.json())
   },
   getCharacterList() {
-    return fetch(`${remoteURL}/characters?_embed=characterAspects&_expand=user`)
+    return fetch(`${remoteURL}/characters?_embed=characterAspects&_expand=user&_expand=characterSubType`)
       .then(results => results.json())
   },
   getSubTypeDetails(id) {

@@ -24,17 +24,17 @@ const Footer = props => {
           </small>
         </p>
         {/* TODO: Ask permission */}
-        <p>
+        {/* <p>
           <small>
             Fate™ is a trademark of Evil Hat Productions, LLC. The Powered by Fate logo is © Evil Hat Productions, LLC and is used with permission.
           </small>
-        </p>
+        </p> */}
         {/* TODO: Ask permission */}
-        <p>
+        {/* <p>
           <small>
             The Fate Core font is © Evil Hat Productions, LLC and is used with permission. The Four Actions icons were designed by Jeremy Keller.
           </small>
-        </p>
+        </p> */}
       </Container>    
     </div>
   )
