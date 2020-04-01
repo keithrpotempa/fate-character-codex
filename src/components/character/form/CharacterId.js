@@ -64,8 +64,7 @@ const CharacterId = props => {
 
   useEffect(() => {
     getCharacterTypeList();
-    getCharacterSubTypeList();
-    getCharacterSubtypeDetails();
+    getCharacterSubTypeList(); 
   }, [])
 
   return (

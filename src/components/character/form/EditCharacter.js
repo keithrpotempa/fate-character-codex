@@ -12,6 +12,7 @@ import ApiManager from "../../../modules/ApiManager";
 const EditCharacter = props => {
   const characterId = props.characterId;
   const setCharacter = props.setCharacter;
+  const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
 
   const characterAspects = props.characterAspects;
   const setCharacterAspects = props.setCharacterAspects;
@@ -38,19 +39,17 @@ const EditCharacter = props => {
   }
 
   const setCharacterToEdit = (character) => {
-    console.log(character)   
     const subtype = character.characterSubTypeId;
     const type = character.characterSubType.characterTypeId;
-
     const characterToEdit = {
       name: character.name, 
       type: `${type}`, 
       subtype: `${subtype}`,
-      created: character.created
+      created: character.created,
+      id: characterId
     }
-    console.log(characterToEdit)
-
     setCharacter(characterToEdit);
+    setCharacterSubTypeDetails(character.characterSubType);
   }
   
   const setAspectsToEdit = (aspects) => {
