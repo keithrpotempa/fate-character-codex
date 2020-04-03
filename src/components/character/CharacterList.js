@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { confirmAlert } from 'react-confirm-alert';
-import { Card, Button, Icon, Container } from "semantic-ui-react"
+import { Card, Button, Icon, Container, Dropdown } from "semantic-ui-react"
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
 
 const CharacterList = props => {
   const [characters, setCharacters] = useState([]);
+  const [characterTypes, setCharacterTypes] = useState([]);
+  const [characterSubTypes, setCharacterSubTypes] = useState([]);
+  const [filter, setFilter] = useState({type: "", subtype: ""})
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
 
   const getCharacters = () => {
@@ -28,6 +31,35 @@ const CharacterList = props => {
     return highConcept;
   }
 
+  const getCharacterTypeList = () => {
+    return ApiManager.getAll("characterTypes")
+      .then(setCharacterTypes)
+  }
+
+  const getCharacterSubTypeList = () => {
+    return ApiManager.getAll("characterSubTypes")
+      .then(setCharacterSubTypes)
+  }
+
+  const handleFilterFieldChange = (evt, {name, value}) => {
+    const stateToChange = {...filter};
+    stateToChange[name] = value;
+    // If they're a PC, set their subtype for them
+    // (there's no subtype for PCs)
+    // Otherwise, wipe any chosen subtype
+    if (name === "type") {
+      if (value === "1") {
+        stateToChange["subtype"] = "6";
+        // If they're changing the character's type, 
+        // clear any chosen subtype info
+      }
+      else {
+        stateToChange["subtype"] = "";
+      }
+    }
+    setFilter(stateToChange);
+  }
+
   const handleDelete = (id) => {
     confirmAlert({
       title: 'Confirm to submit',
@@ -46,8 +78,47 @@ const CharacterList = props => {
     });
   }
 
+  const renderSubtypes = () => {
+    let subtypes = characterSubTypes
+      .sort((a,b) => a.name.localeCompare(b.name))
+    if (filter.type !== "") {
+      subtypes = subtypes
+        .filter(subtype => subtype.characterTypeId === parseInt(filter.type))
+    }
+    return subtypes.map(type => (
+      {
+        key: `type-${type.id}`,
+        value: `${type.id}`,
+        text: `${type.name}`
+      }
+    ))
+  }
+
+  const renderCards = () => {
+    let characterList = characters.sort((a,b) => a.name.localeCompare(b.name))
+    if (filter.type !== "") {
+      characterList = characterList
+        .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
+    }
+    if (filter.subtype !== "") {
+      characterList = characterList
+        .filter(character => character.characterSubTypeId === parseInt(filter.subtype))
+    }
+    return characterList.map(character => 
+      <CharacterCard
+        key={character.id}
+        character={character}
+        highConcept={getHighConcept(character)}
+        handleDelete={() => handleDelete(character.id)}
+        activeUser={activeUser}
+      />
+    )
+  }
+
   useEffect(() => {
     getCharacters();
+    getCharacterTypeList();
+    getCharacterSubTypeList();
   }, [])
 
   return (
@@ -59,6 +130,34 @@ const CharacterList = props => {
         >
           <Icon className="add user"></Icon>
         </Button>
+        <Dropdown
+          clearable 
+          selection
+          onChange={handleFilterFieldChange}
+          className="type"
+          name="type"
+          id="type"
+          placeholder="Filter by type"
+          value={filter.type}
+          options={characterTypes.map(type => (
+            {
+              key: `type-${type.id}`,
+              value: `${type.id}`,
+              text: `${type.name}`
+            }
+          ))}
+        />
+        <Dropdown 
+          clearable
+          selection
+          onChange={handleFilterFieldChange}
+          className="subtype"
+          name="subtype"
+          id="subtype"
+          placeholder="Character Subtype"
+          value={filter.subtype}
+          options={renderSubtypes()}
+        />
         <div className="header-container">
           <h1>Characters</h1>
         </div>
@@ -66,16 +165,7 @@ const CharacterList = props => {
           {/* Sorting characters alphabetically
           https://stackoverflow.com/a/45544166*/}
           <Card.Group itemsPerRow={3}>
-            {characters.sort((a,b) => a.name.localeCompare(b.name))
-              .map(character => 
-              <CharacterCard
-                key={character.id}
-                character={character}
-                highConcept={getHighConcept(character)}
-                handleDelete={() => handleDelete(character.id)}
-                activeUser={activeUser}
-              />
-            )}
+            {renderCards()}
           </Card.Group>
         </div>
       </Container>
