@@ -41,7 +41,7 @@ const Types = props => {
 
   return (
     <>
-      <Container text>
+      <Container>
         <div className="header-container">
           <h1>Character Types</h1>
         </div>

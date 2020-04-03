@@ -13,7 +13,7 @@ const StuntList = props => {
 
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
-  const pageLimit = 6;
+  const pageLimit = 9;
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
@@ -24,7 +24,7 @@ const StuntList = props => {
 
   return (
     <>
-        <Card.Group itemsPerRow={2}>
+        <Card.Group itemsPerRow={3}>
           {currentData.map(stunt => 
             <StuntCard
               key={stunt.id}

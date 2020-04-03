@@ -47,7 +47,7 @@ const Stunts = props => {
 
   return (
     <>
-      <Container text>
+      <Container>
         <div className="header-container">
           <h1>Stunts</h1>
         </div>
