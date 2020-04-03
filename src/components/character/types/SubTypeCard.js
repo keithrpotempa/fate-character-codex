@@ -11,7 +11,7 @@ const SubTypeCard = props => {
         raised
         header={subType.name}
         description={subType.purpose}
-        meta={`Associated Type: ${subType.characterTypeId}`}
+        meta={`Associated Type: ${subType.characterType.name}`}
         // The following safely open a new tab
         extra={
           <div className="flex-end">

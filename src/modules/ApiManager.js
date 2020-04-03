@@ -33,6 +33,10 @@ export default {
     return fetch(`${remoteURL}/characters?_embed=characterAspects&_expand=user&_expand=characterSubType`)
       .then(results => results.json())
   },
+  getAllSubTypesWithDetails() {
+    return fetch(`${remoteURL}/characterSubTypes/?_expand=characterType`)
+      .then(results => results.json())
+  },
   getSubTypeDetails(id) {
     return fetch(`${remoteURL}/characterSubTypes/${id}?_expand=characterType`)
       .then(results => results.json())

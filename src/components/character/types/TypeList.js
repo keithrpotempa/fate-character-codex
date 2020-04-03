@@ -1,50 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Card, Container } from "semantic-ui-react";
-import ApiManager from "../../../modules/ApiManager";
+import Paginator from "react-hooks-paginator";
+import { Card } from "semantic-ui-react";
 import SubTypeCard from "./SubTypeCard";
 
+/* 
+  Child component of Types
+  this receives a list of subtypes
+  (filtered or not) and renders them with pagination
+*/
 const TypeList = props => {
-  // TODO: a filter / sort by type/subtype bar
-  const [typeList, setTypeList] = useState([]);
-  const [subTypeList, setSubTypeList] = useState([]);
+  const subTypeList = props.subTypeList;
 
-  const getTypeList = () => {
-    return ApiManager.getAll("characterTypes")
-      .then(setTypeList);
-  }
-
-  const getSubTypeList = () => {
-    return ApiManager.getAll("characterSubTypes")
-      .then(setSubTypeList);
-  }
+  // State related to pagination 
+  // reference: https://www.npmjs.com/package/react-hooks-paginator
+  const pageLimit = 6;
+  const [offset, setOffset] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentData, setCurrentData] = useState([]);
 
   useEffect(() => {
-    getTypeList();
-    getSubTypeList();
-  }, [])
+    setCurrentData(subTypeList.slice(offset, offset + pageLimit))
+  }, [offset, subTypeList])
 
   return (
     <>
-      <Container>
-        <div className="header-container">
-          <h1>Character Types</h1>
-        </div>
-        <Card.Group itemsPerRow={3}>
-          {subTypeList.sort((a,b) => a.name.localeCompare(b.name))
-            .map(subType => 
-              <SubTypeCard
-                key={subType.id}
-                subType={subType}
-              />  
-            )
-          
-          }
-        </Card.Group>
-      </Container>
+      <Card.Group itemsPerRow={2}>
+        {currentData.map(subType => 
+            <SubTypeCard
+              key={subType.id}
+              subType={subType}
+            />  
+          )
+        }
+      </Card.Group>
+      <Paginator 
+          totalRecords={subTypeList.length}
+          pageLimit={pageLimit}
+          pageNeighbours={2}
+          setOffset={setOffset}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
     </>
   )
-
-
 }
 
 export default TypeList

@@ -8,7 +8,7 @@ import Characters from "./character/Characters";
 import CharacterSheet from "./character/sheet/CharacterSheet";
 import CharacterForm from "./character/form/CharacterForm";
 import MainForm from "./character/form/MainForm";
-import TypeList from "./character/types/TypeList";
+import Types from "./character/types/Types";
 import TypeDetail from "./character/types/TypeDetail";
 
 import Login from "./user/Login"
@@ -28,7 +28,7 @@ const ApplicationViews = props => {
         return <Stunts {...props}/>
       }}/>
       <Route exact path="/types" render={props => {
-        return <TypeList {...props}/>
+        return <Types {...props}/>
       }}/>
       <Route path="/types/:subTypeId(\d+)" 
         render={props => {
