@@ -51,23 +51,25 @@ const Stunts = props => {
         <div className="header-container">
           <h1>Stunts</h1>
         </div>
-        <Dropdown
-          clearable 
-          selection
-          onChange={handleFilterChange}
-          className="skill"
-          name="skill"
-          id="skill"
-          placeholder="Filter by skill"
-          value={filter}
-          options={skills.map(skill => (
-            {
-              key: `skills-${skill.id}`,
-              value: `${skill.id}`,
-              text: `${skill.name}`
-            }
-          ))}
-        />
+        <div className="filter-div">
+          <Dropdown
+            clearable 
+            selection
+            onChange={handleFilterChange}
+            className="skill"
+            name="skill"
+            id="skill"
+            placeholder="Filter by skill"
+            value={filter}
+            options={skills.map(skill => (
+              {
+                key: `skills-${skill.id}`,
+                value: `${skill.id}`,
+                text: `${skill.name}`
+              }
+            ))}
+          />
+        </div>
         <StuntList 
           stunts={ 
             filter !== ""

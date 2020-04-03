@@ -29,6 +29,12 @@
   margin: 20px 0px;
 }
 
+.filter-div {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
 .skills-wrapper {
   display: flex;
   justify-content: center;

@@ -45,23 +45,25 @@ const Types = props => {
         <div className="header-container">
           <h1>Character Types</h1>
         </div>
-        <Dropdown
-          clearable 
-          selection
-          onChange={handleFilterChange}
-          className="type"
-          name="type"
-          id="type"
-          placeholder="Filter by type"
-          value={filter.type}
-          options={typeList.map(type => (
-            {
-              key: `type-${type.id}`,
-              value: `${type.id}`,
-              text: `${type.name}`
-            }
-          ))}
-        />
+        <div className="filter-div">
+          <Dropdown
+            clearable 
+            selection
+            onChange={handleFilterChange}
+            className="type"
+            name="type"
+            id="type"
+            placeholder="Filter by type"
+            value={filter.type}
+            options={typeList.map(type => (
+              {
+                key: `type-${type.id}`,
+                value: `${type.id}`,
+                text: `${type.name}`
+              }
+            ))}
+          />
+        </div>
         <TypeList 
           subTypeList={
             filter !== ""

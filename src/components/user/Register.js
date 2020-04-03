@@ -47,7 +47,8 @@ const Register = props => {
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as='h2' color='teal' textAlign='center'>
-          <Image src='/logo.png' /> Register your account
+          {/* <Image src='/logo.png' />  */}
+          Register your account
         </Header>
         <Form size='large' onSubmit={handleLogin}>
           <Segment stacked>

@@ -95,40 +95,42 @@ const Characters = props => {
   return (
     <>
       <Container>
-        <Button
-          type="button"
-          onClick={() => {props.history.push("/characters/new")}}
-        >
-          <Icon className="add user"></Icon>
-        </Button>
-        <Dropdown
-          clearable 
-          selection
-          onChange={handleFilterFieldChange}
-          className="type"
-          name="type"
-          id="type"
-          placeholder="Filter by type"
-          value={filter.type}
-          options={characterTypes.map(type => (
-            {
-              key: `type-${type.id}`,
-              value: `${type.id}`,
-              text: `${type.name}`
-            }
-          ))}
-        />
-        <Dropdown 
-          clearable
-          selection
-          onChange={handleFilterFieldChange}
-          className="subtype"
-          name="subtype"
-          id="subtype"
-          placeholder="Character Subtype"
-          value={filter.subtype}
-          options={renderSubtypes()}
-        />
+        <div className="filter-div">
+          <Button
+            type="button"
+            onClick={() => {props.history.push("/characters/new")}}
+          >
+            <Icon className="add user"></Icon>
+          </Button>
+          <Dropdown
+            clearable 
+            selection
+            onChange={handleFilterFieldChange}
+            className="type"
+            name="type"
+            id="type"
+            placeholder="Filter by type"
+            value={filter.type}
+            options={characterTypes.map(type => (
+              {
+                key: `type-${type.id}`,
+                value: `${type.id}`,
+                text: `${type.name}`
+              }
+            ))}
+          />
+          <Dropdown 
+            clearable
+            selection
+            onChange={handleFilterFieldChange}
+            className="subtype"
+            name="subtype"
+            id="subtype"
+            placeholder="Character Subtype"
+            value={filter.subtype}
+            options={renderSubtypes()}
+          />
+        </div>
         <CharacterList 
           characters={
             filter.type !== "" || filter.subtype !== ""
