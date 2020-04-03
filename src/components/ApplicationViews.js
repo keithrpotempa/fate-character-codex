@@ -2,7 +2,7 @@ import { Route, Redirect } from "react-router-dom";
 import React from "react";
 
 import SkillList from "./skill/SkillList";
-import StuntList from "./stunt/StuntList";
+import Stunts from "./stunt/Stunts";
 
 import Characters from "./character/Characters";
 import CharacterSheet from "./character/sheet/CharacterSheet";
@@ -25,7 +25,7 @@ const ApplicationViews = props => {
         return <SkillList {...props}/>
       }}/>
       <Route path="/stunts" render={props => {
-        return <StuntList {...props}/>
+        return <Stunts {...props}/>
       }}/>
       <Route exact path="/types" render={props => {
         return <TypeList {...props}/>
