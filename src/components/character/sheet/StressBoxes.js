@@ -20,7 +20,7 @@ const StressBoxes = props => {
     let checkboxes = [];
     for (let i = 1; i <= numberOfBoxes; i++) {
       checkboxes.push(
-        <List.Item>
+        <List.Item key={`stressbox-${i}`}>
           <strong>{i}</strong><Checkbox/>
         </List.Item>
       )
