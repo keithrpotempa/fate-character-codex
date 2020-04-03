@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
+import Paginator from "react-hooks-paginator";
 import { confirmAlert } from 'react-confirm-alert';
 import { Card, Button, Icon, Container, Dropdown } from "semantic-ui-react"
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
 
 const CharacterList = props => {
+  const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
   const [characters, setCharacters] = useState([]);
+
+  /* State related to the filter dropdowns */ 
   const [characterTypes, setCharacterTypes] = useState([]);
   const [characterSubTypes, setCharacterSubTypes] = useState([]);
   const [filter, setFilter] = useState({type: "", subtype: ""})
-  const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
+
+  /* State related to pagination 
+  reference: https://www.npmjs.com/package/react-hooks-paginator
+  */
+  const pageLimit = 9;
+  const [offset, setOffset] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentData, setCurrentData] = useState([]);
 
   const getCharacters = () => {
     ApiManager.getCharacterList()
@@ -95,7 +106,9 @@ const CharacterList = props => {
   }
 
   const renderCards = () => {
-    let characterList = characters.sort((a,b) => a.name.localeCompare(b.name))
+    /* Sorting characters alphabetically
+          https://stackoverflow.com/a/45544166*/
+    let characterList = currentData.sort((a,b) => a.name.localeCompare(b.name))
     if (filter.type !== "") {
       characterList = characterList
         .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
@@ -120,6 +133,10 @@ const CharacterList = props => {
     getCharacterTypeList();
     getCharacterSubTypeList();
   }, [])
+
+  useEffect(() => {
+    setCurrentData(characters.slice(offset, offset + pageLimit))
+  }, [offset, characters])
 
   return (
     <>
@@ -162,11 +179,17 @@ const CharacterList = props => {
           <h1>Characters</h1>
         </div>
         <div>
-          {/* Sorting characters alphabetically
-          https://stackoverflow.com/a/45544166*/}
           <Card.Group itemsPerRow={3}>
             {renderCards()}
           </Card.Group>
+          <Paginator 
+            totalRecords={characters.length}
+            pageLimit={pageLimit}
+            pageNeighbours={2}
+            setOffset={setOffset}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
       </Container>
     </>
