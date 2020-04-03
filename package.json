@@ -9,6 +9,7 @@
     "react": "^16.13.0",
     "react-confirm-alert": "^2.6.1",
     "react-dom": "^16.13.0",
+    "react-hooks-paginator": "^0.4.4",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "semantic-ui-react": "^0.88.2",
