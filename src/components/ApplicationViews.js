@@ -4,7 +4,7 @@ import React from "react";
 import SkillList from "./skill/SkillList";
 import StuntList from "./stunt/StuntList";
 
-import CharacterList from "./character/CharacterList";
+import Characters from "./character/Characters";
 import CharacterSheet from "./character/sheet/CharacterSheet";
 import CharacterForm from "./character/form/CharacterForm";
 import MainForm from "./character/form/MainForm";
@@ -41,10 +41,10 @@ const ApplicationViews = props => {
       {/* -------------------CHARACTER------------------- */}
       {/* TODO: Make root be something other than characters */}
       <Route exact path="/" render={props => {
-        return <CharacterList {...props}/>
+        return <Characters {...props}/>
       }}/>
       <Route exact path="/characters" render={props => {
-        return <CharacterList {...props}/>
+        return <Characters {...props}/>
       }}/>
       <Route 
         path="/characters/new"
