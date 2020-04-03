@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Paginator from "react-hooks-paginator";
 import { confirmAlert } from 'react-confirm-alert';
-import { Card, Button, Icon, Container, Dropdown } from "semantic-ui-react"
+import { Card, Container } from "semantic-ui-react"
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
 
+/* 
+  Child component of Characters
+  this receives a list of characters
+  (filtered or not) and renders them with pagination
+*/
 const CharacterList = props => {
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
-  const filteredCharacters = props.filteredCharacters;
-  /* State related to pagination 
-  reference: https://www.npmjs.com/package/react-hooks-paginator
-  */
+  const characters = props.characters;
+  // State related to pagination 
+  // reference: https://www.npmjs.com/package/react-hooks-paginator
   const pageLimit = 9;
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,8 +54,8 @@ const CharacterList = props => {
   }
 
   useEffect(() => {
-    setCurrentData(filteredCharacters.slice(offset, offset + pageLimit))
-  }, [offset, filteredCharacters])
+    setCurrentData(characters.slice(offset, offset + pageLimit))
+  }, [offset, characters])
 
   return (
     <>
@@ -73,7 +77,7 @@ const CharacterList = props => {
             }
           </Card.Group>
           <Paginator 
-            totalRecords={filteredCharacters.length}
+            totalRecords={characters.length}
             pageLimit={pageLimit}
             pageNeighbours={2}
             setOffset={setOffset}

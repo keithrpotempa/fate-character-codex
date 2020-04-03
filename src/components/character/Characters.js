@@ -130,7 +130,7 @@ const Characters = props => {
           options={renderSubtypes()}
         />
         <CharacterList 
-          filteredCharacters={
+          characters={
             filter.type !== "" || filter.subtype !== ""
               ? filteredCharacters
               : characters
