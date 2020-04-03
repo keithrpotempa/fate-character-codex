@@ -39,6 +39,7 @@ This project utilizes the following:
 * Hooks, state, props, routes, components, modules
 * This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 * [Semantic UI](https://semantic-ui.com/) for React component buttons, cards, containers, dividers, dropdowns, forms, grids, icons, inputs, items, labels,lists, etc.
+* [React Hooks Paginator](https://www.npmjs.com/package/react-hooks-paginator) for pagination
 * [React Confirm Alert](https://www.npmjs.com/package/react-confirm-alert) for confirm alerts
 * [React Router](https://reacttraining.com/react-router/) for page routing
 

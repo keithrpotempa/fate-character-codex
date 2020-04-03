@@ -20,7 +20,8 @@ const CharacterSkills = props => {
           // Sort the skills so that the highest rating is at the top
           .sort((a,b) =>  b - a)
           .map(rating => 
-            <CharacterSkillRow 
+            <CharacterSkillRow
+              key={`skillrow-${rating}`} 
               skillRow={skills[rating]}
               rating={rating}
             />)}

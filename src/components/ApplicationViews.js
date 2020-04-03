@@ -2,13 +2,13 @@ import { Route, Redirect } from "react-router-dom";
 import React from "react";
 
 import SkillList from "./skill/SkillList";
-import StuntList from "./stunt/StuntList";
+import Stunts from "./stunt/Stunts";
 
-import CharacterList from "./character/CharacterList";
+import Characters from "./character/Characters";
 import CharacterSheet from "./character/sheet/CharacterSheet";
 import CharacterForm from "./character/form/CharacterForm";
 import MainForm from "./character/form/MainForm";
-import TypeList from "./character/types/TypeList";
+import Types from "./character/types/Types";
 import TypeDetail from "./character/types/TypeDetail";
 
 import Login from "./user/Login"
@@ -25,10 +25,10 @@ const ApplicationViews = props => {
         return <SkillList {...props}/>
       }}/>
       <Route path="/stunts" render={props => {
-        return <StuntList {...props}/>
+        return <Stunts {...props}/>
       }}/>
       <Route exact path="/types" render={props => {
-        return <TypeList {...props}/>
+        return <Types {...props}/>
       }}/>
       <Route path="/types/:subTypeId(\d+)" 
         render={props => {
@@ -41,10 +41,10 @@ const ApplicationViews = props => {
       {/* -------------------CHARACTER------------------- */}
       {/* TODO: Make root be something other than characters */}
       <Route exact path="/" render={props => {
-        return <CharacterList {...props}/>
+        return <Characters {...props}/>
       }}/>
       <Route exact path="/characters" render={props => {
-        return <CharacterList {...props}/>
+        return <Characters {...props}/>
       }}/>
       <Route 
         path="/characters/new"
