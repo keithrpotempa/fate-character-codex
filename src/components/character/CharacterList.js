@@ -15,7 +15,7 @@ const CharacterList = props => {
   const characters = props.characters;
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
-  const pageLimit = 9;
+  const pageLimit = 8;
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
@@ -59,33 +59,31 @@ const CharacterList = props => {
 
   return (
     <>
-      <Container text>
-        <div className="header-container">
-          <h1>Characters</h1>
-        </div>
-        <div>
-          <Card.Group itemsPerRow={3}>
-            {currentData.map(character => 
-                <CharacterCard
-                  key={character.id}
-                  character={character}
-                  highConcept={getHighConcept(character)}
-                  handleDelete={() => handleDelete(character.id)}
-                  activeUser={activeUser}
-                />
-              )
-            }
-          </Card.Group>
-          <Paginator 
-            totalRecords={characters.length}
-            pageLimit={pageLimit}
-            pageNeighbours={2}
-            setOffset={setOffset}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        </div>
-      </Container>
+      <div className="header-container">
+        <h1>Characters</h1>
+      </div>
+      <div>
+        <Card.Group itemsPerRow={4}>
+          {currentData.map(character => 
+              <CharacterCard
+                key={character.id}
+                character={character}
+                highConcept={getHighConcept(character)}
+                handleDelete={() => handleDelete(character.id)}
+                activeUser={activeUser}
+              />
+            )
+          }
+        </Card.Group>
+        <Paginator 
+          totalRecords={characters.length}
+          pageLimit={pageLimit}
+          pageNeighbours={2}
+          setOffset={setOffset}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </>
   )
 }

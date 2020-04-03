@@ -94,7 +94,7 @@ const Characters = props => {
 
   return (
     <>
-      <Container text>
+      <Container>
         <Button
           type="button"
           onClick={() => {props.history.push("/characters/new")}}
