@@ -156,11 +156,9 @@ const SaveCharacter = props => {
   }
 
   const saveCharacter = (char) => {
-    // if (isEdit) {
-    //   // FIXME: TO BUILD
-    // } else {
-      ApiManager.update('characters', char.id, char)
-    // }
+    // NOTE: at this point, the character's reference on firebase already exists (getKey)
+    // we are just updating it with all the information (whether saving or editing)
+    ApiManager.update("characters", char.id, char);
     return char
   }
 

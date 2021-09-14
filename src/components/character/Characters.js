@@ -99,7 +99,7 @@ const Characters = props => {
         <div className="filter-div">
           <Button
             type="button"
-            onClick={() => {props.history.push("/characters/new")}}
+            onClick={() => {props.history.push("/new-character")}}
           >
             <Icon className="add user"></Icon>
           </Button>

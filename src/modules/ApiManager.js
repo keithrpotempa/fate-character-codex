@@ -78,24 +78,4 @@ export default {
       method: "DELETE"
     }).then(result => result.json());
   },
-  // TODO: Convert to Firebase approach
-  post(dataType, objectToPost) {
-    return fetch(`${fbUrl}/${dataType}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(objectToPost)
-    }).then(data => data.json());
-  },
-    // TODO: Convert to Firebase approach
-  update(dataType, objectToEdit) {
-    return fetch(`${fbUrl}/${dataType}/${objectToEdit.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(objectToEdit)
-    }).then(data => data.json());
-  }
 };

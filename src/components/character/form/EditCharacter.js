@@ -40,30 +40,31 @@ const EditCharacter = props => {
   }
   
   const setCharacterToEdit = (character) => {
-    const subtypeId = character.characterSubTypeId;
-    let typeId = 0
-    if (characterSubTypeList.length > 0) {
-      // Subtype variable is the whole subtype object:
-      const subtype = characterSubTypeList
-        // Filtering the subtype list to get 
-        // the correct subtype by the id on the character
-        .filter(subType => subType.id === subtypeId)[0]
-      // Associated typeId is retrieved from the subtype object
-      typeId = subtype.characterTypeId
-      // And set in state
-      setCharacterSubTypeDetails(subtype);
+    if (character) {
+      const subtypeId = character.characterSubTypeId;
+      let typeId = 0
+      if (characterSubTypeList.length > 0) {
+        // Subtype variable is the whole subtype object:
+        const subtype = characterSubTypeList
+          // Filtering the subtype list to get 
+          // the correct subtype by the id on the character
+          .filter(subType => subType.id === subtypeId)[0]
+        // Associated typeId is retrieved from the subtype object
+        typeId = subtype.characterTypeId
+        // And set in state
+        setCharacterSubTypeDetails(subtype);
+      }
+      // TODO: I don't like that the type and subtype are strings...
+      // Fix this elsewhere so they don't have to be
+      const characterToEdit = {
+        name: character.name, 
+        type: `${typeId}`, 
+        subtype: `${subtypeId}`,
+        created: character.created,
+        id: characterId
+      }
+      setCharacter(characterToEdit);
     }
-    // TODO: I don't like that the type and subtype are strings...
-    // Fix this elsewhere so they don't have to be
-    const characterToEdit = {
-      name: character.name, 
-      type: `${typeId}`, 
-      subtype: `${subtypeId}`,
-      created: character.created,
-      id: characterId
-    }
-    setCharacter(characterToEdit);
-
   }
   
   const setAspectsToEdit = (aspects) => {

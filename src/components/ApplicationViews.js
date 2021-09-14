@@ -111,29 +111,7 @@ const ApplicationViews = props => {
           {...props}
         />
       }}/>
-      <Route 
-        exact
-        path="/characters/new"
-        render={props => {
-          if (hasUser) {
-            return <MainForm 
-            characterTypeList={characterTypeList} 
-            characterSubTypeList={characterSubTypeList}
-            skillList={skillList}
-            stuntList={stuntList}
-            {...props} 
-          />;
-          } else {
-            return <Redirect to="/login" />;
-          }
-        }}
-      />
-      {/* 
-        FIXME: This is also rendering when making new characters
-        due to the :characterId no longer having strict integers
-        and thus matching the above route
-       */}
-      {/* <Route
+      <Route
         exact
         path="/characters/:characterId"
         render={props => {
@@ -146,8 +124,9 @@ const ApplicationViews = props => {
             {...props} 
           />;
         }}
-      /> */}
+      />
       <Route
+        exact
         path="/characters/:characterId/edit"
         render={props => {
           // TODO: this also needs to be the user that made this character
@@ -164,35 +143,18 @@ const ApplicationViews = props => {
           }
         }}
       />
-      {/* "hidden" views to show the way the form used to work */}
-      <Route
-        path="/characters/oldnew"
+      <Route 
+        exact
+        path="/new-character"
         render={props => {
           if (hasUser) {
-            return <CharacterForm
-              characterTypeList={characterTypeList} 
-              characterSubTypeList={characterSubTypeList}
-              skillList={skillList}
-              stuntList={stuntList}
-              {...props} 
-            />;
-          } else {
-            return <Redirect to="/login" />;
-          }
-        }}
-      />
-      <Route
-        path="/characters/:characterId(\d+)/oldedit"
-        render={props => {
-          // TODO: this also needs to be the user that made this character
-          if (hasUser) {
-            return <CharacterForm
-              characterTypeList={characterTypeList} 
-              characterSubTypeList={characterSubTypeList}
-              skillList={skillList}
-              stuntList={stuntList}
-              {...props} 
-            />;
+            return <MainForm 
+            characterTypeList={characterTypeList} 
+            characterSubTypeList={characterSubTypeList}
+            skillList={skillList}
+            stuntList={stuntList}
+            {...props} 
+          />;
           } else {
             return <Redirect to="/login" />;
           }
