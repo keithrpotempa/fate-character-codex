@@ -32,7 +32,6 @@ const SaveCharacter = props => {
     else {
       characterToSave.id = ApiManager.getKey("characters");
     }
-    console.log("characterToSave", characterToSave)
     return characterToSave;
   }
 
@@ -142,22 +141,15 @@ const SaveCharacter = props => {
   }
 
   /* ------------ SAVING FUNCTIONS ------------ */
-  // Made this an async function to allow it to have a .then after
-  // TODO: revisit this after Firebase
-  async function purge() {
-    // IF edit, delete everything before starting
-    // TODO: figure out a better way?
-    if (isEdit) {
-      const userId = props.match.params.characterId;
-      return ApiManager.delete("characters", userId)
-    } else {
-      return character
-    }
-  }
 
   const saveCharacter = (char) => {
     // NOTE: at this point, the character's reference on firebase already exists (getKey)
     // we are just updating it with all the information (whether saving or editing)
+    if (isEdit) {
+      // IF edit, delete everything before starting
+      // TODO: figure out a better way?
+      ApiManager.purgeCharacter(props.match.params.characterId);
+    }
     ApiManager.update("characters", char.id, char);
     return char
   }

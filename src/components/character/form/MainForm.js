@@ -12,6 +12,34 @@ import { Menu } from 'semantic-ui-react'
 import EditCharacter from "./EditCharacter";
 
 const MainForm = props => {
+  const EMPTY_ASPECT = { name: "", characterId: "", id: "" }
+
+  const EMPTY_ASPECTS = [
+    {...EMPTY_ASPECT, aspectTypeId: 1},
+    {...EMPTY_ASPECT, aspectTypeId: 2},
+    {...EMPTY_ASPECT, aspectTypeId: 3},
+    {...EMPTY_ASPECT, aspectTypeId: 3},
+    {...EMPTY_ASPECT, aspectTypeId: 3},
+  ];
+
+  const EMPTY_SKILLS = {
+    6: [],
+    5: [],
+    4: [],
+    3: [],
+    2: [],
+    1: []
+  }
+
+  const EMPTY_STUNTS = {
+    5: "",
+    4: "",
+    3: "",
+    2: "",
+    1: ""
+  }
+
+
   /* ------------------ STATES ------------------*/
   const skillList = props.skillList;
   const stuntList = props.stuntList;
@@ -27,58 +55,16 @@ const MainForm = props => {
 
   // Seeding a default array of aspects
   // presently with their types (currently) hard coded
-  const [characterAspects, setCharacterAspects] = useState([
-    { name: "", aspectTypeId: 1 },
-    { name: "", aspectTypeId: 2 },
-    { name: "", aspectTypeId: 3 },    
-    { name: "", aspectTypeId: 3 },
-    { name: "", aspectTypeId: 3 },
-    { name: "", aspectTypeId: 3 }
-  ])
+  const [characterAspects, setCharacterAspects] = useState(EMPTY_ASPECTS);
 
-  const [characterSkills, setCharacterSkills] = useState({
-    6: [],
-    5: [],
-    4: [],
-    3: [],
-    2: [],
-    1: []
-  });
+  const [characterSkills, setCharacterSkills] = useState(EMPTY_SKILLS);
 
-  const [characterStunts, setCharacterStunts] = useState({
-    5: "",
-    4: "",
-    3: "",
-    2: "",
-    1: ""
-  });
+  const [characterStunts, setCharacterStunts] = useState(EMPTY_STUNTS);
 
-  // TODO: utilize useReducer instead
-  // https://reactjs.org/docs/hooks-reference.html#usereducer
   const resetCharacter = () => {
-    setCharacterAspects([
-      { name: "", aspectTypeId: 1 },
-      { name: "", aspectTypeId: 2 },
-      { name: "", aspectTypeId: 3 },    
-      { name: "", aspectTypeId: 3 },
-      { name: "", aspectTypeId: 3 },
-      { name: "", aspectTypeId: 3 }
-    ]);
-    setCharacterSkills({
-      6: [],
-      5: [],
-      4: [],
-      3: [],
-      2: [],
-      1: []
-    });
-    setCharacterStunts({
-      5: "",
-      4: "",
-      3: "",
-      2: "",
-      1: ""
-    })
+    setCharacterAspects(EMPTY_ASPECTS);
+    setCharacterSkills(EMPTY_SKILLS);
+    setCharacterStunts(EMPTY_STUNTS);
   }
 
   /* ------------------ EVENT HANDLERS  ------------------*/

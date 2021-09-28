@@ -3,8 +3,18 @@ import firebase from '../firebase'
 const fbUrl = "https://fate-character-codex.firebaseio.com";
 const localURL = "http://localhost:5002"
 
-export default {
+const ApiManager = {
   // ---------------- FIREBASE ----------------
+
+  // WIP: saving everything at once
+  // saveCharacter(char, aspects, skills, stunts) {
+  //   const updates = {}
+  //   // Character
+  //   updates[`/characters/${char.id}`] = char;
+  //   updates[`//${char.id}`] = char;
+  //   updates[`/${char}/${char.id}`] = char;
+  //   updates[`/${char}/${char.id}`] = char;
+  // },
   update(dataType, key, objectToPush) {
     // This method is used in combination with getKey to
     // 1) Get a reference (key) for a character-to-create
@@ -12,9 +22,6 @@ export default {
 
     // Reference:
     //https://firebase.google.com/docs/database/web/read-and-write#updating_or_deleting_data
-    console.log("datatype", dataType)
-    console.log("key", key)
-    console.log("objectToPush", objectToPush)
     const updates = {}
     updates[`/${dataType}/${key}`] = objectToPush
     return firebase.database().ref().update(updates)
@@ -45,11 +52,12 @@ export default {
   */
   arrayify(arrayLikeObject){
     let array = []
-
-    Object.entries(arrayLikeObject).forEach(([key, value]) => {
-      array.push(value)
-    });
-
+    if (arrayLikeObject) {
+      // But we want to preserve the fb id in the object
+      Object.entries(arrayLikeObject).forEach(([key, value]) => {
+        array.push({...value, id: key})
+      });
+    }
     return array
   },
   get(dataType, id) {
@@ -60,22 +68,38 @@ export default {
     return fetch(`${fbUrl}/${dataType}/.json`)
       .then(result => result.json());
   },
+  purgeCharacterAttribute(attribute, characterId) {
+    const attributeRef = firebase.database().ref(`/${attribute}/`) 
+    // Ref that includes only attributes with the matching characterId
+    const charactersAttributes = attributeRef.orderByChild('characterId').equalTo(characterId)
+    // Looping over each attribute and making an adding it to an update object marking it as null (deleting it)
+    charactersAttributes.once("value", (snapshot) => {
+      const updates = {};
+      snapshot.forEach((child) => {
+        updates[`/${attribute}/${child.key}`] = null
+      })
+      firebase.database().ref().update(updates);
+    })
+  },
+  // Kludge method to wipe a character before saving it
+  // since firebase has no awareness of foreign keys
+  purgeCharacter(characterId) {
+    this.purgeCharacterAttribute("characterAspects", characterId);
+    this.purgeCharacterAttribute("characterSkills", characterId);
+    this.purgeCharacterAttribute("characterStunts", characterId);
+  },
+  delete(dataType, id) {
+    if (dataType === "characters") {
+      this.purgeCharacter(id);
+    };
+    return firebase.database().ref(`${dataType}/${id}`).remove();
+  },
   // ---------------- JSON SERVER ----------------
   // TODO: Convert to Firebase approach
   getUserByEmail(email) {
     return fetch(`${localURL}/users?email=${email}`)
     .then(result => result.json());
   },
-  // TODO: Convert to Firebase approach
-  delete(dataType, id) {
-    return fetch(`${fbUrl}/${dataType}/${id}`, {
-      method: "DELETE"
-    }).then(result => result.json());
-  },
-  // TODO: Convert to Firebase approach
-  deleteByCharacterId(dataType, charId) {
-    return fetch(`${fbUrl}/${dataType}?characterId=${charId}`, {
-      method: "DELETE"
-    }).then(result => result.json());
-  },
 };
+
+export default ApiManager;

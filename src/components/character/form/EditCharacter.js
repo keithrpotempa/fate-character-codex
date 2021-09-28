@@ -74,7 +74,12 @@ const EditCharacter = props => {
       for (let i = 0; i < 7; i++) {
         const aspect = aspects[i]
         if (aspect) {
-          stateToChange[i] = {name: aspect.name, aspectTypeId: aspect.aspectTypeId}
+          stateToChange[i] = {
+            name: aspect.name, 
+            aspectTypeId: aspect.aspectTypeId, 
+            characterId: aspect.characterId,
+            id: aspect.id,
+          }
         }
       } 
       setCharacterAspects(stateToChange)
