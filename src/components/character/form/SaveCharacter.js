@@ -142,16 +142,19 @@ const SaveCharacter = props => {
 
   /* ------------ SAVING FUNCTIONS ------------ */
 
+  const saveAll = (char) => {
+    return Promise.all([
+      saveCharacter(char),
+      saveAspects(char.id),
+      saveSkills(char.id),
+      saveStunts(char.id),
+    ])
+  }
+
   const saveCharacter = (char) => {
     // NOTE: at this point, the character's reference on firebase already exists (getKey)
     // we are just updating it with all the information (whether saving or editing)
-    if (isEdit) {
-      // IF edit, delete everything before starting
-      // TODO: figure out a better way?
-      ApiManager.purgeCharacter(props.match.params.characterId);
-    }
-    ApiManager.update("characters", char.id, char);
-    return char
+    return ApiManager.update("characters", char.id, char);
   }
 
   const saveAspects = (charId) => {
@@ -159,7 +162,7 @@ const SaveCharacter = props => {
       // This keeps blank aspects from being posted
       if (aspect.name !== "") {
         const aspectToSave = constructAspect(aspect, charId)
-        ApiManager.push('characterAspects', aspectToSave)
+        return ApiManager.push('characterAspects', aspectToSave)
       } 
     })
   }
@@ -171,7 +174,7 @@ const SaveCharacter = props => {
       if (skillsAtRating.length > 0) {
         skillsAtRating.forEach(skill => {
           const skillToSave = constructSkill(skill, rating, charId);
-          ApiManager.push("characterSkills", skillToSave);
+          return ApiManager.push("characterSkills", skillToSave);
         })
       }
     }
@@ -184,7 +187,7 @@ const SaveCharacter = props => {
       if (stunts[row]) {
         const stuntId = stunts[row]
         const stuntToSave = constructStunt(stuntId, charId)
-        ApiManager.push("characterStunts", stuntToSave)
+        return ApiManager.push("characterStunts", stuntToSave)
       }
     }  
   }
@@ -192,19 +195,20 @@ const SaveCharacter = props => {
 
   /* ------------ SAVING ------------ */
   // FIREBASE APPROACH
-  const handleSave = evt => {
+  async function handleSave(evt) {
     evt.preventDefault();
     // SAVING CHARACTER
     const char = constructCharacter()
     if (validChar(char)) {
       setIsLoading(true);
-      // Save character to firebase
-      // and store return key/id value for subsequent saves 
-      saveCharacter(char);
-      saveAspects(char.id);
-      saveSkills(char.id);
-      saveStunts(char.id);
-      props.history.push("/characters")
+      if (isEdit) {
+        // IF edit, delete everything before starting
+        // TODO: figure out a better way?
+        await ApiManager.purgeCharacter(props.match.params.characterId);
+      }
+      saveAll(char).then(() => {
+        props.history.push("/characters")
+      });
     }
   }
 

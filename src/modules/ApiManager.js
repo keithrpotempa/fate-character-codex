@@ -43,7 +43,7 @@ const ApiManager = {
     return fetch(`${fbUrl}/characterAspects/.json?orderBy="characterId"&equalTo="${characterId}"`)
       .then(result => result.json())
       .then(this.arrayify)
-      .then(aspects => aspects.filter(aspect => aspect.aspectTypeId === 0)[0].name)
+      .then(aspects => aspects.filter(aspect => aspect.aspectTypeId === 0)[0]?.name)
   },
   /* 
     Since Realtime Database data types are composed of array-like objects,
@@ -73,7 +73,7 @@ const ApiManager = {
     // Ref that includes only attributes with the matching characterId
     const charactersAttributes = attributeRef.orderByChild('characterId').equalTo(characterId)
     // Looping over each attribute and making an adding it to an update object marking it as null (deleting it)
-    charactersAttributes.once("value", (snapshot) => {
+    return charactersAttributes.once("value", (snapshot) => {
       const updates = {};
       snapshot.forEach((child) => {
         updates[`/${attribute}/${child.key}`] = null
@@ -84,9 +84,11 @@ const ApiManager = {
   // Kludge method to wipe a character before saving it
   // since firebase has no awareness of foreign keys
   purgeCharacter(characterId) {
-    this.purgeCharacterAttribute("characterAspects", characterId);
-    this.purgeCharacterAttribute("characterSkills", characterId);
-    this.purgeCharacterAttribute("characterStunts", characterId);
+    return Promise.all([
+      this.purgeCharacterAttribute("characterAspects", characterId),
+      this.purgeCharacterAttribute("characterSkills", characterId),
+      this.purgeCharacterAttribute("characterStunts", characterId),
+    ])
   },
   delete(dataType, id) {
     if (dataType === "characters") {
