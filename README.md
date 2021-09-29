@@ -57,14 +57,9 @@ This project utilizes the following:
 
 ## Other Technologies Used
 
-1. API calls with: POST, PUT, PATCH, DELETE, and GET (with expand, embed)
-1. Javascript: functions, objects, arrays, mapping
-1. Persistent data storage with JSON Server
-1. Github Scrum workflow
-1. CSS styling
-1. Modular code
-1. Semantic HTML
-1. [Valid HTML5](https://validator.w3.org/)
+1. Firebase Hosting
+1. Firebase Authentication
+1. Firebase Realtime Database backend
 
 ## Entity Relationship Diagram
 ![ERD](./images/FCC_FE_ERD.png)
@@ -75,12 +70,4 @@ If you would like to test this code locally, you can follow these steps to get s
 1. `git clone git@github.com:keithrpotempa/fate-character-codex.git && cd fate-character-codex`
 1. `npm install` to build dependencies
 1. `npm start` to run the application in development mode
-
-In a new terminal tab or window, 
-1. `cd` back to the git directory
-1. `mkdir api && cd $_`
-1. `curl -o database.json https://raw.githubusercontent.com/keithrpotempa/fate-character-codex-database-seed/master/database.json`
-1. `json-server -p 5002 database.json`
-
-(*) **Note: this app does not use true authentication.** There are no passwords used to login, and all credentials are saved in clear text on the JSON database. Do not use any sensitive information. 
 
