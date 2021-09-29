@@ -5,14 +5,15 @@ import SheetPreview from "../sheet/SheetPreview";
   for a character-in-progress (either edited or created)  
   and then passes it on to the sheet preview rendering component */
 
-const SheetReview = props => {
-  const characterSubType = props.characterSubType
-  const character = props.character;
-  const aspects = props.aspects;
-  const skills = props.skills;
-  const stunts = props.stunts;
-  const skillList = props.skillList;
-  const stuntList = props.stuntList;
+const SheetReview = ({
+  characterSubType,
+  character,
+  aspects,
+  skills,
+  stunts,
+  skillList,
+  stuntList
+}) => {
   
   const [willRating, setWillRating] = useState();
   const [physiqueRating, setPhysiqueRating] = useState();

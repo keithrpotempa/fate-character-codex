@@ -13,15 +13,17 @@ import SheetPreview from "./SheetPreview";
 // It is used by the character sheet view (detail route)
 // but not in the review stage of the character creation process
 
-const CharacterSheetMunger = props => {
-  const id = props.id;
-  const character = props.character;
-  const characterSubType = props.characterSubType;
-  const characterAspects = props.characterAspects;
-  const skillList = props.skillList;
-  const stuntList = props.stuntList;
-  const activeUser = props.activeUser;
-  
+const CharacterSheetMunger = ({
+  id,
+  character,
+  characterSubType,
+  characterAspects,
+  skillList,
+  stuntList,
+  activeUser,
+  isLoading,
+  handleDelete,
+}) => {  
   const [characterSkills, setCharacterSkills] = useState({
     6: [],
     5: [],
@@ -114,15 +116,15 @@ const CharacterSheetMunger = props => {
             {activeUser && character.userId === activeUser.id 
               ? <div className="flex-end">
                   <Link to={`/characters/${id}/edit`}>
-                    <Button disabled={props.isLoading} >
+                    <Button disabled={isLoading} >
                       <Icon fitted className="edit outline"/>
                     </Button>
                   </Link>
                   <Button
                     className="ui button"
                     type="button"
-                    onClick={() => props.handleDelete(id)}
-                    disabled={props.isLoading}
+                    onClick={() => handleDelete(id)}
+                    disabled={isLoading}
                   >
                     <Icon fitted className="trash alternate outline"/>
                   </Button>

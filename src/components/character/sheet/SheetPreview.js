@@ -6,7 +6,15 @@ import CharacterAspects from "./CharacterAspects";
 import CharacterSkills from "./CharacterSkills";
 import CharacterStunts from "./CharacterStunts";
 
-const SheetPreview = props => {
+const SheetPreview = ({
+  character,
+  characterSubType,
+  aspects,
+  skills,
+  stunts,
+  physiqueRating,
+  willRating,
+}) => {
   // This component renders a Character Sheet for:
   // the character sheet (character detail view)
   // Review; last stage of creating / editing a character
@@ -17,28 +25,28 @@ const SheetPreview = props => {
         <h4>ID</h4>
       </Divider>
       {/* <div className="flex-space-between"> */}
-        <p><strong>Name:</strong> {props.character.name}</p>
+        <p><strong>Name:</strong> {character.name}</p>
         <Label
           tag
           color="blue"
-          content={props.characterSubType.name}
+          content={characterSubType.name}
         />
       {/* </div> */}
       <Segment basic placeholder>
         <Grid columns={2} relaxed='very' stackable>
           <Grid.Column>
-            <CharacterAspects aspects={props.aspects}/>
+            <CharacterAspects aspects={aspects}/>
           </Grid.Column>
           <Grid.Column verticalAlign='middle'>
-            <CharacterSkills skills={props.skills}/>
+            <CharacterSkills skills={skills}/>
           </Grid.Column>
         </Grid>
       </Segment>
-      <CharacterStunts stunts={props.stunts}/>
+      <CharacterStunts stunts={stunts}/>
       <StressConsequences
-        physiqueRating={props.physiqueRating}
-        willRating={props.willRating}
-        characterSubType={props.characterSubType}
+        physiqueRating={physiqueRating}
+        willRating={willRating}
+        characterSubType={characterSubType}
       />
     </>
   )

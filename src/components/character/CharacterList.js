@@ -10,9 +10,12 @@ import ApiManager from "../../modules/ApiManager";
   this receives a list of characters
   (filtered or not) and renders them with pagination
 */
-const CharacterList = props => {
+const CharacterList = ({
+  characters,
+  getCharacters,
+}) => {
+  // FIXME:
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
-  const characters = props.characters;
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
   const pageLimit = 8;
@@ -43,7 +46,7 @@ const CharacterList = props => {
         {
           label: 'Yes',
           onClick: () => ApiManager.delete("characters", id)
-            .then(props.getCharacters)
+            .then(getCharacters)
         },
         {
           label: 'No',

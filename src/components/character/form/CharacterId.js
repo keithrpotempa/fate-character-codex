@@ -3,11 +3,13 @@ import { Divider, Dropdown, Form, Label } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 import TypeDetail from "../types/TypeDetail";
 
-const CharacterId = props => {
-  const character = props.character; 
-  const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
-  const resetCharacter = props.resetCharacter;
-  const characterInProgress = props.characterInProgress;
+const CharacterId = ({
+  character,
+  setCharacterSubTypeDetails,
+  resetCharacter,
+  characterInProgress,
+  setCharacter,
+}) => {
   const [characterTypeList, setCharacterTypeList] = useState([]);
   const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
 
@@ -34,7 +36,7 @@ const CharacterId = props => {
   const handleNameFieldChange = (evt, {name, value}) => {
     const stateToChange = {...character};
     stateToChange[name] = value;
-    props.setCharacter(stateToChange)
+    setCharacter(stateToChange)
   }
 
   const handleTypeFieldChange = (evt, {name, value}) => {
@@ -54,7 +56,7 @@ const CharacterId = props => {
       stateToChange["subtype"] = "";
       setCharacterSubTypeDetails({});
     }
-    props.setCharacter(stateToChange)
+    setCharacter(stateToChange)
   }
 
   const handleSubTypeFieldChange = (evt, {name, value}) => {
@@ -65,7 +67,7 @@ const CharacterId = props => {
     stateToChange[name] = value;
     // Set subtype details in state
     getCharacterSubtypeDetails(parseInt(value))
-    props.setCharacter(stateToChange)
+    setCharacter(stateToChange)
   }
 
   useEffect(() => {

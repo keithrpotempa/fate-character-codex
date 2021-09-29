@@ -14,9 +14,12 @@ import CharacterSheetMunger from "./CharacterSheetMunger"
 // TODO: possibly can be merged back with munger 
 // now that skill list and stunt list have been lifted 
 
-const CharacterSheet = props => {
-  const skillList = props.skillList;
-  const stuntList = props.stuntList;
+const CharacterSheet = ({
+  skillList,
+  stuntList,
+  characterId,
+  history,
+}) => {
   
   const [character, setCharacter] = useState({});
   const [characterSubType, setCharacterSubType] = useState({});
@@ -24,7 +27,7 @@ const CharacterSheet = props => {
   const [isLoading, setIsLoading] = useState(true);
   
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
-  const id = props.characterId;
+  const id = characterId;
 
   const getCharacter = () => {
     return ApiManager.get("characters", id)
@@ -47,7 +50,7 @@ const CharacterSheet = props => {
         {
           label: 'Yes',
           onClick: () => ApiManager.delete("characters", id)
-            .then(props.history.push("/characters"))
+            .then(history.push("/characters"))
         },
         {
           label: 'No',

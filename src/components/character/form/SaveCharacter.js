@@ -3,30 +3,34 @@ import { Button } from "semantic-ui-react";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
+import { useAuth } from "../../../hooks/useAuth";
 
-const SaveCharacter = props => {
-  const character = props.character;
-  const aspects = props.aspects;
-  const skills = props.skills;
-  const stunts = props.stunts;
-  const isLoading = props.isLoading;
-  const isEdit = props.match.params.characterId ? true : false;
-  const setIsLoading= props.setIsLoading;
+const SaveCharacter = ({
+  character,
+  aspects,
+  skills,
+  stunts,
+  isLoading,
+  setIsLoading,
+  history,
+  match,
+}) => {
 
-  // NOTE: JSON.parse is the reverse of JSON.stringify
-  const user = JSON.parse(sessionStorage.getItem("credentials"));
+  const isEdit = match.params.characterId ? true : false;
+
+  const { user } = useAuth();
 
   /* ------------ OBJECT CONSTRUCTORS ------------ */
   const constructCharacter = () => {
     const characterToSave = {
       name: character.name,
       characterSubTypeId: parseInt(character.subtype),
-      userId: user.id,
+      userId: user.uid,
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()
     }
     if (isEdit) {
-      characterToSave.id = props.match.params.characterId;
+      characterToSave.id = match.params.characterId;
       characterToSave.created = character.created
     }
     else {
@@ -204,10 +208,10 @@ const SaveCharacter = props => {
       if (isEdit) {
         // IF edit, delete everything before starting
         // TODO: figure out a better way?
-        await ApiManager.purgeCharacter(props.match.params.characterId);
+        await ApiManager.purgeCharacter(match.params.characterId);
       }
       saveAll(char).then(() => {
-        props.history.push("/characters")
+        history.push("/characters")
       });
     }
   }

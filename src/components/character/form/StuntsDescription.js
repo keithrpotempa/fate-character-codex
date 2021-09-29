@@ -1,9 +1,10 @@
 import React from "react";
 import { Form, TextArea } from "semantic-ui-react";
 
-const StuntDescription = props => {
-  const stuntList = props.stuntList;
-  const selectedStunt = props.stunt;
+const StuntDescription = ({
+  stuntList,
+  selectedStunt
+}) => {
   const stuntToDisplay = stuntList.find(stunt => stunt.id === parseInt(selectedStunt))
   const stuntDescription = stuntToDisplay ? stuntToDisplay.description : "" 
 

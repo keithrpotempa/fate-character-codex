@@ -2,9 +2,7 @@ import React from "react";
 import { Divider, List } from "semantic-ui-react";
 import CharacterSkillRow from "./CharacterSkillRow"
 
-const CharacterSkills = props => {
-  const skills = props.skills;
-
+const CharacterSkills = ({ skills }) => {
   return (
     <>
       <Divider horizontal>

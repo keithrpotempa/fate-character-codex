@@ -3,11 +3,13 @@ import { Divider, Grid } from "semantic-ui-react";
 import AspectInput from "./AspectInput"
 import ApiManager from "../../../modules/ApiManager"
 
-const AspectForm = props => {
-  const type = props.type;
-  const aspects = props.aspects;
-  const maxAspects = props.maxAspects;
-  const aspectComment = props.aspectComment;
+const AspectForm = ({
+  type,
+  aspects,
+  maxAspects,
+  aspectComment,
+  setAspects,
+}) => {
   const [aspectTypes, setAspectTypes] = useState([]);
 
   const handleFieldChange = evt => {
@@ -28,7 +30,7 @@ const AspectForm = props => {
         name: evt.target.value,
         aspectTypeId: getAspectTypeId()
       }
-      props.setAspects(stateToChange)
+      setAspects(stateToChange)
   }
 
   const getAspectTypes = () => {

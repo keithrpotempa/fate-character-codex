@@ -4,9 +4,11 @@ import { Card, Button, Icon, Label } from "semantic-ui-react"
 import "./Character.css";
 import ApiManager from "../../modules/ApiManager";
 
-const CharacterCard = props => {
-  const character = props.character;
-  const activeUser = props.activeUser;
+const CharacterCard = ({
+  character,
+  activeUser,
+  handleDelete,
+}) => {
   const [highConcept, setHighConcept] = useState("");
   const [subType, setSubType] = useState("");
   
@@ -49,7 +51,7 @@ const CharacterCard = props => {
                   </Button>
                 </Link>  
                 <Button className="ui button"
-                    onClick={props.handleDelete}
+                    onClick={handleDelete}
                   >
                   <Icon fitted className="trash alternate outline"/>
                 </Button>

@@ -8,13 +8,14 @@ import { Checkbox, Icon, List, Popup } from "semantic-ui-react";
   - character type's max stress
 */
 
-const StressBoxes = props => {
-  const type = props.type;
-  const stressType = props.stressType;
-  const bothStressTypes = props.bothStressTypes;
-  const rating = props.skillRating;
-  const stressMax = props.stressMax;
-  const stressComment = props.stressComment;
+const StressBoxes = ({
+  type,
+  stressType,
+  bothStressTypes,
+  rating,
+  stressMax,
+  stressComment,
+}) => {
 
   const makeJSXBoxes = (numberOfBoxes) => {
     let checkboxes = [];

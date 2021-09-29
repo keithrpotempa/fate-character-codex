@@ -11,7 +11,14 @@ import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
 import EditCharacter from "./EditCharacter";
 
-const MainForm = props => {
+const MainForm = ({
+  skillList,
+  stuntList,
+  characterTypeList,
+  characterSubTypeList,
+  match,
+  history
+}) => {
   const EMPTY_ASPECT = { name: "", characterId: "", id: "" }
 
   const EMPTY_ASPECTS = [
@@ -41,11 +48,6 @@ const MainForm = props => {
 
 
   /* ------------------ STATES ------------------*/
-  const skillList = props.skillList;
-  const stuntList = props.stuntList;
-  const characterTypeList = props.characterTypeList;
-  const characterSubTypeList = props.characterSubTypeList;
-
   const [isLoading, setIsLoading] = useState(true);
   const [step, setStep] = useState(1);
 
@@ -267,9 +269,9 @@ const MainForm = props => {
       <Container>
         {/* If this is an edit, render the component that 
           retrieves all the characters' data */}
-        {props.match.params.characterId
+        {match.params.characterId
           ? <EditCharacter 
-            characterId={props.match.params.characterId}
+            characterId={match.params.characterId}
             setCharacter={setCharacter}
             characterAspects={characterAspects}
             setCharacterAspects={setCharacterAspects}
@@ -357,7 +359,8 @@ const MainForm = props => {
                     stunts={characterStunts}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
-                    {...props}
+                    match={match}
+                    history={history}
                   />
               }
             </div>

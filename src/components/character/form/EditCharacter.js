@@ -9,23 +9,20 @@ import ApiManager from "../../../modules/ApiManager";
   database and puts it in state in the format of the form
 */
 
-const EditCharacter = props => {
-  const characterSubTypeList = props.characterSubTypeList;
+const EditCharacter = ({
+  characterSubTypeList,
+  characterId,
+  setCharacter,
+  setCharacterSubTypeDetails,
+  characterAspects,
+  setCharacterAspects,
+  characterSkills,
+  setCharacterSkills,
+  characterStunts,
+  setCharacterStunts,
+  setIsLoading,
+}) => {
 
-  const characterId = props.characterId;
-  const setCharacter = props.setCharacter;
-  const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
-
-  const characterAspects = props.characterAspects;
-  const setCharacterAspects = props.setCharacterAspects;
-  
-  const characterSkills = props.characterSkills;
-  const setCharacterSkills = props.setCharacterSkills;
-  
-  const characterStunts = props.characterStunts;
-  const setCharacterStunts = props.setCharacterStunts;
-  
-  const setIsLoading = props.setIsLoading;
 
   const editSetup = () => {
     ApiManager.get("characters", characterId)

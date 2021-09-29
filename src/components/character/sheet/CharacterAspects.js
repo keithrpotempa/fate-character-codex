@@ -2,9 +2,7 @@ import React from "react";
 import { Divider, List } from "semantic-ui-react";
 
 
-const CharacterAspects = props => {
-  const aspects = props.aspects
-
+const CharacterAspects = ({aspects}) => {
   return (
     <>
       <Divider horizontal>
