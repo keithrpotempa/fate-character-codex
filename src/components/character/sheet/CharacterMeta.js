@@ -5,14 +5,14 @@ import ApiManager from "../../../modules/ApiManager";
 const CharacterMeta = ({ userId, character }) => {
   const [user, setUser] = useState({})
 
-  const getUser = () => {
-    if (userId) {
-      ApiManager.get("users", userId)
-        .then(setUser)
-    }
-  }
-
   useEffect(() => {
+    const getUser = () => {
+      if (userId) {
+        ApiManager.get("users", userId)
+          .then(setUser)
+      }
+    }
+    
     getUser();
   }, [userId])
 

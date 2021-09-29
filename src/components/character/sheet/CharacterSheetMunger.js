@@ -5,6 +5,9 @@ import ApiManager from "../../../modules/ApiManager";
 import CharacterMeta from "./CharacterMeta";
 import SheetPreview from "./SheetPreview";
 
+// FIXME: revisiting this after a long time; this logic should be a custom hook 
+// and this component removed or merged with parent/child
+
 // This component is a child of CharacterSheet,
 // it retrieves characterSkills and characterStunts data
 // and munges them into the proper format 
@@ -37,67 +40,67 @@ const CharacterSheetMunger = ({
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
   
-  
-  const getCharacterSkills = () => {
-    ApiManager.getCharacterAttributes("characterSkills", id)
-      .then(rawSkills => {
-        // Before the skills are sorted into a weird format to output
-        // we extract the rating of will and physique to use later
-        // If they don't have a rating, consider it to be zero
-        const will = rawSkills.find( ({skillId}) => skillId === 18)
-        will ? setWillRating(will.skillRating) : setWillRating(0)
-  
-        const physique = rawSkills.find( ({skillId}) => skillId === 12)
-        physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
-        return rawSkills
-      })
-        .then(setFormattedSkills)
-  }
-  
-  const setFormattedSkills = (rawSkills) => {
-    const stateToChange = {...characterSkills};
-    // TODO: Make this loop more adaptable to different range of rating levels
-    for (let i = 1; i < 7; i++) {
-      stateToChange[i] = skillsByRating(rawSkills, i)
-    } 
-    setCharacterSkills(stateToChange)
-  }
-  
-  const skillsByRating = (rawSkills, rating) => {
-    // Converting the format of the db to the format of the form's state
-    const filteredSkills = rawSkills.filter(skill => skill.skillRating === rating)
-
-    // Note: at initial rendering, 
-    // the skillList is not accessible at this point
-    // so this trick keeps it from crashing...   
-    let formattedSkills = []
-    if (skillList.length > 0) {
-      // Map a new array with the actual names of the skills,
-      // found by matching the fk id from characterSkills and the skill list
-      formattedSkills = filteredSkills.map(skill => skillList[skill.skillId].name)
-    }
-    return formattedSkills;
-  }
-  
-  const getCharacterStunts = () => {
-    ApiManager.getCharacterAttributes("characterStunts", id)
-      .then(stunts => {
-        let formattedStunts = [];
-        // To keep this from crashing if stuntList hasn't loaded yet...
-        if (stuntList.length > 0) {
-          // Map a new array with the actual names of the stunts,
-          // found by matching the fk id from characterStunts and the stunt list
-          formattedStunts = stunts.map(stunt => stuntList[stunt.stuntId])
-        }
-        setCharacterStunts(formattedStunts)
-      });
-  }
-
+  // FIXME: Mentioned above, this should be from a custom hook
   useEffect(()=>{
+    const skillsByRating = (rawSkills, rating) => {
+      // Converting the format of the db to the format of the form's state
+      const filteredSkills = rawSkills.filter(skill => skill.skillRating === rating)
+  
+      // Note: at initial rendering, 
+      // the skillList is not accessible at this point
+      // so this trick keeps it from crashing...   
+      let formattedSkills = []
+      if (skillList.length > 0) {
+        // Map a new array with the actual names of the skills,
+        // found by matching the fk id from characterSkills and the skill list
+        formattedSkills = filteredSkills.map(skill => skillList[skill.skillId].name)
+      }
+      return formattedSkills;
+    }
+
+    const getCharacterStunts = () => {
+      ApiManager.getCharacterAttributes("characterStunts", id)
+        .then(stunts => {
+          let formattedStunts = [];
+          // To keep this from crashing if stuntList hasn't loaded yet...
+          if (stuntList.length > 0) {
+            // Map a new array with the actual names of the stunts,
+            // found by matching the fk id from characterStunts and the stunt list
+            formattedStunts = stunts.map(stunt => stuntList[stunt.stuntId])
+          }
+          setCharacterStunts(formattedStunts)
+        });
+    }
+
+    const setFormattedSkills = (rawSkills) => {
+      const stateToChange = {...characterSkills};
+      // TODO: Make this loop more adaptable to different range of rating levels
+      for (let i = 1; i < 7; i++) {
+        stateToChange[i] = skillsByRating(rawSkills, i)
+      } 
+      setCharacterSkills(stateToChange)
+    }
+
+    const getCharacterSkills = () => {
+      ApiManager.getCharacterAttributes("characterSkills", id)
+        .then(rawSkills => {
+          // Before the skills are sorted into a weird format to output
+          // we extract the rating of will and physique to use later
+          // If they don't have a rating, consider it to be zero
+          const will = rawSkills.find( ({skillId}) => skillId === 18)
+          will ? setWillRating(will.skillRating) : setWillRating(0)
+    
+          const physique = rawSkills.find( ({skillId}) => skillId === 12)
+          physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
+          return rawSkills
+        })
+          .then(setFormattedSkills)
+    }
+
     getCharacterSkills();
     // FIXME: uncomment when you get skills to work...
     getCharacterStunts();
-  }, [skillList, stuntList])
+  }, [characterSkills, id, skillList, stuntList])
   
   return (
     <>

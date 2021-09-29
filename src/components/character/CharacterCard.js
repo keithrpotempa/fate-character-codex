@@ -17,7 +17,7 @@ const CharacterCard = ({
       .then(setHighConcept)
     ApiManager.get("characterSubTypes", character.characterSubTypeId)
       .then(subType => setSubType(subType.name))
-  }, [])
+  }, [character])
 
   return (
     <>

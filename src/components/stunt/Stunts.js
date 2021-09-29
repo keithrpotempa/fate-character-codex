@@ -18,17 +18,17 @@ const Stunts = props => {
     setFilter(value);
   }
 
-  const filterStunts = () => {
-    const stuntList = stunts
-      .filter(stunt => stunt.skillId === parseInt(filter))
-    setFilteredStunts(stuntList)
-  }
-
   useEffect(() => {
+    const filterStunts = () => {
+      const stuntList = stunts
+        .filter(stunt => stunt.skillId === parseInt(filter))
+      setFilteredStunts(stuntList)
+    }
+
     if (filter !== "") {
       filterStunts();
     }
-  }, [filter])
+  }, [filter, stunts])
 
   return (
     <>

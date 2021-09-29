@@ -17,17 +17,17 @@ const Types = props => {
     setFilter(value);
   }
 
-  const filterSubTypes = () => {
-    const subtypes = subTypeList
-      .filter(subtype => subtype.characterTypeId === parseInt(filter))
-    setFilteredSubTypes(subtypes);
-  }
-
   useEffect(() => {
+    const filterSubTypes = () => {
+      const subtypes = subTypeList
+        .filter(subtype => subtype.characterTypeId === parseInt(filter))
+      setFilteredSubTypes(subtypes);
+    }
+
     if (filter !== "") {
       filterSubTypes();
     }
-  }, [filter])
+  }, [filter, subTypeList])
 
   return (
     <>

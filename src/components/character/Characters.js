@@ -71,27 +71,27 @@ const Characters = props => {
     ))
   }
 
-  const filterCharacters = () => {
-    let characterList = characters;
-    if (filter.type !== "") {
-      characterList = characterList
-        .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
-    }
-    if (filter.subtype !== "") {
-      characterList = characterList
-        .filter(character => character.characterSubTypeId === parseInt(filter.subtype))
-    }
-    setFilteredCharacters(characterList);
-  }
-
   useEffect(() => {
+    const filterCharacters = () => {
+      let characterList = characters;
+      if (filter.type !== "") {
+        characterList = characterList
+          .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
+      }
+      if (filter.subtype !== "") {
+        characterList = characterList
+          .filter(character => character.characterSubTypeId === parseInt(filter.subtype))
+      }
+      setFilteredCharacters(characterList);
+    }
+
     getCharacters();
     getCharacterTypeList();
     getCharacterSubTypeList();
     if (filter.type !== "" || filter.subtype !== "") {
       filterCharacters();
     }
-  }, [filter])
+  }, [filter, characters])
 
   return (
     <>

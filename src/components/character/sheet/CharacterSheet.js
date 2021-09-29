@@ -23,24 +23,13 @@ const CharacterSheet = ({
   
   const [character, setCharacter] = useState({});
   const [characterSubType, setCharacterSubType] = useState({});
-  const [characterAspects, setCharacterAspects] = useState([]);
+  // FIXME: what's going on here? Are we not setting character aspects?
+  // const [characterAspects, setCharacterAspects] = useState([]);
+  const [characterAspects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
   const id = characterId;
-
-  const getCharacter = () => {
-    return ApiManager.get("characters", id)
-      .then(character => {
-        setCharacter(character)
-        ApiManager.get("characterSubTypes", character.characterSubTypeId)
-          .then(setCharacterSubType)
-      });
-  }
-
-  const getCharacterAspects = () => {
-    return ApiManager.getCharacterAttributes("characterAspects", id)
-  }
 
   const handleDelete = (id) => {
     confirmAlert({
@@ -61,10 +50,24 @@ const CharacterSheet = ({
   }
 
   useEffect(()=>{
+    const getCharacter = () => {
+      return ApiManager.get("characters", id)
+        .then(character => {
+          setCharacter(character)
+          ApiManager.get("characterSubTypes", character.characterSubTypeId)
+            .then(setCharacterSubType)
+        });
+    }
+  
+    // FIXME: not setting character aspects?
+    const getCharacterAspects = () => {
+      return ApiManager.getCharacterAttributes("characterAspects", id)
+    }
+
     getCharacter();
     getCharacterAspects();
     setIsLoading(false);
-  }, [])
+  }, [id])
 
   return (
     <>

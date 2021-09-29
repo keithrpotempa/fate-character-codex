@@ -8,18 +8,18 @@ const TypeDetail = props => {
   const id = props.subTypeId;
   const verbose = props.verbose;
 
-  const getSubType = () => {
-    ApiManager.get("characterSubTypes", id)
-      .then(subType => {
-        setSubType(subType)
-        // After setting the subtype, reach out for the type
-        // using the subtype's characterTypeId
-        ApiManager.get("characterTypes", subType.characterTypeId)
-          .then(setType)
-      })
-  }
-  
   useEffect(()=>{
+    const getSubType = () => {
+      ApiManager.get("characterSubTypes", id)
+        .then(subType => {
+          setSubType(subType)
+          // After setting the subtype, reach out for the type
+          // using the subtype's characterTypeId
+          ApiManager.get("characterTypes", subType.characterTypeId)
+            .then(setType)
+        })
+    }
+
     getSubType();
   }, [id])
 
