@@ -6,19 +6,15 @@ import Stunts from "./stunt/Stunts";
 
 import Characters from "./character/Characters";
 import CharacterSheet from "./character/sheet/CharacterSheet";
-import CharacterForm from "./character/form/CharacterForm";
 import MainForm from "./character/form/MainForm";
 import Types from "./character/types/Types";
 import TypeDetail from "./character/types/TypeDetail";
 
-import Login from "./user/Login"
-import Register from "./user/Register"
-
 import ApiManager from "../modules/ApiManager"
+import { useAuth } from "../hooks/useAuth";
 
 const ApplicationViews = props => {
-  const hasUser = props.hasUser;
-  const setUser = props.setUser;
+  const { user } = useAuth();
 
   // Since the vast majority of components use the static mechanics lists
   // I've 'lifted' these components here, to be shared by all
@@ -130,7 +126,7 @@ const ApplicationViews = props => {
         path="/characters/:characterId/edit"
         render={props => {
           // TODO: this also needs to be the user that made this character
-          if (hasUser) {
+          if (user) {
             return <MainForm
               characterTypeList={characterTypeList} 
               characterSubTypeList={characterSubTypeList}
@@ -147,7 +143,7 @@ const ApplicationViews = props => {
         exact
         path="/new-character"
         render={props => {
-          if (hasUser) {
+          if (user) {
             return <MainForm 
             characterTypeList={characterTypeList} 
             characterSubTypeList={characterSubTypeList}
@@ -158,20 +154,6 @@ const ApplicationViews = props => {
           } else {
             return <Redirect to="/login" />;
           }
-        }}
-      />
-      
-      {/* -------------------USER------------------- */}
-      <Route 
-        path="/login"
-        render={props => {
-          return <Login setUser={setUser} {...props} />;
-        }}
-      />
-      <Route 
-        path="/register"
-        render={props => {
-          return <Register setUser={setUser} {...props} />;
         }}
       />
     </>

@@ -2,33 +2,23 @@ import React, {useState } from "react";
 import { withRouter } from "react-router-dom";
 import { Menu, Segment } from 'semantic-ui-react'
 import "../../App.css";
+import { useAuth } from "../../hooks/useAuth";
 import "./NavBar.css"
 
-const NavBar = props => {
+const NavBar = (props) => {
+  const { user, signin, signout } = useAuth();
   const [activeItem, setActiveItem] = useState('home')
 
-  const hasUser = props.hasUser;
+  const NAV_ITEMS = ['characters', 'types', 'skills', 'stunts']
 
   const handleLogout = () => {
-    props.clearUser();
+    signout();
     props.history.push('/');
   }
 
   const handleItemClick = (e, { name, to }) => {
     setActiveItem(name)
     props.history.push(to)
-  }
-
-  const MenuItem = name => {
-    return (
-      <Menu.Item
-      name={name}
-      link={true}
-      to={`/${name}`}
-      active={activeItem === name}
-      onClick={handleItemClick}
-    />
-    )
   }
 
   return (
@@ -38,12 +28,16 @@ const NavBar = props => {
       </div>
       <div className="navbar-container">
         <Menu inverted size="huge" color="blue">
-          {/* {MenuItem("home")} */}
-          {MenuItem("characters")}
-          {MenuItem("types")}
-          {MenuItem("skills")}
-          {MenuItem("stunts")}
-          {hasUser 
+          {NAV_ITEMS.map((name) => 
+            <Menu.Item
+              name={name}
+              link={true}
+              to={`/${name}`}
+              active={activeItem === name}
+              onClick={handleItemClick}
+            />
+          )}
+          {user 
             ? <Menu.Item
                 name='logout'
                 to={"/logout"}
@@ -53,10 +47,11 @@ const NavBar = props => {
               /> 
             : <Menu.Item
                 name='login'
-                to={"/login"}
-                link={true}
-                active={activeItem === 'login'}
-                onClick={handleItemClick}
+                // to={"/login"}
+                // link={true}
+                // active={activeItem === 'login'}
+                // onClick={handleItemClick}
+                onClick={signin}
               /> 
           }
         </Menu>
@@ -64,72 +59,5 @@ const NavBar = props => {
     </Segment>
   )
 }
-
-/*
-const NavBar = props => {
-
-
-  return (
-    <header>
-
-      <nav>
-        <ul className="container">
-          <li>
-            <NavLink 
-              className="nav-link" 
-              activeClassName="active" 
-              exact to="/"
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              className="nav-link" 
-              activeClassName="active" 
-              exact to="/characters"
-            >
-              Characters
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              className="nav-link" 
-              activeClassName="active" 
-              exact to="/skills"
-            >
-              Skills
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              className="nav-link" 
-              activeClassName="active" 
-              exact to="/stunts"
-            >
-              Stunts
-            </NavLink>
-          </li>
-          {hasUser 
-            ? <li>
-                <span className="nav-link" onClick={handleLogout}> Logout </span>
-              </li>
-            : <li>
-                <NavLink 
-                  className="nav-link" 
-                  activeClassName="active" 
-                  exact to="/login"
-                >
-                  Login
-                </NavLink>
-              </li>
-          }
-          
-        </ul>
-      </nav>
-    </header>
-  )
-}
-*/
 
 export default withRouter(NavBar);

@@ -5,16 +5,6 @@ const localURL = "http://localhost:5002"
 
 const ApiManager = {
   // ---------------- FIREBASE ----------------
-
-  // WIP: saving everything at once
-  // saveCharacter(char, aspects, skills, stunts) {
-  //   const updates = {}
-  //   // Character
-  //   updates[`/characters/${char.id}`] = char;
-  //   updates[`//${char.id}`] = char;
-  //   updates[`/${char}/${char.id}`] = char;
-  //   updates[`/${char}/${char.id}`] = char;
-  // },
   update(dataType, key, objectToPush) {
     // This method is used in combination with getKey to
     // 1) Get a reference (key) for a character-to-create
