@@ -17,6 +17,10 @@
     <script defer src="/__/firebase/9.1.0/firebase-analytics-compat.js"></script>
     <script defer src="/__/firebase/9.1.0/firebase-remote-config-compat.js"></script>
     <script defer src="/__/firebase/9.1.0/firebase-performance-compat.js"></script>
+
+    <!-- Semantic UI stylesheet -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
+
     <!-- 
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
@@ -39,6 +43,8 @@
     </style>
   </head>
   <body>
+  <div id="root"></div>
+  <!--
     <div id="message">
       <h2>Welcome</h2>
       <h1>Firebase Hosting Setup Complete</h1>
@@ -46,7 +52,7 @@
       <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
-
+  -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
