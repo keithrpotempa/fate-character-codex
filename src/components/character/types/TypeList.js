@@ -9,6 +9,7 @@ import SubTypeCard from "./SubTypeCard";
   (filtered or not) and renders them with pagination
 */
 const TypeList = props => {
+  const typeList = props.typeList;
   const subTypeList = props.subTypeList;
 
   // State related to pagination 
@@ -27,8 +28,9 @@ const TypeList = props => {
       <Card.Group itemsPerRow={3}>
         {currentData.map(subType => 
             <SubTypeCard
-              key={subType.id}
+              key={`subType-${subType.id}`}
               subType={subType}
+              type={typeList.find(type => type.id === subType.characterTypeId)}
             />  
           )
         }

@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Icon, Label } from "semantic-ui-react"
 import "./Character.css";
+import ApiManager from "../../modules/ApiManager";
 
-const CharacterCard = props => {
-  const character = props.character;
-  const activeUser = props.activeUser;
-  const user = props.character.user;
+const CharacterCard = ({
+  character,
+  activeUser,
+  handleDelete,
+}) => {
+  const [highConcept, setHighConcept] = useState("");
+  const [subType, setSubType] = useState("");
+  
+  useEffect(() => {
+    ApiManager.getHighConcept(character.id)
+      .then(setHighConcept)
+    ApiManager.get("characterSubTypes", character.characterSubTypeId)
+      .then(subType => setSubType(subType.name))
+  }, [character])
 
   return (
     <>
@@ -14,8 +25,9 @@ const CharacterCard = props => {
         raised
         // href={`/characters/${character.id}`}
         header={character.name}
-        description={props.highConcept}
-        meta={`by: ${user.email}`}
+        description={highConcept}
+        // FIXME: 
+        // meta={`by: ${user.email}`}
         extra={
           <>
             {/* A label detailing what character subtype they are  */}
@@ -23,11 +35,13 @@ const CharacterCard = props => {
               tag
               color="blue"
               size="tiny"
-              content={props.character.characterSubType.name}
+              content={subType}
             />
             {/* Conditionally rendering these buttons 
             if the user created this character */}
-            {activeUser && activeUser.id === user.id
+            {/* FIXME: */}
+            {/* {activeUser && activeUser.id === user.id */}
+            {true
             ? <div className="flex-end">
                 <Link to={`/characters/${character.id}`}>
                   <Button 
@@ -37,7 +51,7 @@ const CharacterCard = props => {
                   </Button>
                 </Link>  
                 <Button className="ui button"
-                    onClick={props.handleDelete}
+                    onClick={handleDelete}
                   >
                   <Icon fitted className="trash alternate outline"/>
                 </Button>

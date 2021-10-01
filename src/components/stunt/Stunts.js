@@ -1,49 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Container, Dropdown } from "semantic-ui-react"
-import ApiManager from "../../modules/ApiManager";
 import StuntList from "./StuntList"
 
 // This is a parent component of StuntList
-// it retrieves the stunts, handles filters
+// ~~it retrieves the stunts,~~ handles filters
 // and passes them down to StuntList to render
+
+// TODO: Might be able to collapse this into stunt list now that 
+// the lists are coming from props
 const Stunts = props => {
-  const [stunts, setStunts] = useState([]);
+  const stunts = props.stuntList;
+  const skills = props.skillList;
   const [filteredStunts, setFilteredStunts] = useState([]);
   const [filter, setFilter] = useState("");
-
-  const [skills, setSkills] = useState([]);
-
-  const getStunts = () => {
-    return ApiManager.getAllExpand("stunts", "skill")
-        /* Sorting the stunts alphabetically
-          https://stackoverflow.com/a/45544166*/
-      .then(stunts => stunts.sort((a,b) => a.name.localeCompare(b.name)))
-      .then(setStunts);
-  }
-
-  const getSkills = () => {
-    return ApiManager.getAll("skills")
-      .then(skills => skills.sort((a, b) => a.name.localeCompare(b.name)))
-      .then(setSkills)
-  }  
 
   const handleFilterChange = (evt, {name, value}) => {
     setFilter(value);
   }
 
-  const filterStunts = () => {
-    const stuntList = stunts
-      .filter(stunt => stunt.skillId === parseInt(filter))
-    setFilteredStunts(stuntList)
-  }
-
   useEffect(() => {
-    getStunts();
-    getSkills();
+    const filterStunts = () => {
+      const stuntList = stunts
+        .filter(stunt => stunt.skillId === parseInt(filter))
+      setFilteredStunts(stuntList)
+    }
+
     if (filter !== "") {
       filterStunts();
     }
-  }, [filter])
+  }, [filter, stunts])
 
   return (
     <>
@@ -70,12 +55,14 @@ const Stunts = props => {
             ))}
           />
         </div>
-        <StuntList 
+        <StuntList
+          key="stuntlist" 
           stunts={ 
             filter !== ""
               ? filteredStunts
               : stunts
           } 
+          skills={skills}
         />
       </Container>
     </>

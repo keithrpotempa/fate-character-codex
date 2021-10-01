@@ -8,13 +8,13 @@ import { Grid, Icon, Input, Popup } from "semantic-ui-react";
     - the character type's maxConsequences value
 */
 
-const ConsequenceInputs = props => {
-  const willRating = props.willRating;
-  const physiqueRating = props.physiqueRating;
-
-  const type = props.type;
-  const maxConsequence = props.maxConsequence;
-  const consequenceComment = props.consequenceComment;
+const ConsequenceInputs = ({
+  willRating,
+  physiqueRating,
+  type,
+  maxConsequence,
+  consequenceComment,
+}) => {
 
   // If skill rating is 5+, they also get an extra mild consequence slot 
   const extraInputs = (stressType) => {

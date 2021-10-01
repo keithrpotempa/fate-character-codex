@@ -2,9 +2,10 @@ import React from "react";
 import { List, Label } from "semantic-ui-react";
 
 
-const CharacterSkillRow = props => {
-  const skillRow = props.skillRow;
-  const rating = props.rating;
+const CharacterSkillRow = ({
+  skillRow,
+  rating,
+}) => {
 
   //FIXME: "each child in a list should contain a unique key" warning
   return (

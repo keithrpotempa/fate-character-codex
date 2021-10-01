@@ -10,6 +10,7 @@ import StuntCard from "./StuntCard"
 */
 const StuntList = props => {
   const stunts = props.stunts;
+  const skills = props.skills;
 
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
@@ -25,10 +26,11 @@ const StuntList = props => {
   return (
     <>
         <Card.Group itemsPerRow={3}>
-          {currentData.map(stunt => 
+          {currentData.map((stunt, index) => 
             <StuntCard
-              key={stunt.id}
+              key={`stunt-${stunt.id}`}
               stunt={stunt}
+              skill={skills.find(skill => skill.id === stunt.skillId)}
             />  
           )}
         </Card.Group>

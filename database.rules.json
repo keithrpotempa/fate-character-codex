@@ -1,0 +1,37 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "characters": {
+      ".indexOn": [
+        "characterSubTypeId",
+        "id"
+      ]
+    },
+    "characterSkills": {
+      ".indexOn": [
+        "characterId"
+      ]
+    },
+    "characterAspects": {
+      ".indexOn": [
+        "characterId"
+      ]
+    },
+    "characterStunts": {
+      ".indexOn": [
+        "characterId"
+      ]
+    },
+    "characterTypes": {
+      ".indexOn": [
+        "id"
+      ]
+    },
+    "characterSubTypes": {
+      ".indexOn": [
+        "id"
+      ]
+    }
+  }
+}

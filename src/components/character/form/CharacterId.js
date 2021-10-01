@@ -3,11 +3,13 @@ import { Divider, Dropdown, Form, Label } from "semantic-ui-react";
 import ApiManager from "../../../modules/ApiManager";
 import TypeDetail from "../types/TypeDetail";
 
-const CharacterId = props => {
-  const character = props.character; 
-  const setCharacterSubTypeDetails = props.setCharacterSubTypeDetails;
-  const resetCharacter = props.resetCharacter;
-  const characterInProgress = props.characterInProgress;
+const CharacterId = ({
+  character,
+  setCharacterSubTypeDetails,
+  resetCharacter,
+  characterInProgress,
+  setCharacter,
+}) => {
   const [characterTypeList, setCharacterTypeList] = useState([]);
   const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
 
@@ -34,7 +36,7 @@ const CharacterId = props => {
   const handleNameFieldChange = (evt, {name, value}) => {
     const stateToChange = {...character};
     stateToChange[name] = value;
-    props.setCharacter(stateToChange)
+    setCharacter(stateToChange)
   }
 
   const handleTypeFieldChange = (evt, {name, value}) => {
@@ -43,18 +45,18 @@ const CharacterId = props => {
     // If they're a PC, set their subtype for them
     // (there's no subtype for PCs)
     // Otherwise, wipe any chosen subtype
-    if (value === "1") {
+    if (value === "0") {
       // TODO: make this less dependent on being hard-coded
-      stateToChange["subtype"] = "6"; // 6 is the PC subtype
+      stateToChange["subtype"] = "5"; // 5 is the PC subtype
       // Force a get of the subtype details:
-      getCharacterSubtypeDetails(6); 
+      getCharacterSubtypeDetails(5); 
     } else {
       // If they're changing the character's type, 
       // clear any chosen subtype info
       stateToChange["subtype"] = "";
       setCharacterSubTypeDetails({});
     }
-    props.setCharacter(stateToChange)
+    setCharacter(stateToChange)
   }
 
   const handleSubTypeFieldChange = (evt, {name, value}) => {
@@ -65,7 +67,7 @@ const CharacterId = props => {
     stateToChange[name] = value;
     // Set subtype details in state
     getCharacterSubtypeDetails(parseInt(value))
-    props.setCharacter(stateToChange)
+    setCharacter(stateToChange)
   }
 
   useEffect(() => {
@@ -109,7 +111,7 @@ const CharacterId = props => {
         />
         {// Don't display this option until a type is chosen
           // And don't display it if they're a PC (no additional choice necessary)
-          character.type === "" || character.type === "1"
+          character.type === "" || character.type === "0"
             ? <></>
             : <Dropdown 
                 required

@@ -2,19 +2,23 @@ import React from "react";
 import { Dropdown } from 'semantic-ui-react';
 import "../Character.css"
 
-const StuntsDropdown = props => {
+const StuntsDropdown = ({
+  filter,
+  stuntList,
+  setCharacterStunts,
+  characterStunts,
+  x,
+}) => {
   // Ick
-  const stuntList = props.filter === "" 
-    ? props.stuntList 
-    : props.stuntList.filter(stunt => stunt.skillId === props.filter);
-  const setCharacterStunts = props.setCharacterStunts;
-  const characterStunts = props.characterStunts;
+  const filteredStuntList = filter === "" 
+    ? stuntList 
+    : stuntList.filter(stunt => stunt.skillId === filter);
 
-  const stuntToEdit = props.characterStunts[props.x]
+  const stuntToEdit = characterStunts[x]
 
   const handleFieldChange = (evt, {name, value}) => {
     const stuntId = value;
-    const row = props.x;
+    const row = x;
     const stateToChange = {...characterStunts}
     stateToChange[row] = stuntId
     setCharacterStunts(stateToChange);
@@ -27,10 +31,10 @@ const StuntsDropdown = props => {
           clearable
           placeholder="Select Stunt"
           selection
-          id={`stunts--${props.x}`}
+          id={`stunts--${x}`}
           onChange={handleFieldChange}
           value={stuntToEdit}
-          options={stuntList.map(stunt => (
+          options={filteredStuntList.map(stunt => (
             {
               key: `${stunt.id}`, 
               value: `${stunt.id}`,

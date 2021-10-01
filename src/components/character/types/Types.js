@@ -1,43 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Container, Dropdown } from "semantic-ui-react";
-import ApiManager from "../../../modules/ApiManager";
 import TypeList from "./TypeList";
 
+/*
+  This is a parent component of the type list,
+  ~~it retrieves the stunts,~~ handles filters
+  and passes them down to the list to render
+*/
 const Types = props => {
-  const [typeList, setTypeList] = useState([]);
-  const [subTypeList, setSubTypeList] = useState([]);
+  const typeList = props.characterTypeList;
+  const subTypeList = props.characterSubTypeList;
   const [filteredSubTypes, setFilteredSubTypes] = useState([]);
   const [filter, setFilter] = useState("")
-
-  const getTypeList = () => {
-    return ApiManager.getAll("characterTypes")
-      .then(types => types.sort((a,b) => a.name.localeCompare(b.name)))
-      .then(setTypeList);
-  }
-
-  const getSubTypeList = () => {
-    return ApiManager.getAllSubTypesWithDetails()
-      .then(subtypes => subtypes.sort((a,b) => a.name.localeCompare(b.name)))
-      .then(setSubTypeList);
-  }
 
   const handleFilterChange = (evt, {name, value}) => {
     setFilter(value);
   }
 
-  const filterSubTypes = () => {
-    const subtypes = subTypeList
-      .filter(subtype => subtype.characterTypeId === parseInt(filter))
-    setFilteredSubTypes(subtypes);
-  }
-
   useEffect(() => {
-    getTypeList();
-    getSubTypeList();
+    const filterSubTypes = () => {
+      const subtypes = subTypeList
+        .filter(subtype => subtype.characterTypeId === parseInt(filter))
+      setFilteredSubTypes(subtypes);
+    }
+
     if (filter !== "") {
       filterSubTypes();
     }
-  }, [filter])
+  }, [filter, subTypeList])
 
   return (
     <>
@@ -70,6 +60,7 @@ const Types = props => {
               ? filteredSubTypes 
               : subTypeList
           }
+          typeList={typeList}
         />
       </Container>
     </>

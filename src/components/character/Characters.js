@@ -18,9 +18,10 @@ const Characters = props => {
   const [filter, setFilter] = useState({type: "", subtype: ""})
 
   const getCharacters = () => {
-    ApiManager.getCharacterList()
+    return ApiManager.getAll("characters")
         /* Sorting characters alphabetically
           https://stackoverflow.com/a/45544166*/
+      .then(ApiManager.arrayify)
       .then(characters => characters.sort((a,b) => a.name.localeCompare(b.name)))
       .then(setCharacters)
   }
@@ -70,27 +71,27 @@ const Characters = props => {
     ))
   }
 
-  const filterCharacters = () => {
-    let characterList = characters;
-    if (filter.type !== "") {
-      characterList = characterList
-        .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
-    }
-    if (filter.subtype !== "") {
-      characterList = characterList
-        .filter(character => character.characterSubTypeId === parseInt(filter.subtype))
-    }
-    setFilteredCharacters(characterList);
-  }
-
   useEffect(() => {
+    const filterCharacters = () => {
+      let characterList = characters;
+      if (filter.type !== "") {
+        characterList = characterList
+          .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
+      }
+      if (filter.subtype !== "") {
+        characterList = characterList
+          .filter(character => character.characterSubTypeId === parseInt(filter.subtype))
+      }
+      setFilteredCharacters(characterList);
+    }
+
     getCharacters();
     getCharacterTypeList();
     getCharacterSubTypeList();
     if (filter.type !== "" || filter.subtype !== "") {
       filterCharacters();
     }
-  }, [filter])
+  }, [filter, characters])
 
   return (
     <>
@@ -98,7 +99,7 @@ const Characters = props => {
         <div className="filter-div">
           <Button
             type="button"
-            onClick={() => {props.history.push("/characters/new")}}
+            onClick={() => {props.history.push("/new-character")}}
           >
             <Icon className="add user"></Icon>
           </Button>

@@ -1,81 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
-import { Container, Button, Icon} from "semantic-ui-react"
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
-import CharacterMeta from "./CharacterMeta";
-import SheetPreview from "./SheetPreview";
+import CharacterSheetMunger from "./CharacterSheetMunger"
 
-const CharacterSheet = props => {
+// This parent component (of all character sheet components) 
+// gets some initial data necessary to render a character sheet, 
+// and passes it on to the munger to organize and format
+
+// It is used by the character sheet view (detail route)
+// but not in the review stage of the character creation process
+
+// TODO: possibly can be merged back with munger 
+// now that skill list and stunt list have been lifted 
+
+const CharacterSheet = ({
+  skillList,
+  stuntList,
+  characterId,
+  history,
+}) => {
+  
   const [character, setCharacter] = useState({});
   const [characterSubType, setCharacterSubType] = useState({});
-  const [aspects, setAspects] = useState([]);
-  const [skills, setSkills] = useState({
-    6: [],
-    5: [],
-    4: [],
-    3: [],
-    2: [],
-    1: []
-  });
-  const [physiqueRating, setPhysiqueRating] = useState({});
-  const [willRating, setWillRating] = useState({});
-  const [stunts, setStunts] = useState([]);
+  // FIXME: what's going on here? Are we not setting character aspects?
+  // const [characterAspects, setCharacterAspects] = useState([]);
+  const [characterAspects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
-  const id = props.characterId;
-
-  const getCharacter = () => {
-    ApiManager.getCharacterWithType(id)
-      .then(character => {
-        setCharacter(character)
-        setCharacterSubType(character.characterSubType)
-      });
-  }
-
-  const getAspects = () => {
-    ApiManager.getCharacterAspects(id)
-      .then(setAspects);
-  }
-
-  const getSkills = () => {
-    ApiManager.getCharacterSkills(id)
-      .then(rawSkills => {
-          // Before the skills are sorted into a weird format to output
-          // we extract the rating of will and physique to use later
-          // If they don't have a rating, consider it to be zero
-          const will = rawSkills.find( ({skillId}) => skillId === 18)
-          will ? setWillRating(will.skillRating) : setWillRating(0)
-
-          const physique = rawSkills.find( ({skillId}) => skillId === 12)
-          physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
-          return rawSkills
-      })
-      .then(setFormattedSkills)
-  }
-
-  const setFormattedSkills = (rawSkills) => {
-    const stateToChange = {...skills};
-    // TODO: Make this loop more adaptable to different range of rating levels
-    for (let i = 1; i < 7; i++) {
-      stateToChange[i] = skillsByRating(rawSkills, i)
-    } 
-    setSkills(stateToChange)
-  }
-
-  const skillsByRating = (rawSkills, rating) => {
-    // Converting the format of the db to the format of the form's state
-    const filteredSkills = rawSkills.filter(skill => skill.skillRating === rating)
-    const formattedSkills = filteredSkills.map(skill => skill.skill.name)
-    return formattedSkills;
-  }
-
-  const getStunts = () => {
-    ApiManager.getCharacterStunts(id)
-      .then(setStunts);
-  }
+  const id = characterId;
 
   const handleDelete = (id) => {
     confirmAlert({
@@ -85,7 +39,7 @@ const CharacterSheet = props => {
         {
           label: 'Yes',
           onClick: () => ApiManager.delete("characters", id)
-            .then(props.history.push("/characters"))
+            .then(history.push("/characters"))
         },
         {
           label: 'No',
@@ -96,47 +50,38 @@ const CharacterSheet = props => {
   }
 
   useEffect(()=>{
+    const getCharacter = () => {
+      return ApiManager.get("characters", id)
+        .then(character => {
+          setCharacter(character)
+          ApiManager.get("characterSubTypes", character.characterSubTypeId)
+            .then(setCharacterSubType)
+        });
+    }
+  
+    // FIXME: not setting character aspects?
+    const getCharacterAspects = () => {
+      return ApiManager.getCharacterAttributes("characterAspects", id)
+    }
+
     getCharacter();
-    getAspects();
-    getSkills();
-    getStunts();
+    getCharacterAspects();
     setIsLoading(false);
-  }, [])
+  }, [id])
 
   return (
     <>
-      <Container text>
-        <SheetPreview 
-          character={character}
-          aspects={aspects}
-          skills={skills}
-          stunts={stunts}
-          physiqueRating={physiqueRating}
-          willRating={willRating}
-          characterSubType={characterSubType}
-        />
-          {/* Conditionally rendering these buttons 
-            if the user created this character */}
-          {activeUser && character.userId === activeUser.id 
-            ? <div className="flex-end">
-                <Link to={`/characters/${id}/edit`}>
-                  <Button disabled={isLoading} >
-                    <Icon fitted className="edit outline"/>
-                  </Button>
-                </Link>
-                <Button
-                  className="ui button"
-                  type="button"
-                  onClick={() => handleDelete(id)}
-                  disabled={isLoading}
-                >
-                  <Icon fitted className="trash alternate outline"/>
-                </Button>
-              </div>
-            : <></>
-          }
-          <CharacterMeta character={character} userId={character.userId}/>
-      </Container>
+      <CharacterSheetMunger
+        id={id}
+        character={character}
+        characterSubType={characterSubType}
+        characterAspects={characterAspects}
+        skillList={skillList}
+        stuntList={stuntList}
+        isLoading={isLoading}
+        handleDelete={handleDelete}
+        activeUser={activeUser}
+      />
     </>
   )
 }

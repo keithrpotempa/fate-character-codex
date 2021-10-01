@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Paginator from "react-hooks-paginator";
 import { confirmAlert } from 'react-confirm-alert';
-import { Card, Container } from "semantic-ui-react"
+import { Card } from "semantic-ui-react"
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
 
@@ -10,9 +10,12 @@ import ApiManager from "../../modules/ApiManager";
   this receives a list of characters
   (filtered or not) and renders them with pagination
 */
-const CharacterList = props => {
+const CharacterList = ({
+  characters,
+  getCharacters,
+}) => {
+  // FIXME:
   const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
-  const characters = props.characters;
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
   const pageLimit = 8;
@@ -20,20 +23,20 @@ const CharacterList = props => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
 
-  const getHighConcept = (character) => {
-    const aspects = character.characterAspects;
-    /* 
-      Filter out everything that isn't 
-      a High Concept (type of 1)
-      Return the .name property of the only aspect
-      remaining in the array  
-      (there's only ever one High Aspect)
-    */
-    const highConcept = aspects.filter(aspect => {
-      return aspect.aspectTypeId === 1;
-    })[0].name
-    return highConcept;
-  }
+  // const getHighConcept = (character) => {
+  //   const aspects = character.characterAspects;
+  //   /* 
+  //     Filter out everything that isn't 
+  //     a High Concept (type of 1)
+  //     Return the .name property of the only aspect
+  //     remaining in the array  
+  //     (there's only ever one High Aspect)
+  //   */
+  //   const highConcept = aspects.filter(aspect => {
+  //     return aspect.aspectTypeId === 1;
+  //   })[0].name
+  //   return highConcept;
+  // }
 
   const handleDelete = (id) => {
     confirmAlert({
@@ -43,7 +46,7 @@ const CharacterList = props => {
         {
           label: 'Yes',
           onClick: () => ApiManager.delete("characters", id)
-            .then(props.getCharacters)
+            .then(getCharacters)
         },
         {
           label: 'No',
@@ -68,7 +71,6 @@ const CharacterList = props => {
               <CharacterCard
                 key={character.id}
                 character={character}
-                highConcept={getHighConcept(character)}
                 handleDelete={() => handleDelete(character.id)}
                 activeUser={activeUser}
               />

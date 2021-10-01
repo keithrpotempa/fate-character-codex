@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Divider, Grid } from "semantic-ui-react";
 import { confirmAlert } from 'react-confirm-alert';
 import "../Character.css";
-import ApiManager from "../../../modules/ApiManager";
 import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
@@ -12,85 +11,62 @@ import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
 import EditCharacter from "./EditCharacter";
 
-const MainForm = props => {
-  /* ------------------ STATES ------------------*/
-  const [isLoading, setIsLoading] = useState(true);
-  const [step, setStep] = useState(1);
+const MainForm = ({
+  skillList,
+  stuntList,
+  characterTypeList,
+  characterSubTypeList,
+  match,
+  history
+}) => {
+  const EMPTY_ASPECT = { name: "", characterId: "", id: "" }
 
-  const [skillList, setSkillList] = useState([]);
-  const [stuntList, setStuntList] = useState([]);
+  const EMPTY_ASPECTS = [
+    {...EMPTY_ASPECT, aspectTypeId: 1},
+    {...EMPTY_ASPECT, aspectTypeId: 2},
+    {...EMPTY_ASPECT, aspectTypeId: 3},
+    {...EMPTY_ASPECT, aspectTypeId: 3},
+    {...EMPTY_ASPECT, aspectTypeId: 3},
+  ];
 
-  const [character, setCharacter] = useState({name: "", type: "", subtype: ""});
-  const [characterSubTypeDetails, setCharacterSubTypeDetails] = useState();
-
-  // Seeding a default array of aspects
-  // presently with their types (currently) hard coded
-  const [characterAspects, setCharacterAspects] = useState([
-    { name: "", aspectTypeId: 1 },
-    { name: "", aspectTypeId: 2 },
-    { name: "", aspectTypeId: 3 },    
-    { name: "", aspectTypeId: 3 },
-    { name: "", aspectTypeId: 3 },
-    { name: "", aspectTypeId: 3 }
-  ])
-
-  const [characterSkills, setCharacterSkills] = useState({
+  const EMPTY_SKILLS = {
     6: [],
     5: [],
     4: [],
     3: [],
     2: [],
     1: []
-  });
+  }
 
-  const [characterStunts, setCharacterStunts] = useState({
+  const EMPTY_STUNTS = {
     5: "",
     4: "",
     3: "",
     2: "",
     1: ""
-  });
+  }
 
-  // TODO: utilize useReducer instead
-  // https://reactjs.org/docs/hooks-reference.html#usereducer
+
+  /* ------------------ STATES ------------------*/
+  const [isLoading, setIsLoading] = useState(true);
+  const [step, setStep] = useState(1);
+
+
+  const [character, setCharacter] = useState({name: "", type: "", subtype: ""});
+  const [characterSubTypeDetails, setCharacterSubTypeDetails] = useState();
+
+  // Seeding a default array of aspects
+  // presently with their types (currently) hard coded
+  const [characterAspects, setCharacterAspects] = useState(EMPTY_ASPECTS);
+
+  const [characterSkills, setCharacterSkills] = useState(EMPTY_SKILLS);
+
+  const [characterStunts, setCharacterStunts] = useState(EMPTY_STUNTS);
+
   const resetCharacter = () => {
-    setCharacterAspects([
-      { name: "", aspectTypeId: 1 },
-      { name: "", aspectTypeId: 2 },
-      { name: "", aspectTypeId: 3 },    
-      { name: "", aspectTypeId: 3 },
-      { name: "", aspectTypeId: 3 },
-      { name: "", aspectTypeId: 3 }
-    ]);
-    setCharacterSkills({
-      6: [],
-      5: [],
-      4: [],
-      3: [],
-      2: [],
-      1: []
-    });
-    setCharacterStunts({
-      5: "",
-      4: "",
-      3: "",
-      2: "",
-      1: ""
-    })
-  }
-
-  /* ------------------ GETS & STATE SETS  ------------------*/
-  const getSkillList = () => {
-    return ApiManager.getAll("skills")
-      .then(setSkillList);      
-  }
-
-  const getStuntList = () => {
-    return ApiManager.getAll("stunts")
-      /* Sorting stunts alphabetically
-        https://stackoverflow.com/a/45544166*/
-      .then(stuntList => stuntList.sort((a, b) => a.name.localeCompare(b.name) ))
-      .then(setStuntList); 
+    setCharacterAspects(EMPTY_ASPECTS);
+    setCharacterSkills(EMPTY_SKILLS);
+    setCharacterStunts(EMPTY_STUNTS);
   }
 
   /* ------------------ EVENT HANDLERS  ------------------*/
@@ -251,7 +227,6 @@ const MainForm = props => {
       case 3: 
         return <SkillsForm 
           skillList={skillList}
-          setSkillList={setSkillList}
           characterSkills={characterSkills}
           setCharacterSkills={setCharacterSkills}
           maxSkillRating={characterSubTypeDetails.maxSkillRating}
@@ -265,7 +240,6 @@ const MainForm = props => {
           setCharacterStunts={setCharacterStunts}
           skillList={skillList}
           stuntList={stuntList}
-          setStuntList={setStuntList}
           type={characterSubTypeDetails.name}
           maxStunts={characterSubTypeDetails.maxStunts}
           stuntComment={characterSubTypeDetails.stuntComment}
@@ -287,8 +261,6 @@ const MainForm = props => {
   }
 
   useEffect(() => {
-    getSkillList();
-    getStuntList();
     setIsLoading(false);
   }, [])
 
@@ -297,9 +269,9 @@ const MainForm = props => {
       <Container>
         {/* If this is an edit, render the component that 
           retrieves all the characters' data */}
-        {props.match.params.characterId
+        {match.params.characterId
           ? <EditCharacter 
-            characterId={props.match.params.characterId}
+            characterId={match.params.characterId}
             setCharacter={setCharacter}
             characterAspects={characterAspects}
             setCharacterAspects={setCharacterAspects}
@@ -309,6 +281,7 @@ const MainForm = props => {
             setCharacterStunts={setCharacterStunts}
             setIsLoading={setIsLoading}
             setCharacterSubTypeDetails={setCharacterSubTypeDetails}
+            characterSubTypeList = {characterSubTypeList}
           />
           : <></>
         }
@@ -386,7 +359,8 @@ const MainForm = props => {
                     stunts={characterStunts}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
-                    {...props}
+                    match={match}
+                    history={history}
                   />
               }
             </div>

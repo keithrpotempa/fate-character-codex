@@ -4,14 +4,16 @@ import { Divider, Grid } from "semantic-ui-react";
 import StuntRow from "./StuntRow";
 import "../Character.css";
 
-const StuntsForm = props => {
-  const setCharacterStunts = props.setCharacterStunts;
-  const characterStunts = props.characterStunts;
-  const stuntList = props.stuntList;
-  const setStuntList = props.setStuntList;
-  const type = props.type;
-  const maxStunts = props.maxStunts;
-  const stuntComment = props.stuntComment;
+const StuntsForm = ({
+  setCharacterStunts,
+  characterStunts,
+  stuntList,
+  setStuntList,
+  skillList,
+  type,
+  maxStunts,
+  stuntComment,
+}) => {
 
   const createStuntRow = () => {
     let stuntRows = [];
@@ -23,7 +25,7 @@ const StuntsForm = props => {
           setStuntList={setStuntList} 
           characterStunts={characterStunts} 
           setCharacterStunts={setCharacterStunts} 
-          skillList={props.skillList}
+          skillList={skillList}
         />
       )
     }

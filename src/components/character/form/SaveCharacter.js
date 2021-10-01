@@ -3,31 +3,38 @@ import { Button } from "semantic-ui-react";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import ApiManager from "../../../modules/ApiManager";
+import { useAuth } from "../../../hooks/useAuth";
 
-const SaveCharacter = props => {
-  const character = props.character;
-  const aspects = props.aspects;
-  const skills = props.skills;
-  const stunts = props.stunts;
-  const isLoading = props.isLoading;
-  const isEdit = props.match.params.characterId ? true : false;
-  const setIsLoading= props.setIsLoading;
+const SaveCharacter = ({
+  character,
+  aspects,
+  skills,
+  stunts,
+  isLoading,
+  setIsLoading,
+  history,
+  match,
+}) => {
 
-  // NOTE: JSON.parse is the reverse of JSON.stringify
-  const user = JSON.parse(sessionStorage.getItem("credentials"));
+  const isEdit = match.params.characterId ? true : false;
+
+  const { user } = useAuth();
 
   /* ------------ OBJECT CONSTRUCTORS ------------ */
   const constructCharacter = () => {
     const characterToSave = {
       name: character.name,
       characterSubTypeId: parseInt(character.subtype),
-      userId: user.id,
+      userId: user.uid,
       created: new Date().toLocaleString(),
       modified: new Date().toLocaleString()
     }
     if (isEdit) {
-      characterToSave.id = parseInt(props.match.params.characterId);
+      characterToSave.id = match.params.characterId;
       characterToSave.created = character.created
+    }
+    else {
+      characterToSave.id = ApiManager.getKey("characters");
     }
     return characterToSave;
   }
@@ -43,7 +50,7 @@ const SaveCharacter = props => {
 
   const constructSkill = (skill, rating, characterId) => {
     const skillToSave = {
-      characterId: parseInt(characterId),
+      characterId: characterId,
       skillId: parseInt(skill),
       skillRating: parseInt(rating)
     }
@@ -52,7 +59,7 @@ const SaveCharacter = props => {
 
   const constructStunt = (stuntId, characterId) => {
     const stuntToSave = {
-      characterId: parseInt(characterId),
+      characterId: characterId,
       stuntId: parseInt(stuntId),
     }
     return stuntToSave;
@@ -138,16 +145,20 @@ const SaveCharacter = props => {
   }
 
   /* ------------ SAVING FUNCTIONS ------------ */
-  // Made this an async function to allow it to have a .then after
-  async function purge() {
-    // IF edit, delete everything before starting
-    // TODO: figure out a better way?
-    if (isEdit) {
-      const userId = props.match.params.characterId;
-      return ApiManager.delete("characters", userId)
-    } else {
-      return character
-    }
+
+  const saveAll = (char) => {
+    return Promise.all([
+      saveCharacter(char),
+      saveAspects(char.id),
+      saveSkills(char.id),
+      saveStunts(char.id),
+    ])
+  }
+
+  const saveCharacter = (char) => {
+    // NOTE: at this point, the character's reference on firebase already exists (getKey)
+    // we are just updating it with all the information (whether saving or editing)
+    return ApiManager.update("characters", char.id, char);
   }
 
   const saveAspects = (charId) => {
@@ -155,10 +166,9 @@ const SaveCharacter = props => {
       // This keeps blank aspects from being posted
       if (aspect.name !== "") {
         const aspectToSave = constructAspect(aspect, charId)
-        ApiManager.post("characterAspects", aspectToSave)
+        return ApiManager.push('characterAspects', aspectToSave)
       } 
     })
-    return charId;
   }
 
   const saveSkills = (charId) => {
@@ -167,12 +177,11 @@ const SaveCharacter = props => {
       const rating = row
       if (skillsAtRating.length > 0) {
         skillsAtRating.forEach(skill => {
-          const skillToSave = constructSkill(skill, rating, charId)
-          ApiManager.post("characterSkills", skillToSave)
+          const skillToSave = constructSkill(skill, rating, charId);
+          return ApiManager.push("characterSkills", skillToSave);
         })
       }
     }
-    return charId; 
   }
 
   const saveStunts = (charId) => {
@@ -182,28 +191,28 @@ const SaveCharacter = props => {
       if (stunts[row]) {
         const stuntId = stunts[row]
         const stuntToSave = constructStunt(stuntId, charId)
-        ApiManager.post("characterStunts", stuntToSave)
+        return ApiManager.push("characterStunts", stuntToSave)
       }
     }  
-    return charId;
   }
 
+
   /* ------------ SAVING ------------ */
-  const handleSave = evt => {
+  // FIREBASE APPROACH
+  async function handleSave(evt) {
     evt.preventDefault();
     // SAVING CHARACTER
     const char = constructCharacter()
     if (validChar(char)) {
       setIsLoading(true);
-      purge()
-        .then(resp => {
-            // Not updating if everything is deleted
-            ApiManager.post("characters", char)
-              .then(resp => saveAspects(resp.id))
-              .then(saveSkills)
-              .then(saveStunts) 
-              .then(() => props.history.push("/characters"))
-        })
+      if (isEdit) {
+        // IF edit, delete everything before starting
+        // TODO: figure out a better way?
+        await ApiManager.purgeCharacter(match.params.characterId);
+      }
+      saveAll(char).then(() => {
+        history.push("/characters")
+      });
     }
   }
 

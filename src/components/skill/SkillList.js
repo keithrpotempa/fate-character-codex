@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Paginator from "react-hooks-paginator";
 import { Card, Container } from "semantic-ui-react"
-import ApiManager from "../../modules/ApiManager";
 import SkillCard from "./SkillCard"
 
 const SkillList = props => {
-  const [skills, setSkills] = useState([]);
+  const skills = props.skillList;
 
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
@@ -14,14 +13,7 @@ const SkillList = props => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
 
-
-  const getSkills = () => {
-    return ApiManager.getAll("skills")
-      .then(setSkills);
-  }
-
   useEffect(() => {
-    getSkills();
     setCurrentData(skills.slice(offset, offset + pageLimit))
   }, [offset, skills])
 
@@ -32,9 +24,9 @@ const SkillList = props => {
           <h1>Skills</h1>
         </div>
         <Card.Group stackable itemsPerRow={3}>
-          {currentData.map(skill => 
+          {currentData.map((skill, index) => 
             <SkillCard
-              key={skill.id}
+              key={`skill-${skill.id}`}
               skill={skill}
             />  
           )}

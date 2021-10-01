@@ -1,13 +1,17 @@
 import React from "react";
 import { Input } from "semantic-ui-react";
 
-const AspectInput = props => {
-  const index = props.index;
-  const aspectTypes = props.aspectTypes;
+const AspectInput = ({
+  index,
+  aspectTypes,
+  aspects,
+  handleFieldChange,
+  typeId,
+}) => {
 
-  const aspectToEdit = props.aspects[index];
+  const aspectToEdit = aspects[index];
   const aspectName = aspectToEdit ? aspectToEdit.name : ""
-  const aspectType = aspectTypes.find( ({id}) => id === parseInt(props.typeId) )
+  const aspectType = aspectTypes.find( ({id}) => id === parseInt(typeId) )
   const aspectTypeName = aspectType ? aspectType.name : ""
   // TODO: make this way less hackey and hardcoded
 
@@ -18,7 +22,7 @@ const AspectInput = props => {
         type="text"
         key={`aspect-${index}`}
         required
-        onChange={props.handleFieldChange}
+        onChange={handleFieldChange}
         className="aspect"
         id={`aspect-${index}`}
         placeholder={aspectTypeName}

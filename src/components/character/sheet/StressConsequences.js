@@ -4,14 +4,17 @@ import StressBoxes from "./StressBoxes";
 import ConsequenceInputs from "./ConsequenceInputs";
 import "../Character.css";
 
-const StressConsequences = props => {
-  const characterSubType = props.characterSubType;
-  const type = characterSubType.name;
-  const stressMax = characterSubType.stressMax; 
-  const bothStressTypes = characterSubType.bothStressTypes;
-  const stressComment = characterSubType.stressComment;
-  const maxConsequence = characterSubType.maxConsequence;
-  const consequenceComment = characterSubType.consequenceComment;
+const StressConsequences = ({
+  characterSubType,
+  type,
+  stressMax,
+  bothStressTypes,
+  stressComment,
+  maxConsequence,
+  consequenceComment,
+  physiqueRating,
+  willRating,
+}) => {
 
   /* 
     This component renders:
@@ -35,7 +38,7 @@ const StressConsequences = props => {
               ? <>
                   <StressBoxes 
                     stressType="physical" 
-                    skillRating={props.physiqueRating}
+                    skillRating={physiqueRating}
                     stressMax={stressMax}
                     bothStressTypes={bothStressTypes}
                     type={type}
@@ -43,7 +46,7 @@ const StressConsequences = props => {
                   />
                   <StressBoxes 
                     stressType="mental" 
-                    skillRating={props.willRating}
+                    skillRating={willRating}
                     stressMax={stressMax}
                     bothStressTypes={bothStressTypes}
                     type={type}
@@ -52,9 +55,9 @@ const StressConsequences = props => {
                 </>
               : <StressBoxes 
                   stressType="" 
-                  skillRating={props.physiqueRating > props.willRating  
-                    ? props.physiqueRating
-                    : props.willRating
+                  skillRating={physiqueRating > willRating  
+                    ? physiqueRating
+                    : willRating
                   }
                   stressMax={stressMax}
                   bothStressTypes={bothStressTypes}
@@ -65,8 +68,8 @@ const StressConsequences = props => {
           </Grid.Column>
           <Grid.Column width={10}>
             <ConsequenceInputs 
-              willRating={props.willRating} 
-              physiqueRating={props.physiqueRating}
+              willRating={willRating} 
+              physiqueRating={physiqueRating}
               type={type}
               maxConsequence={maxConsequence}
               consequenceComment={consequenceComment}

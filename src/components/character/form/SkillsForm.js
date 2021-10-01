@@ -2,13 +2,15 @@ import React from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import SkillsMultiSelector from "./SkillsMultiSelector"
 
-const SkillsForm = props => {
-  const type = props.type;
-  const maxSkillRating = props.maxSkillRating;
-  const skillRatingComment = props.skillRatingComment;
-  const skillChoiceComment = props.skillChoiceComment;
-  const setCharacterSkills = props.setCharacterSkills;
-  const characterSkills = props.characterSkills;
+const SkillsForm = ({
+  type,
+  maxSkillRating,
+  skillRatingComment,
+  skillChoiceComment,
+  setCharacterSkills,
+  characterSkills,
+  skillList,
+}) => {
   
   // Value comes from the Semantic UI component
   // https://medium.com/@omallek/a-beginners-story-to-using-semantic-ui-react-24002da738e5
@@ -28,7 +30,7 @@ const SkillsForm = props => {
       skillSelectors.push(
         <SkillsMultiSelector 
           row={`${i}`} 
-          skillList={props.skillList} 
+          skillList={skillList} 
           characterSkills={characterSkills} 
           handleFieldChange={handleFieldChange} 
         /> 
