@@ -30,6 +30,7 @@ const NavBar = (props) => {
         <Menu inverted size="huge" color="blue">
           {NAV_ITEMS.map((name) => 
             <Menu.Item
+              key={name}
               name={name}
               link={true}
               to={`/${name}`}

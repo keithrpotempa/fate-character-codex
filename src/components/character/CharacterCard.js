@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Icon, Label } from "semantic-ui-react"
 
 import "./Character.css";
-import ApiManager from "../../modules/ApiManager";
 
 const CharacterCard = ({
   character,
+  highConcept,
+  subType,
   activeUser,
   handleDelete,
 }) => {
-
-  // FIXME: fetching should not happen this far down; fetch once all the high concepts and character subtypes
-  // at a higher level, and then pass them down to this card
-  const [highConcept, setHighConcept] = useState("");
-  const [subType, setSubType] = useState("");
-  
-  useEffect(() => {
-    ApiManager.getHighConcept(character.id)
-      .then(setHighConcept)
-    ApiManager.get("characterSubTypes", character.characterSubTypeId)
-      .then(subType => setSubType(subType.name))
-  }, [character])
 
   return (
     <>

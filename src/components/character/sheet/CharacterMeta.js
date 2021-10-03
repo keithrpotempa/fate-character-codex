@@ -22,7 +22,8 @@ const CharacterMeta = ({ userId, character }) => {
         <Container textAlign="right">
           <Item>
             <Item.Meta className="metadata">
-              <p>Created by: {user.email}</p>
+              {/* FIXME */}
+              {/* <p>Created by: {user.email}</p> */}
               <p>Date Created: {character.created}</p>
               <p>Last Modified: {character.modified}</p>
             </Item.Meta>

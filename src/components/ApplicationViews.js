@@ -27,11 +27,7 @@ const ApplicationViews = props => {
         return <Stunts {...props}/>
       }}/>
       <Route exact path="/types" render={props => {
-        return <Types 
-          characterTypeList={characterTypes}
-          characterSubTypeList={characterSubTypes} 
-          {...props}
-        />
+        return <Types {...props}/>
       }}/>
       <Route path="/types/:subTypeId(\d+)" 
         render={props => {
@@ -44,22 +40,10 @@ const ApplicationViews = props => {
       {/* -------------------CHARACTER------------------- */}
       {/* TODO: Make root be something other than characters */}
       <Route exact path="/" render={props => {
-        return <Characters
-          characterTypeList={characterTypes} 
-          characterSubTypeList={characterSubTypes}
-          skillList={skillList}
-          stuntList={stuntList}
-          {...props}
-        />
+        return <Characters {...props}/>
       }}/>
       <Route exact path="/characters" render={props => {
-        return <Characters
-          characterTypeList={characterTypes} 
-          characterSubTypeList={characterSubTypes}
-          skillList={skillList}
-          stuntList={stuntList}
-          {...props}
-        />
+        return <Characters {...props}/>
       }}/>
       <Route
         exact

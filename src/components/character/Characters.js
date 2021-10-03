@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Button, Icon, Container, Dropdown } from "semantic-ui-react"
+import React from "react";
+import { Container, Loader } from "semantic-ui-react"
 import CharacterList from "./CharacterList"
-import ApiManager from "../../modules/ApiManager";
+
 import { useFateRules } from "../../hooks/useFateRules";
+import { useCharacterList } from "../../hooks/useCharacters";
+import { useCharacterFilter } from "../../hooks/useCharacterFilter";
+import CharacterFilterDropdowns from "./CharacterFilterDropdowns";
 
 /* 
   Parent component of CharacterList
@@ -11,126 +14,33 @@ import { useFateRules } from "../../hooks/useFateRules";
   a filtered list of characters to CharacterList
 */
 const Characters = props => {
-  const { characterTypes, characterSubTypes } = useFateRules();
+  const { characterSubTypesByType, isLoading: fateRulesLoading } = useFateRules();
+  const { characters, isLoading: characterListLoading, highConcepts, deleteCharacter } = useCharacterList();
 
-  const [characters, setCharacters] = useState([]);
-  const [filteredCharacters, setFilteredCharacters] = useState([]);
-  /* State related to the filter dropdowns */ 
-
-  const [filter, setFilter] = useState({type: "", subtype: ""})
-
-  const getCharacters = () => {
-    return ApiManager.getAll("characters")
-        /* Sorting characters alphabetically
-          https://stackoverflow.com/a/45544166*/
-      .then(ApiManager.arrayify)
-      .then(characters => characters.sort((a,b) => a.name.localeCompare(b.name)))
-      .then(setCharacters)
-  }
-
-  const handleFilterFieldChange = (evt, {name, value}) => {
-    const stateToChange = {...filter};
-    stateToChange[name] = value;
-    // If they're a PC, set their subtype for them
-    // (there's no subtype for PCs)
-    // Otherwise, wipe any chosen subtype
-    if (name === "type") {
-      if (value === "1") {
-        stateToChange["subtype"] = "6";
-        // If they're changing the character's type, 
-        // clear any chosen subtype info
-      }
-      else {
-        stateToChange["subtype"] = "";
-      }
-    }
-    setFilter(stateToChange);
-  }
-
-  const renderSubtypes = () => {
-    let subtypes = characterSubTypes
-      .sort((a,b) => a.name.localeCompare(b.name))
-    if (filter.type !== "") {
-      subtypes = subtypes
-        .filter(subtype => subtype.characterTypeId === parseInt(filter.type))
-    }
-    return subtypes.map(type => (
-      {
-        key: `type-${type.id}`,
-        value: `${type.id}`,
-        text: `${type.name}`
-      }
-    ))
-  }
-
-  useEffect(() => {
-    const filterCharacters = () => {
-      let characterList = characters;
-      if (filter.type !== "") {
-        characterList = characterList
-          .filter(character => character.characterSubType.characterTypeId === parseInt(filter.type))
-      }
-      if (filter.subtype !== "") {
-        characterList = characterList
-          .filter(character => character.characterSubTypeId === parseInt(filter.subtype))
-      }
-      setFilteredCharacters(characterList);
-    }
-
-    getCharacters();
-
-    if (filter.type !== "" || filter.subtype !== "") {
-      filterCharacters();
-    }
-  }, [filter, characters])
+  const { filter, filteredCharacters, handleFilterFieldChange } = useCharacterFilter(characters, characterSubTypesByType);
 
   return (
     <>
       <Container>
-        <div className="filter-div">
-          <Button
-            type="button"
-            onClick={() => {props.history.push("/new-character")}}
-          >
-            <Icon className="add user"></Icon>
-          </Button>
-          <Dropdown
-            clearable 
-            selection
-            onChange={handleFilterFieldChange}
-            className="type"
-            name="type"
-            id="type"
-            placeholder="Filter by type"
-            value={filter.type}
-            options={characterTypes.map(type => (
-              {
-                key: `type-${type.id}`,
-                value: `${type.id}`,
-                text: `${type.name}`
-              }
-            ))}
-          />
-          <Dropdown 
-            clearable
-            selection
-            onChange={handleFilterFieldChange}
-            className="subtype"
-            name="subtype"
-            id="subtype"
-            placeholder="Character Subtype"
-            value={filter.subtype}
-            options={renderSubtypes()}
-          />
-        </div>
-        <CharacterList 
-          characters={
-            filter.type !== "" || filter.subtype !== ""
-              ? filteredCharacters
-              : characters
-          }
-          getCharacters={getCharacters}
+        <CharacterFilterDropdowns 
+          handleFilterFieldChange={handleFilterFieldChange}
+          filter={filter}
+          {...props}
         />
+        {fateRulesLoading || characterListLoading
+          ? <Loader active inline='centered' />
+          :  (
+            <CharacterList 
+              filteredCharacters={
+                filter.type !== "" || filter.subtype !== ""
+                  ? filteredCharacters
+                  : characters
+              }
+              highConcepts={highConcepts}
+              deleteCharacter={deleteCharacter} 
+            />
+          )
+        }
       </Container>
     </>
   )
