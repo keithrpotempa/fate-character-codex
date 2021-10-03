@@ -5,21 +5,24 @@ import { ProvideAuth } from "../hooks/useAuth";
 import ApplicationViews from "./ApplicationViews";
 import NavBar from "./nav/NavBar";
 import Footer from "./footer/Footer"
+import { ProvideFateRules } from "../hooks/useFateRules";
 
 const CharacterCodex = () => {
   return (
     <ProvideAuth>
-      <div className="App Site">
-          <div className="Site-content">
-            <div className="App-header">
-              <NavBar/>
+      <ProvideFateRules>
+        <div className="App Site">
+            <div className="Site-content">
+              <div className="App-header">
+                <NavBar/>
+              </div>
+              <div className="main">
+                <ApplicationViews/>
+              </div>
             </div>
-            <div className="main">
-              <ApplicationViews/>
-            </div>
-          </div>
-        <Footer/>
-      </div>
+          <Footer/>
+        </div>
+      </ProvideFateRules>
     </ProvideAuth>
   );
 }

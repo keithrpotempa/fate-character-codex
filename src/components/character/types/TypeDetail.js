@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card, Container, Icon } from "semantic-ui-react";
-import ApiManager from "../../../modules/ApiManager";
+import { useFateRules } from "../../../hooks/useFateRules";
 
-const TypeDetail = props => {
-  const [subType, setSubType] = useState({});
-  const [type, setType] = useState("");
-  const id = props.subTypeId;
-  const verbose = props.verbose;
+const TypeDetail = ({ subTypeId, verbose }) => {
+  const { characterSubTypes, characterTypes } = useFateRules();
 
-  useEffect(()=>{
-    const getSubType = () => {
-      ApiManager.get("characterSubTypes", id)
-        .then(subType => {
-          setSubType(subType)
-          // After setting the subtype, reach out for the type
-          // using the subtype's characterTypeId
-          ApiManager.get("characterTypes", subType.characterTypeId)
-            .then(setType)
-        })
-    }
-
-    getSubType();
-  }, [id])
+  const subType = characterSubTypes.find((st) => st.id === subTypeId);
+  const type = characterTypes.find((t) => t.id === subType.characterTypeId);
 
   return (
     <>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Icon, Container, Dropdown } from "semantic-ui-react"
 import CharacterList from "./CharacterList"
 import ApiManager from "../../modules/ApiManager";
+import { useFateRules } from "../../hooks/useFateRules";
 
 /* 
   Parent component of CharacterList
@@ -10,11 +11,12 @@ import ApiManager from "../../modules/ApiManager";
   a filtered list of characters to CharacterList
 */
 const Characters = props => {
+  const { characterTypes, characterSubTypes } = useFateRules();
+
   const [characters, setCharacters] = useState([]);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   /* State related to the filter dropdowns */ 
-  const [characterTypes, setCharacterTypes] = useState([]);
-  const [characterSubTypes, setCharacterSubTypes] = useState([]);
+
   const [filter, setFilter] = useState({type: "", subtype: ""})
 
   const getCharacters = () => {
@@ -24,16 +26,6 @@ const Characters = props => {
       .then(ApiManager.arrayify)
       .then(characters => characters.sort((a,b) => a.name.localeCompare(b.name)))
       .then(setCharacters)
-  }
-
-  const getCharacterTypeList = () => {
-    return ApiManager.getAll("characterTypes")
-      .then(setCharacterTypes)
-  }
-
-  const getCharacterSubTypeList = () => {
-    return ApiManager.getAll("characterSubTypes")
-      .then(setCharacterSubTypes)
   }
 
   const handleFilterFieldChange = (evt, {name, value}) => {
@@ -86,8 +78,7 @@ const Characters = props => {
     }
 
     getCharacters();
-    getCharacterTypeList();
-    getCharacterSubTypeList();
+
     if (filter.type !== "" || filter.subtype !== "") {
       filterCharacters();
     }

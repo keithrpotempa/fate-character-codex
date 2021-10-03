@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Dropdown } from "semantic-ui-react";
+import { useFateRules } from "../../../hooks/useFateRules";
 import TypeList from "./TypeList";
 
 /*
@@ -8,8 +9,8 @@ import TypeList from "./TypeList";
   and passes them down to the list to render
 */
 const Types = props => {
-  const typeList = props.characterTypeList;
-  const subTypeList = props.characterSubTypeList;
+  const { characterTypes, characterSubTypes } = useFateRules();
+
   const [filteredSubTypes, setFilteredSubTypes] = useState([]);
   const [filter, setFilter] = useState("")
 
@@ -19,15 +20,15 @@ const Types = props => {
 
   useEffect(() => {
     const filterSubTypes = () => {
-      const subtypes = subTypeList
-        .filter(subtype => subtype.characterTypeId === parseInt(filter))
-      setFilteredSubTypes(subtypes);
+      const filteredSubTypes = characterSubTypes
+        .filter(subtype => subtype.characterTypeId === parseInt(filter));
+      setFilteredSubTypes(filteredSubTypes);
     }
 
     if (filter !== "") {
       filterSubTypes();
     }
-  }, [filter, subTypeList])
+  }, [filter, characterSubTypes])
 
   return (
     <>
@@ -45,7 +46,7 @@ const Types = props => {
             id="type"
             placeholder="Filter by type"
             value={filter.type}
-            options={typeList.map(type => (
+            options={characterTypes.map(type => (
               {
                 key: `type-${type.id}`,
                 value: `${type.id}`,
@@ -55,12 +56,11 @@ const Types = props => {
           />
         </div>
         <TypeList 
-          subTypeList={
+          filteredSubTypes={
             filter !== ""
               ? filteredSubTypes 
-              : subTypeList
+              : characterSubTypes
           }
-          typeList={typeList}
         />
       </Container>
     </>
