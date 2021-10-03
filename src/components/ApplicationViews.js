@@ -21,17 +21,10 @@ const ApplicationViews = props => {
     <>
       {/* -------------------MECHANICS------------------- */}
       <Route path="/skills" render={props => {
-        return <SkillList 
-          skillList={skillList} 
-          {...props}
-        />
+        return <SkillList {...props}/>
       }}/>
       <Route path="/stunts" render={props => {
-        return <Stunts 
-          skillList={skillList} 
-          stuntList={stuntList} 
-          {...props}
-        />
+        return <Stunts {...props}/>
       }}/>
       <Route exact path="/types" render={props => {
         return <Types 

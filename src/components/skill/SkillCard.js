@@ -1,11 +1,7 @@
 import React from "react";
 import { Card } from "semantic-ui-react";
-// import "./Skill.css";
 
-const SkillCard = props => {
-  const name = props.skill.name;
-  const url = props.skill.url;
-  const summary = props.skill.summary;
+const SkillCard = ({ skill: {name, url, summary} }) => {
 
   return (
     <>
