@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Icon, Label } from "semantic-ui-react"
+
 import "./Character.css";
 import ApiManager from "../../modules/ApiManager";
 
@@ -9,6 +10,9 @@ const CharacterCard = ({
   activeUser,
   handleDelete,
 }) => {
+
+  // FIXME: fetching should not happen this far down; fetch once all the high concepts and character subtypes
+  // at a higher level, and then pass them down to this card
   const [highConcept, setHighConcept] = useState("");
   const [subType, setSubType] = useState("");
   
@@ -23,11 +27,10 @@ const CharacterCard = ({
     <>
       <Card 
         raised
-        // href={`/characters/${character.id}`}
         header={character.name}
         description={highConcept}
-        // FIXME: 
-        // meta={`by: ${user.email}`}
+        // TODO: Show the user that created it
+        // meta={`by: ${character.userId.email}`}
         extra={
           <>
             {/* A label detailing what character subtype they are  */}
@@ -39,9 +42,7 @@ const CharacterCard = ({
             />
             {/* Conditionally rendering these buttons 
             if the user created this character */}
-            {/* FIXME: */}
-            {/* {activeUser && activeUser.id === user.id */}
-            {true
+            {activeUser && activeUser?.uid === character.userId
             ? <div className="flex-end">
                 <Link to={`/characters/${character.id}`}>
                   <Button 

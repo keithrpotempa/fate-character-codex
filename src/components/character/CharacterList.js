@@ -4,6 +4,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import { Card } from "semantic-ui-react"
 import CharacterCard from "./CharacterCard";
 import ApiManager from "../../modules/ApiManager";
+import { useAuth } from "../../hooks/useAuth";
 
 /* 
   Child component of Characters
@@ -14,8 +15,8 @@ const CharacterList = ({
   characters,
   getCharacters,
 }) => {
-  // FIXME:
-  const activeUser = JSON.parse(sessionStorage.getItem("credentials"));
+  const { user } = useAuth();
+
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
   const pageLimit = 8;
@@ -70,9 +71,9 @@ const CharacterList = ({
           {currentData.map(character => 
               <CharacterCard
                 key={character.id}
+                activeUser={user}
                 character={character}
                 handleDelete={() => handleDelete(character.id)}
-                activeUser={activeUser}
               />
             )
           }
