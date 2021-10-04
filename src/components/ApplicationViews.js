@@ -11,11 +11,9 @@ import Types from "./character/types/Types";
 import TypeDetail from "./character/types/TypeDetail";
 
 import { useAuth } from "../hooks/useAuth";
-import { useFateRules } from "../hooks/useFateRules";
 
 const ApplicationViews = props => {
   const { user } = useAuth();
-  const { characterTypes, characterSubTypes, skillList, stuntList } = useFateRules();
 
   return (
     <>
@@ -49,14 +47,7 @@ const ApplicationViews = props => {
         exact
         path="/characters/:characterId"
         render={props => {
-          return <CharacterSheet 
-            characterId={props.match.params.characterId}
-            characterTypeList={characterTypes} 
-            characterSubTypeList={characterSubTypes}
-            skillList={skillList}
-            stuntList={stuntList}
-            {...props} 
-          />;
+          return <CharacterSheet characterId={props.match.params.characterId} {...props} />;
         }}
       />
       <Route
