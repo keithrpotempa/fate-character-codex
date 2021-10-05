@@ -5,13 +5,14 @@ import ConsequenceInputs from "./ConsequenceInputs";
 import "../Character.css";
 
 const StressConsequences = ({
-  characterSubType,
-  type,
-  stressMax,
-  bothStressTypes,
-  stressComment,
-  maxConsequence,
-  consequenceComment,
+  characterSubType: {
+    type,
+    stressMax,
+    bothStressTypes,
+    stressComment,
+    maxConsequence,
+    consequenceComment,
+  },
   physiqueRating,
   willRating,
 }) => {
@@ -22,8 +23,6 @@ const StressConsequences = ({
     consequence inputs
     for character preview
   */
-  
-  // STOPPED HERE. SHOULD THERE BE STRESS/CONSEQUENCE COMMENTS?
 
   return (
     <>

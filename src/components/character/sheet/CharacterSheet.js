@@ -1,6 +1,6 @@
 import React, { createContext, useMemo } from "react";
 import { useAuth } from "../../../hooks/useAuth";
-import { useCharacterSheet } from "../../../hooks/useCharacterSheet";
+import { useCharacterSheet } from "../../../hooks/characterSheet/useCharacterSheet";
 import { useFateRules } from "../../../hooks/useFateRules";
 
 import { Link } from "react-router-dom";
@@ -8,6 +8,10 @@ import { Container, Button, Icon} from "semantic-ui-react"
 
 import CharacterMeta from "./CharacterMeta";
 import SheetPreview from "./SheetPreview";
+import { useCharacterBasics } from "../../../hooks/characterSheet/useCharacterBasics";
+import { useCharacterAspects } from "../../../hooks/characterSheet/useCharacterAspects";
+import { useCharacterStunts } from "../../../hooks/characterSheet/useCharacterStunts";
+import { useCharacterSkills } from "../../../hooks/characterSheet/useCharacterSkills";
 
 // This parent component (of all character sheet components) 
 // gets some initial data necessary to render a character sheet, 
@@ -26,14 +30,16 @@ const CharacterSheet = ({ characterId }) => {
 
   const { stuntList, skillList } = useFateRules();
 
+  const { character, characterSubType } = useCharacterBasics(characterId);
+  const { characterAspects } = useCharacterAspects(characterId);
+  const { characterStunts } = useCharacterStunts(characterId, stuntList);
   const { 
-    character,
-    characterSubType,
-    characterAspects,
     characterSkills,
-    characterStunts,
     physiqueRating,
     willRating,
+  } = useCharacterSkills(characterId, skillList);
+
+  const { 
     isLoading,
     deleteCharacter,
   } = useCharacterSheet(characterId, stuntList, skillList);
