@@ -57,10 +57,7 @@ const ApplicationViews = props => {
           // TODO: this also needs to be the user that made this character
           if (user) {
             return <MainForm
-              characterTypeList={characterTypes} 
-              characterSubTypeList={characterSubTypes}
-              skillList={skillList}
-              stuntList={stuntList}
+              characterId={props.match.params.characterId}
               {...props} 
             />;
           } else {
@@ -74,10 +71,7 @@ const ApplicationViews = props => {
         render={props => {
           if (user) {
             return <MainForm 
-            characterTypeList={characterTypes} 
-            characterSubTypeList={characterSubTypes}
-            skillList={skillList}
-            stuntList={stuntList}
+            characterId={props.match.params.characterId}
             {...props} 
           />;
           } else {

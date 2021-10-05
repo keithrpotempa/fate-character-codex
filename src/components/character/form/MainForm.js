@@ -6,68 +6,80 @@ import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
 import SaveCharacter from "./SaveCharacter";
-import SheetReview from "./SheetReview";
+import SheetPreview from "../sheet/SheetPreview";
 import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
-import EditCharacter from "./EditCharacter";
+import { useFateRules } from "../../../hooks/useFateRules";
+import { useCharacterSkills } from "../../../hooks/characterSheet/useCharacterSkills";
+import { useCharacterStunts } from "../../../hooks/characterSheet/useCharacterStunts";
+import { useCharacterAspects } from "../../../hooks/characterSheet/useCharacterAspects";
+import { useCharacterBasics } from "../../../hooks/characterSheet/useCharacterBasics";
 
 const MainForm = ({
-  skillList,
-  stuntList,
-  characterTypeList,
-  characterSubTypeList,
-  match,
+  characterId,
   history
 }) => {
-  const EMPTY_ASPECT = { name: "", characterId: "", id: "" }
+  
+  const {
+    skillList,
+    stuntList,
+    // characterTypes,
+    characterSubTypes,
+  } = useFateRules();
 
-  const EMPTY_ASPECTS = [
-    {...EMPTY_ASPECT, aspectTypeId: 1},
-    {...EMPTY_ASPECT, aspectTypeId: 2},
-    {...EMPTY_ASPECT, aspectTypeId: 3},
-    {...EMPTY_ASPECT, aspectTypeId: 3},
-    {...EMPTY_ASPECT, aspectTypeId: 3},
-  ];
+  const { 
+    // isLoading,
+    // setIsLoading,
+    character,
+    setCharacterName,
+    characterType,
+    setCharacterType,
+    characterSubType,
+    setCharacterSubType,
+  } = useCharacterBasics(characterId, characterSubTypes);
 
-  const EMPTY_SKILLS = {
-    6: [],
-    5: [],
-    4: [],
-    3: [],
-    2: [],
-    1: []
-  }
+  const { 
+    // isLoading,
+    // setIsLoading,
+    characterAspects,
+    setCharacterAspects,
+    resetAspects,
+  } = useCharacterAspects(characterId);
 
-  const EMPTY_STUNTS = {
-    5: "",
-    4: "",
-    3: "",
-    2: "",
-    1: ""
-  }
+  const { 
+    // isLoading,
+    // setIsLoading,
+    characterStunts,
+    setCharacterStunts,
+    resetStunts,
+  } = useCharacterStunts(characterId, stuntList);
+  
+  const { 
+    // isLoading,
+    // setIsLoading,
+    characterSkills,
+    setCharacterSkills,
+    physiqueRating,
+    willRating,
+    resetSkills,
+  } = useCharacterSkills(characterId, skillList);
 
-
-  /* ------------------ STATES ------------------*/
-  const [isLoading, setIsLoading] = useState(true);
-  const [step, setStep] = useState(1);
-
-
-  const [character, setCharacter] = useState({name: "", type: "", subtype: ""});
-  const [characterSubTypeDetails, setCharacterSubTypeDetails] = useState();
-
-  // Seeding a default array of aspects
-  // presently with their types (currently) hard coded
-  const [characterAspects, setCharacterAspects] = useState(EMPTY_ASPECTS);
-
-  const [characterSkills, setCharacterSkills] = useState(EMPTY_SKILLS);
-
-  const [characterStunts, setCharacterStunts] = useState(EMPTY_STUNTS);
+  // const { 
+  //   isLoading,
+  //   deleteCharacter,
+  // } = useCharacterSheet(characterId, stuntList, skillList);
 
   const resetCharacter = () => {
-    setCharacterAspects(EMPTY_ASPECTS);
-    setCharacterSkills(EMPTY_SKILLS);
-    setCharacterStunts(EMPTY_STUNTS);
+    resetAspects();
+    resetSkills();
+    resetStunts();
   }
+
+  const characterSubTypeObject = characterSubTypes.find((st) => st.id === parseInt(characterSubType));
+
+  /* ------------------ STATES ------------------*/
+  const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState(1);
 
   /* ------------------ EVENT HANDLERS  ------------------*/
 
@@ -211,50 +223,43 @@ const MainForm = ({
       case 1:
         return <CharacterId 
           character={character} 
-          setCharacter={setCharacter}
-          setCharacterSubTypeDetails={setCharacterSubTypeDetails}
+          setCharacterName={setCharacterName}
+          characterType={characterType}
+          setCharacterType={setCharacterType}
+          characterSubType={characterSubType}
+          setCharacterSubType={setCharacterSubType}
           characterInProgress={characterInProgress}
           resetCharacter={resetCharacter}
         />
       case 2: 
         return <AspectForm
-          type={characterSubTypeDetails.name}
+          subType={characterSubTypeObject}
           aspects={characterAspects}
           setAspects={setCharacterAspects}
-          maxAspects={characterSubTypeDetails.maxAspects}
-          aspectComment={characterSubTypeDetails.aspectComment}
         />
       case 3: 
         return <SkillsForm 
-          skillList={skillList}
           characterSkills={characterSkills}
           setCharacterSkills={setCharacterSkills}
-          maxSkillRating={characterSubTypeDetails.maxSkillRating}
-          skillRatingComment={characterSubTypeDetails.skillRatingComment}
-          skillChoiceComment={characterSubTypeDetails.skillChoiceComment}
-          type={characterSubTypeDetails.name}
+          characterSubType={characterSubTypeObject}
         />
       case 4: 
         return <StuntsForm
           characterStunts={characterStunts}
           setCharacterStunts={setCharacterStunts}
-          skillList={skillList}
-          stuntList={stuntList}
-          type={characterSubTypeDetails.name}
-          maxStunts={characterSubTypeDetails.maxStunts}
-          stuntComment={characterSubTypeDetails.stuntComment}
+          characterSubType={characterSubTypeObject}
         />
       case 5:
         return <>
             <Divider horizontal><h1>Review and Save</h1></Divider>
-            <SheetReview
+            <SheetPreview
               character={character}
+              characterSubType={characterSubType}
               aspects={characterAspects}
               skills={characterSkills}
               stunts={characterStunts}
-              skillList={skillList}
-              stuntList={stuntList}
-              characterSubType={characterSubTypeDetails}
+              physiqueRating={physiqueRating}
+              willRating={willRating}
             />
         </>
     }
@@ -269,22 +274,6 @@ const MainForm = ({
       <Container>
         {/* If this is an edit, render the component that 
           retrieves all the characters' data */}
-        {match.params.characterId
-          ? <EditCharacter 
-            characterId={match.params.characterId}
-            setCharacter={setCharacter}
-            characterAspects={characterAspects}
-            setCharacterAspects={setCharacterAspects}
-            characterSkills={characterSkills}
-            setCharacterSkills={setCharacterSkills}
-            characterStunts={characterStunts}
-            setCharacterStunts={setCharacterStunts}
-            setIsLoading={setIsLoading}
-            setCharacterSubTypeDetails={setCharacterSubTypeDetails}
-            characterSubTypeList = {characterSubTypeList}
-          />
-          : <></>
-        }
         <Grid columns={2}>
           <Grid.Column width={3}>
             <Menu inverted pointing compact vertical 
@@ -359,7 +348,7 @@ const MainForm = ({
                     stunts={characterStunts}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
-                    match={match}
+                    characterId={characterId}
                     history={history}
                   />
               }

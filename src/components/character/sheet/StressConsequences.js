@@ -5,8 +5,8 @@ import ConsequenceInputs from "./ConsequenceInputs";
 import "../Character.css";
 
 const StressConsequences = ({
+  characterType,
   characterSubType: {
-    type,
     stressMax,
     bothStressTypes,
     stressComment,
@@ -40,7 +40,7 @@ const StressConsequences = ({
                     skillRating={physiqueRating}
                     stressMax={stressMax}
                     bothStressTypes={bothStressTypes}
-                    type={type}
+                    type={characterType}
                     stressComment={stressComment}
                   />
                   <StressBoxes 
@@ -48,7 +48,7 @@ const StressConsequences = ({
                     skillRating={willRating}
                     stressMax={stressMax}
                     bothStressTypes={bothStressTypes}
-                    type={type}
+                    type={characterType}
                     stressComment={stressComment}
                   />
                 </>
@@ -60,7 +60,7 @@ const StressConsequences = ({
                   }
                   stressMax={stressMax}
                   bothStressTypes={bothStressTypes}
-                  type={type}
+                  type={characterType}
                   stressComment={stressComment}
                 />
             }    
@@ -69,7 +69,7 @@ const StressConsequences = ({
             <ConsequenceInputs 
               willRating={willRating} 
               physiqueRating={physiqueRating}
-              type={type}
+              type={characterType}
               maxConsequence={maxConsequence}
               consequenceComment={consequenceComment}
             />

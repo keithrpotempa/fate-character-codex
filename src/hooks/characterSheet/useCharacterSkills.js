@@ -5,24 +5,20 @@ export const useCharacterSkills = (id, skillList) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [characterSkills, setCharacterSkills] = useState(EMPTY_SKILLS);
+  const [characterSkillsByRating, setCharacterSkillsByRating] = useState(EMPTY_SKILLS);
   
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
 
+  const resetSkills = () => {
+    setCharacterSkills(EMPTY_SKILLS);
+  }
+
   useEffect(()=>{
-    const skillsByRating = (rawSkills, rating) => {
+    const skillsByRating = (skills, rating) => {
       // Converting the format of the db to the format of the form's state
-      const filteredSkills = rawSkills.filter(skill => skill.skillRating === rating)
-  
-      // Note: at initial rendering, 
-      // the skillList is not accessible at this point
-      // so this trick keeps it from crashing...   
-      let formattedSkills = []
-      if (skillList.length > 0) {
-        // Map a new array with the actual names of the skills,
-        // found by matching the fk id from characterSkills and the skill list
-        formattedSkills = filteredSkills.map(skill => skillList[skill.skillId].name)
-      }
+      const filteredSkills = skills.filter(skill => skill.skillRating === rating)
+      const formattedSkills = filteredSkills.map(skill => skill.skillId.toString())
       return formattedSkills;
     }
 
@@ -63,6 +59,7 @@ export const useCharacterSkills = (id, skillList) => {
     setCharacterSkills,
     physiqueRating,
     willRating,
+    resetSkills,
   }
 }
 

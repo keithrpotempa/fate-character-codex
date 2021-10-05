@@ -5,6 +5,10 @@ export const useCharacterAspects = (id) => {
   const [isLoading, setIsLoading] = useState(false);
   const [characterAspects, setCharacterAspects] = useState(EMPTY_ASPECTS);
 
+  const resetAspects = () => {
+    setCharacterAspects(EMPTY_ASPECTS);
+  }
+
   useEffect(()=>{
     // Then we're editing and need to fetch
     const getCharacterAspects = () => {
@@ -23,6 +27,7 @@ export const useCharacterAspects = (id) => {
     setIsLoading,
     characterAspects,
     setCharacterAspects,
+    resetAspects,
   }
 }
 

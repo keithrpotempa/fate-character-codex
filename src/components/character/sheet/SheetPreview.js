@@ -5,6 +5,7 @@ import StressConsequences from "./StressConsequences";
 import CharacterAspects from "./CharacterAspects";
 import CharacterSkills from "./CharacterSkills";
 import CharacterStunts from "./CharacterStunts";
+import { useFateRules } from "../../../hooks/useFateRules";
 
 const SheetPreview = ({
   character,
@@ -19,6 +20,11 @@ const SheetPreview = ({
   // the character sheet (character detail view)
   // Review; last stage of creating / editing a character
 
+  const { characterSubTypes, characterTypes } = useFateRules();
+
+  const characterSubTypeObject = characterSubTypes.find((st) => st.id === parseInt(characterSubType));
+  const characterTypeObject = characterTypes.find((t) => t.id === characterSubTypeObject?.characterTypeId);
+
   return (
     <>
       <Divider horizontal>
@@ -29,7 +35,7 @@ const SheetPreview = ({
         <Label
           tag
           color="blue"
-          content={characterSubType.name}
+          content={characterSubTypeObject?.name}
         />
       {/* </div> */}
       <Segment basic placeholder>
@@ -46,7 +52,8 @@ const SheetPreview = ({
       <StressConsequences
         physiqueRating={physiqueRating}
         willRating={willRating}
-        characterSubType={characterSubType}
+        characterType={characterTypeObject}
+        characterSubType={characterSubTypeObject}
       />
     </>
   )

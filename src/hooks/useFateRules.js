@@ -18,6 +18,7 @@ export const useFateRules = () => {
 // Retrieves and provides all the static character information and rules
 const useProvideFateRules = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [aspectTypes, setAspectTypes] = useState([]);
   const [characterTypes, setCharacterTypes] = useState([]);
   const [characterSubTypes, setCharacterSubTypes] = useState([]);
   const [characterSubTypesByType, setCharacterSubTypesByType] = useState({});
@@ -62,6 +63,11 @@ const useProvideFateRules = () => {
       .then(setStuntList)
   }
 
+  const getAspectTypes = () => {
+    ApiManager.getAll("aspectTypes")
+      .then(setAspectTypes)
+  }
+
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
@@ -69,6 +75,7 @@ const useProvideFateRules = () => {
       getCharacterSubTypeList(),
       getSkillList(),
       getStuntList(),
+      getAspectTypes(),
     ]).then(setIsLoading(false))
   }, [])
 
@@ -79,5 +86,6 @@ const useProvideFateRules = () => {
     characterSubTypesByType,
     skillList,
     stuntList,
+    aspectTypes,
   }
 }

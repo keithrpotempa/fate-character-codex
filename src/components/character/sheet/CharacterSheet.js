@@ -4,7 +4,7 @@ import { useCharacterSheet } from "../../../hooks/characterSheet/useCharacterShe
 import { useFateRules } from "../../../hooks/useFateRules";
 
 import { Link } from "react-router-dom";
-import { Container, Button, Icon} from "semantic-ui-react"
+import { Container, Button, Icon, Loader} from "semantic-ui-react"
 
 import CharacterMeta from "./CharacterMeta";
 import SheetPreview from "./SheetPreview";
@@ -28,21 +28,29 @@ const CharacterSheet = ({ characterId }) => {
   
   const { user: activeUser } = useAuth();
 
-  const { stuntList, skillList } = useFateRules();
+  const { isLoading: rulesLoading, stuntList, skillList, characterSubTypes } = useFateRules();
 
-  const { character, characterSubType } = useCharacterBasics(characterId);
-  const { characterAspects } = useCharacterAspects(characterId);
-  const { characterStunts } = useCharacterStunts(characterId, stuntList);
+  const { isLoading: basicsLoading, character, characterSubType } = useCharacterBasics(characterId, characterSubTypes);
+  const { isLoading: aspectsLoading, characterAspects } = useCharacterAspects(characterId);
+  const { isLoading: stuntsLoading, characterStunts } = useCharacterStunts(characterId, stuntList);
   const { 
+    isLoading: skillsLoading,
     characterSkills,
     physiqueRating,
     willRating,
   } = useCharacterSkills(characterId, skillList);
 
   const { 
-    isLoading,
+    isLoading: characterLoading,
     deleteCharacter,
   } = useCharacterSheet(characterId, stuntList, skillList);
+
+  const isLoading = characterLoading 
+    || skillsLoading 
+    || stuntsLoading
+    || aspectsLoading
+    || basicsLoading
+    || rulesLoading
 
   const characterSheetContextValue = useMemo(() => ({
     character,
@@ -69,36 +77,39 @@ const CharacterSheet = ({ characterId }) => {
   return (
     <CharacterSheetContext.Provider value={characterSheetContextValue} >
       <Container text>
-        <SheetPreview 
-          character={character}
-          aspects={characterAspects}
-          skills={characterSkills}
-          stunts={characterStunts}
-          physiqueRating={physiqueRating}
-          willRating={willRating}
-          characterSubType={characterSubType}
-        />
-          {/* Conditionally rendering these buttons 
-            if the user created this character */}
-          {activeUser && character.userId === activeUser.id 
-            ? <div className="flex-end">
-                <Link to={`/characters/${characterId}/edit`}>
-                  <Button disabled={isLoading} >
-                    <Icon fitted className="edit outline"/>
-                  </Button>
-                </Link>
-                <Button
-                  className="ui button"
-                  type="button"
-                  onClick={() => deleteCharacter(characterId)}
-                  disabled={isLoading}
-                >
-                  <Icon fitted className="trash alternate outline"/>
+        {isLoading 
+          ? <Loader active inline='centered' />
+          : 
+            <SheetPreview 
+              character={character}
+              aspects={characterAspects}
+              skills={characterSkills}
+              stunts={characterStunts}
+              physiqueRating={physiqueRating}
+              willRating={willRating}
+              characterSubType={characterSubType}
+            />
+        }
+        {/* Letting creating user delete & edit */}
+        {activeUser && character.userId === activeUser.id 
+          ? <div className="flex-end">
+              <Link to={`/characters/${characterId}/edit`}>
+                <Button disabled={isLoading} >
+                  <Icon fitted className="edit outline"/>
                 </Button>
-              </div>
-            : <></>
-          }
-          <CharacterMeta character={character} userId={character.userId}/>
+              </Link>
+              <Button
+                className="ui button"
+                type="button"
+                onClick={() => deleteCharacter(characterId)}
+                disabled={isLoading}
+              >
+                <Icon fitted className="trash alternate outline"/>
+              </Button>
+            </div>
+          : null
+        }
+        <CharacterMeta character={character} userId={character.userId}/>
       </Container>
     </CharacterSheetContext.Provider>
   )

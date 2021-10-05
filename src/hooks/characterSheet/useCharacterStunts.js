@@ -6,6 +6,10 @@ export const useCharacterStunts = (id, stuntList) => {
 
   const [characterStunts, setCharacterStunts] = useState(EMPTY_STUNTS);
 
+  const resetStunts = () => {
+    setCharacterStunts(EMPTY_STUNTS);
+  }
+
   useEffect(()=>{
     const getCharacterStunts = () => {
       ApiManager.getCharacterAttributes("characterStunts", id)
@@ -30,6 +34,7 @@ export const useCharacterStunts = (id, stuntList) => {
     setIsLoading,
     characterStunts,
     setCharacterStunts,
+    resetStunts,
   }
 };
 

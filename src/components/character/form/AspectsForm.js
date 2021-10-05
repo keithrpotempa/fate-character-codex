@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import AspectInput from "./AspectInput"
-import ApiManager from "../../../modules/ApiManager"
+import { useFateRules } from "../../../hooks/useFateRules";
 
 const AspectForm = ({
-  type,
+  subType: {
+    name: typeName,
+    maxAspects,
+    aspectComment,
+  },
   aspects,
-  maxAspects,
-  aspectComment,
   setAspects,
 }) => {
-  const [aspectTypes, setAspectTypes] = useState([]);
+  const { aspectTypes } = useFateRules();
 
   const handleFieldChange = evt => {
       const stateToChange = [...aspects]
@@ -33,11 +35,6 @@ const AspectForm = ({
       setAspects(stateToChange)
   }
 
-  const getAspectTypes = () => {
-    ApiManager.getAll("aspectTypes")
-      .then(setAspectTypes)
-  }
-
   const createAspectInputs = () => {
     let aspectInputs = [];
     for (let i = 0; i < maxAspects; i++) {
@@ -53,6 +50,7 @@ const AspectForm = ({
       }
       aspectInputs.push(
         <AspectInput 
+          key={i}
           handleFieldChange={handleFieldChange} 
           aspects={aspects} 
           index={i} 
@@ -64,10 +62,6 @@ const AspectForm = ({
     return aspectInputs;
   }
 
-  useEffect(() => {
-    getAspectTypes();
-  },[])
-
   return (
     <>
       <Divider horizontal><h2>ASPECTS</h2></Divider>
@@ -77,7 +71,7 @@ const AspectForm = ({
         </Grid.Column>
         <Grid.Column width={6}>
           {/* TODO: make this look cleaner on render */}
-          <h3>Aspects for {type}</h3>
+          <h3>Aspects for {typeName}</h3>
           <p>{aspectComment}</p>
         </Grid.Column>
       </Grid>
