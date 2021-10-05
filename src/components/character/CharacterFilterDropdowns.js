@@ -3,7 +3,7 @@ import React from "react";
 import { Button, Icon, Dropdown } from "semantic-ui-react"
 import { useFateRules } from "../../hooks/useFateRules";
 
-const CharacterFilterDropdowns = ({ props, handleFilterFieldChange, filter }) => {
+const CharacterFilterDropdowns = ({ history, handleFilterFieldChange, filter }) => {
   const { characterTypes, characterSubTypes } = useFateRules();
 
   const renderSubtypes = () => {
@@ -27,7 +27,7 @@ const CharacterFilterDropdowns = ({ props, handleFilterFieldChange, filter }) =>
       <div className="filter-div">
         <Button
           type="button"
-          onClick={() => {props.history.push("/new-character")}}
+          onClick={() => {history.push("/new-character")}}
         >
           <Icon className="add user"></Icon>
         </Button>

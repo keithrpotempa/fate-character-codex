@@ -1,4 +1,4 @@
-import React, { createContext, useMemo } from "react";
+import React from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import { useCharacterSheet } from "../../../hooks/characterSheet/useCharacterSheet";
 import { useFateRules } from "../../../hooks/useFateRules";
@@ -14,15 +14,8 @@ import { useCharacterStunts } from "../../../hooks/characterSheet/useCharacterSt
 import { useCharacterSkills } from "../../../hooks/characterSheet/useCharacterSkills";
 
 // This parent component (of all character sheet components) 
-// gets some initial data necessary to render a character sheet, 
-// and passes it on to the munger to organize and format
-
-// It is used by the character sheet view (detail route)
-// but not in the review stage of the character creation process
-
-// TODO: possibly can be merged back with munger 
-// now that skill list and stunt list have been lifted 
-
+// is used by the character sheet view (detail route)
+// but not in the review stage of the character creation / editing process
 
 const CharacterSheet = ({ characterId }) => {
   
@@ -52,69 +45,43 @@ const CharacterSheet = ({ characterId }) => {
     || basicsLoading
     || rulesLoading
 
-  const characterSheetContextValue = useMemo(() => ({
-    character,
-    characterSubType,
-    characterAspects,
-    characterSkills,
-    characterStunts,
-    physiqueRating,
-    willRating,
-    isLoading,
-    deleteCharacter,
-  }), [
-    character,
-    characterSubType,
-    characterAspects,
-    characterSkills,
-    characterStunts,
-    physiqueRating,
-    willRating,
-    isLoading,
-    deleteCharacter,
-  ])
+  if (isLoading) {
+    return <Loader active inline='centered' /> 
+  }
 
   return (
-    <CharacterSheetContext.Provider value={characterSheetContextValue} >
-      <Container text>
-        {isLoading 
-          ? <Loader active inline='centered' />
-          : 
-            <SheetPreview 
-              character={character}
-              aspects={characterAspects}
-              skills={characterSkills}
-              stunts={characterStunts}
-              physiqueRating={physiqueRating}
-              willRating={willRating}
-              characterSubType={characterSubType}
-            />
-        }
-        {/* Letting creating user delete & edit */}
-        {activeUser && character.userId === activeUser.id 
-          ? <div className="flex-end">
-              <Link to={`/characters/${characterId}/edit`}>
-                <Button disabled={isLoading} >
-                  <Icon fitted className="edit outline"/>
-                </Button>
-              </Link>
-              <Button
-                className="ui button"
-                type="button"
-                onClick={() => deleteCharacter(characterId)}
-                disabled={isLoading}
-              >
-                <Icon fitted className="trash alternate outline"/>
+    <Container text>
+      <SheetPreview 
+        character={character}
+        aspects={characterAspects}
+        skills={characterSkills}
+        stunts={characterStunts}
+        physiqueRating={physiqueRating}
+        willRating={willRating}
+        characterSubType={characterSubType}
+      />
+      {/* Letting creating user delete & edit */}
+      {activeUser && character.userId === activeUser.id 
+        ? <div className="flex-end">
+            <Link to={`/characters/${characterId}/edit`}>
+              <Button disabled={isLoading} >
+                <Icon fitted className="edit outline"/>
               </Button>
-            </div>
-          : null
-        }
-        <CharacterMeta character={character} userId={character.userId}/>
-      </Container>
-    </CharacterSheetContext.Provider>
+            </Link>
+            <Button
+              className="ui button"
+              type="button"
+              onClick={() => deleteCharacter(characterId)}
+              disabled={isLoading}
+            >
+              <Icon fitted className="trash alternate outline"/>
+            </Button>
+          </div>
+        : null
+      }
+      <CharacterMeta character={character} userId={character.userId}/>
+    </Container>
   )
 }
-
-export const CharacterSheetContext = createContext();
 
 export default CharacterSheet;

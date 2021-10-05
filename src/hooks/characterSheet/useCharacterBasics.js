@@ -6,7 +6,7 @@ export const useCharacterBasics = (id, characterSubTypes) => {
   const [character, setCharacter] = useState(EMPTY_CHARACTER);
   const [characterType, setCharacterType] = useState(null);
 
-  const characterSubType = character.characterSubTypeId;
+  const characterSubType = character?.characterSubTypeId;
 
   const setCharacterName = (newName) => {
     const newCharacter = {...character};
@@ -21,18 +21,23 @@ export const useCharacterBasics = (id, characterSubTypes) => {
   }
 
   useEffect(()=>{
+    setIsLoading(true);
     const getCharacter = () => {
       return ApiManager.get("characters", id)
       .then(character => {
         const subType = characterSubTypes.find((st) => st.id === character.characterSubTypeId);
         setCharacterType(subType.characterTypeId);
         setCharacter(character);
+        setIsLoading(false);
       });
     }
     
-    // Then we're editing and need to fetch
-    if (id) {
+    // Then we're editing, we've already retrieved the characterSubTypes, 
+    // and we need to fetch the specific character
+    if (characterSubTypes.length && id) {
       getCharacter();
+    }
+    if (id) {
     }
   }, [id, characterSubTypes]);
 
