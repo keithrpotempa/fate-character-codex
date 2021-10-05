@@ -9,6 +9,17 @@ export const useCharacterAspects = (id) => {
     setCharacterAspects(EMPTY_ASPECTS);
   }
 
+  const saveCharacterAspects = (characterId) => {
+    const aspectsToSave = [...characterAspects];
+    return aspectsToSave.forEach((a) => {
+      // This keeps blank aspects from being posted
+      if (a.name !== "") {
+        a.characterId = characterId;
+        return ApiManager.push('characterAspects', a)
+      }
+    });
+  }
+
   useEffect(()=>{
     // Then we're editing and need to fetch
     const getCharacterAspects = () => {
@@ -28,6 +39,7 @@ export const useCharacterAspects = (id) => {
     characterAspects,
     setCharacterAspects,
     resetAspects,
+    saveCharacterAspects,
   }
 }
 

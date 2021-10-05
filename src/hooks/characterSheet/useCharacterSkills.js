@@ -5,7 +5,7 @@ export const useCharacterSkills = (id, skillList) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [characterSkills, setCharacterSkills] = useState(EMPTY_SKILLS);
-  const [characterSkillsByRating, setCharacterSkillsByRating] = useState(EMPTY_SKILLS);
+  // const [characterSkillsByRating, setCharacterSkillsByRating] = useState(EMPTY_SKILLS);
   
   const [physiqueRating, setPhysiqueRating] = useState({});
   const [willRating, setWillRating] = useState({});
@@ -13,6 +13,23 @@ export const useCharacterSkills = (id, skillList) => {
   const resetSkills = () => {
     setCharacterSkills(EMPTY_SKILLS);
   }
+
+  const saveCharacterSkills = (characterId) => {
+    for (const row in characterSkills) {
+      const skillsAtRating = characterSkills[row]
+      const rating = row
+      if (skillsAtRating.length > 0) {
+        skillsAtRating.forEach(skill => {
+          const skillToSave = {
+            characterId: characterId,
+            skillId: parseInt(skill),
+            skillRating: parseInt(rating),
+          }
+          return ApiManager.push("characterSkills", skillToSave);
+        })
+      }
+    }
+  } 
 
   useEffect(()=>{
     const skillsByRating = (skills, rating) => {
@@ -60,6 +77,7 @@ export const useCharacterSkills = (id, skillList) => {
     physiqueRating,
     willRating,
     resetSkills,
+    saveCharacterSkills,
   }
 }
 

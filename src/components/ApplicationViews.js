@@ -70,7 +70,7 @@ const ApplicationViews = props => {
                 {...props} 
               />;
             } else {
-              return <Redirect to="/login" />;
+              return <Redirect to="/" />;
             }
           }}
         />,
@@ -84,7 +84,7 @@ const ApplicationViews = props => {
               {...props} 
             />;
             } else {
-              return <Redirect to="/login" />;
+              return <Redirect to="/" />;
             }
           }}
         />,

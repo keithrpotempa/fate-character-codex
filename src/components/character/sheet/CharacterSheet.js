@@ -23,7 +23,7 @@ const CharacterSheet = ({ characterId }) => {
 
   const { isLoading: rulesLoading, stuntList, skillList, characterSubTypes } = useFateRules();
 
-  const { isLoading: basicsLoading, character, characterSubType } = useCharacterBasics(characterId, characterSubTypes);
+  const { isLoading: basicsLoading, character, characterSubType } = useCharacterBasics(characterId, characterSubTypes, activeUser);
   const { isLoading: aspectsLoading, characterAspects } = useCharacterAspects(characterId);
   const { isLoading: stuntsLoading, characterStunts } = useCharacterStunts(characterId, stuntList);
   const { 

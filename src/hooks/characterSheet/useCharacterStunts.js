@@ -10,6 +10,22 @@ export const useCharacterStunts = (id, stuntList) => {
     setCharacterStunts(EMPTY_STUNTS);
   }
 
+  const saveCharacterStunts = (characterId) => {
+    // Why are these objects again?
+    for (const row in characterStunts) {
+      // Only build and post if there's 
+      // actually a stunt selected on that row
+      if (characterStunts[row]) {
+        const stuntId = characterStunts[row]
+        const stuntToSave = {
+          characterId: characterId,
+          stuntId: parseInt(stuntId)
+        }
+        ApiManager.push("characterStunts", stuntToSave)
+      }
+    }  
+  }
+
   useEffect(()=>{
     const getCharacterStunts = () => {
       ApiManager.getCharacterAttributes("characterStunts", id)
@@ -35,6 +51,7 @@ export const useCharacterStunts = (id, stuntList) => {
     characterStunts,
     setCharacterStunts,
     resetStunts,
+    saveCharacterStunts,
   }
 };
 

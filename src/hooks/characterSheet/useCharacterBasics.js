@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ApiManager from "../../modules/ApiManager";
 
-export const useCharacterBasics = (id, characterSubTypes) => {
+export const useCharacterBasics = (id, characterSubTypes, user) => {
   const [isLoading, setIsLoading] = useState(false);
   const [character, setCharacter] = useState(EMPTY_CHARACTER);
   const [characterType, setCharacterType] = useState(null);
@@ -20,6 +20,20 @@ export const useCharacterBasics = (id, characterSubTypes) => {
     setCharacter(newCharacter);
   }
 
+  const saveCharacterBasics = () => {
+    const characterToSave = {...character}; 
+    characterToSave.modified = new Date().toLocaleString();
+    
+    // Then we're creating a new character
+    if (!id) {
+      characterToSave.created = new Date().toLocaleString();
+    }
+    setCharacter(characterToSave);
+    // NOTE: at this point, the character's reference on firebase already exists (getKey)
+    // we are just updating it with all the information (whether saving or editing)
+    return ApiManager.update("characters", characterToSave.id, characterToSave);
+  };
+
   useEffect(()=>{
     setIsLoading(true);
     const getCharacter = () => {
@@ -36,10 +50,17 @@ export const useCharacterBasics = (id, characterSubTypes) => {
     // and we need to fetch the specific character
     if (characterSubTypes.length && id) {
       getCharacter();
+    } else {
+      const newState = {...EMPTY_CHARACTER}
+      // Then we're making a new character, 
+      // so we get a key from firebase
+      newState.id = ApiManager.getKey("characters");
+      // and set the active user as the userid on the character
+      newState.userId = user ? user.uid : "";
+      setCharacter(newState);
     }
-    if (id) {
-    }
-  }, [id, characterSubTypes]);
+
+  }, [id, characterSubTypes, user]);
 
   return {
     isLoading,
@@ -50,6 +71,7 @@ export const useCharacterBasics = (id, characterSubTypes) => {
     setCharacterType,
     characterSubType,
     setCharacterSubType,
+    saveCharacterBasics,
   }
 };
 

@@ -5,7 +5,6 @@ import "../Character.css";
 import AspectForm from "./AspectsForm";
 import SkillsForm from "./SkillsForm";
 import StuntsForm from "./StuntsForm";
-import SaveCharacter from "./SaveCharacter";
 import SheetPreview from "../sheet/SheetPreview";
 import CharacterId from "./CharacterId";
 import { Menu } from 'semantic-ui-react'
@@ -14,12 +13,17 @@ import { useCharacterSkills } from "../../../hooks/characterSheet/useCharacterSk
 import { useCharacterStunts } from "../../../hooks/characterSheet/useCharacterStunts";
 import { useCharacterAspects } from "../../../hooks/characterSheet/useCharacterAspects";
 import { useCharacterBasics } from "../../../hooks/characterSheet/useCharacterBasics";
+import { useAuth } from "../../../hooks/useAuth";
+import { validChar } from "../../../helpers/characterValidators";
+import ApiManager from "../../../modules/ApiManager";
 
 const MainForm = ({
   characterId,
   history
 }) => {
   
+  const { user } = useAuth();
+
   const {
     skillList,
     stuntList,
@@ -36,7 +40,8 @@ const MainForm = ({
     setCharacterType,
     characterSubType,
     setCharacterSubType,
-  } = useCharacterBasics(characterId, characterSubTypes);
+    saveCharacterBasics,
+  } = useCharacterBasics(characterId, characterSubTypes, user);
 
   const { 
     // isLoading,
@@ -44,6 +49,7 @@ const MainForm = ({
     characterAspects,
     setCharacterAspects,
     resetAspects,
+    saveCharacterAspects,
   } = useCharacterAspects(characterId);
 
   const { 
@@ -52,6 +58,7 @@ const MainForm = ({
     characterStunts,
     setCharacterStunts,
     resetStunts,
+    saveCharacterStunts,
   } = useCharacterStunts(characterId, stuntList);
   
   const { 
@@ -62,6 +69,7 @@ const MainForm = ({
     physiqueRating,
     willRating,
     resetSkills,
+    saveCharacterSkills,
   } = useCharacterSkills(characterId, skillList);
 
   // const { 
@@ -73,6 +81,33 @@ const MainForm = ({
     resetAspects();
     resetSkills();
     resetStunts();
+  }
+
+  const saveAll = (char) => {
+    return Promise.all([
+      saveCharacterBasics(char),
+      saveCharacterAspects(char.id),
+      saveCharacterSkills(char.id),
+      saveCharacterStunts(char.id),
+    ])
+  }
+
+  async function handleSaveAll (e) {
+    e.preventDefault();
+    // FIXME: VALIDATION BUSTED
+    // SAVING CHARACTER
+    // if (validChar(character, characterAspects, characterSkills)) {
+      setIsLoading(true);
+      saveCharacterBasics();
+      if (characterId) {
+        // IF editing, delete everything before starting
+        // TODO: figure out a better way?
+        await ApiManager.purgeCharacter(characterId);
+      }
+      saveAll(character).then(() => {
+        history.push("/characters")
+      });
+    // }
   }
 
   const characterSubTypeObject = characterSubTypes.find((st) => st.id === parseInt(characterSubType));
@@ -341,16 +376,14 @@ const MainForm = ({
                   >
                   Next
                 </Button>
-                : <SaveCharacter
-                    character={character}
-                    aspects={characterAspects}
-                    skills={characterSkills}
-                    stunts={characterStunts}
-                    isLoading={isLoading}
-                    setIsLoading={setIsLoading}
-                    characterId={characterId}
-                    history={history}
-                  />
+                : <Button
+                    type="button"
+                    value="save"
+                    // disabled={isLoading}
+                    onClick={handleSaveAll}
+                  >
+                    SAVE
+                  </Button>
               }
             </div>
           </Grid.Column>
