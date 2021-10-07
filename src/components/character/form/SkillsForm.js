@@ -1,17 +1,21 @@
 import React from "react";
 import { Divider, Grid } from "semantic-ui-react";
+import { useFateRules } from "../../../hooks/useFateRules";
 import SkillsMultiSelector from "./SkillsMultiSelector"
 
 const SkillsForm = ({
-  type,
-  maxSkillRating,
-  skillRatingComment,
-  skillChoiceComment,
-  setCharacterSkills,
   characterSkills,
-  skillList,
+  setCharacterSkills,
+  characterSubType: {
+    name,
+    maxSkillRating,
+    skillRatingComment,
+    skillChoiceComment,
+  },
 }) => {
   
+  const { skillList } = useFateRules();
+
   // Value comes from the Semantic UI component
   // https://medium.com/@omallek/a-beginners-story-to-using-semantic-ui-react-24002da738e5
   const handleFieldChange = (evt, {name, value}) => {
@@ -20,7 +24,7 @@ const SkillsForm = ({
     const stateToChange = {...characterSkills}
     stateToChange[row] = skillIds
     setCharacterSkills(stateToChange);
-    };
+  };
 
   const createSkillSelectors = () => {
     let skillSelectors = [];
@@ -28,7 +32,8 @@ const SkillsForm = ({
       /* Using this row prop to determine the "rating" 
         of a particular chosen skill */
       skillSelectors.push(
-        <SkillsMultiSelector 
+        <SkillsMultiSelector
+          key={i} 
           row={`${i}`} 
           skillList={skillList} 
           characterSkills={characterSkills} 
@@ -49,7 +54,7 @@ const SkillsForm = ({
         </Grid.Column>
         <Grid.Column width={6}>
           {/* TODO: make this look cleaner on render */}
-          <h3>Skills for {type}</h3>
+          <h3>Skills for {name}</h3>
           <p>{skillRatingComment}</p>
           <p>{skillChoiceComment}</p>
         </Grid.Column>

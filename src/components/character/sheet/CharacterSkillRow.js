@@ -1,26 +1,27 @@
 import React from "react";
 import { List, Label } from "semantic-ui-react";
-
+import { useFateRules } from "../../../hooks/useFateRules";
 
 const CharacterSkillRow = ({
   skillRow,
   rating,
 }) => {
 
-  //FIXME: "each child in a list should contain a unique key" warning
+  const { skillList } = useFateRules();
+
   return (
     <>
       {skillRow.length > 0
         ? <List.Item key={`skillRating-${rating}`}>
             <List.Content>
               <strong>+{rating}:</strong>
-              {skillRow.map(skill => 
-                <Label key={`skillLabel-${skill}`}>
-                  {skill}
+              {skillRow.map(skillId => 
+                <Label key={`skillLabel-${skillId}`}>
+                  {skillList.find((s) => s.id === parseInt(skillId))?.name}
                 </Label>)}
             </List.Content>
           </List.Item>
-        : <List.Item key={`skillRating-${rating}`} disabled/>
+        : null
       }
     </>
     )

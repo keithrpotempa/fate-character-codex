@@ -10,6 +10,17 @@ const SkillsMultiSelector = ({
 }) => {
   const skillsAtRow = characterSkills[row]
 
+  const usedSkills = Object.values(characterSkills).flat();
+
+  const unusedSkillList = skillList.filter((s) => {
+    const currentSkillAlreadySelected = usedSkills.includes(s.id)
+    const currentSkillExistsInCurrentRow = skillsAtRow.includes(s.id)
+    // Keep skills that are either: 
+    // 1) selected in the current row
+    // 2) haven't been selected in other rows 
+    return currentSkillExistsInCurrentRow || !currentSkillAlreadySelected
+  })
+
   // See formatting reference:
   // https://react.semantic-ui.com/modules/dropdown/#types-multiple-selection
   return (
@@ -25,10 +36,10 @@ const SkillsMultiSelector = ({
           id={`skills-${row}`}
           value={skillsAtRow}
           onChange={handleFieldChange}
-          options={skillList.map(skill => (
+          options={unusedSkillList.map(skill => (
             {
               key: `${skill.id}`,
-              value: `${skill.id}`,
+              value: skill.id,
               text: `${skill.name}`
             }
           ))}

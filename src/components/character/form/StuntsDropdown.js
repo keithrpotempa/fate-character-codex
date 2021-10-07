@@ -14,12 +14,12 @@ const StuntsDropdown = ({
     ? stuntList 
     : stuntList.filter(stunt => stunt.skillId === filter);
 
-  const stuntToEdit = characterStunts[x]
+  const stuntToEdit = characterStunts[x];
 
   const handleFieldChange = (evt, {name, value}) => {
     const stuntId = value;
     const row = x;
-    const stateToChange = {...characterStunts}
+    const stateToChange = [...characterStunts]
     stateToChange[row] = stuntId
     setCharacterStunts(stateToChange);
   }
@@ -37,7 +37,7 @@ const StuntsDropdown = ({
           options={filteredStuntList.map(stunt => (
             {
               key: `${stunt.id}`, 
-              value: `${stunt.id}`,
+              value: stunt.id,
               text: `${stunt.name}`
             }
           ))}

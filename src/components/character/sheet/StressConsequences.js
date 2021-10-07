@@ -5,13 +5,14 @@ import ConsequenceInputs from "./ConsequenceInputs";
 import "../Character.css";
 
 const StressConsequences = ({
-  characterSubType,
-  type,
-  stressMax,
-  bothStressTypes,
-  stressComment,
-  maxConsequence,
-  consequenceComment,
+  characterType,
+  characterSubType: {
+    stressMax,
+    bothStressTypes,
+    stressComment,
+    maxConsequence,
+    consequenceComment,
+  },
   physiqueRating,
   willRating,
 }) => {
@@ -22,8 +23,6 @@ const StressConsequences = ({
     consequence inputs
     for character preview
   */
-  
-  // STOPPED HERE. SHOULD THERE BE STRESS/CONSEQUENCE COMMENTS?
 
   return (
     <>
@@ -41,7 +40,7 @@ const StressConsequences = ({
                     skillRating={physiqueRating}
                     stressMax={stressMax}
                     bothStressTypes={bothStressTypes}
-                    type={type}
+                    type={characterType}
                     stressComment={stressComment}
                   />
                   <StressBoxes 
@@ -49,7 +48,7 @@ const StressConsequences = ({
                     skillRating={willRating}
                     stressMax={stressMax}
                     bothStressTypes={bothStressTypes}
-                    type={type}
+                    type={characterType}
                     stressComment={stressComment}
                   />
                 </>
@@ -61,7 +60,7 @@ const StressConsequences = ({
                   }
                   stressMax={stressMax}
                   bothStressTypes={bothStressTypes}
-                  type={type}
+                  type={characterType}
                   stressComment={stressComment}
                 />
             }    
@@ -70,7 +69,7 @@ const StressConsequences = ({
             <ConsequenceInputs 
               willRating={willRating} 
               physiqueRating={physiqueRating}
-              type={type}
+              type={characterType}
               maxConsequence={maxConsequence}
               consequenceComment={consequenceComment}
             />

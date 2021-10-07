@@ -1,79 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Divider, Dropdown, Form, Label } from "semantic-ui-react";
-import ApiManager from "../../../modules/ApiManager";
-import TypeDetail from "../types/TypeDetail";
+import { useFateRules } from "../../../hooks/useFateRules";
+import TypeDetail from "../../pages/TypeDetail";
 
 const CharacterId = ({
   character,
-  setCharacterSubTypeDetails,
-  resetCharacter,
+  setCharacterName,
+  characterType,
+  setCharacterType,
+  characterSubType,
+  setCharacterSubType,
   characterInProgress,
-  setCharacter,
+  resetCharacter,
 }) => {
-  const [characterTypeList, setCharacterTypeList] = useState([]);
-  const [characterSubTypeList, setCharacterSubTypeList] = useState([]);
 
-  const getCharacterTypeList = () => {
-    return ApiManager.getAll("characterTypes")
-      .then(setCharacterTypeList)
-  }
+  const {
+    characterTypes,
+    characterSubTypes,
+  } = useFateRules();
 
-  const getCharacterSubTypeList = () => {
-    return ApiManager.getAll("characterSubTypes")
-      .then(setCharacterSubTypeList)
-  }
-
-  // Once a character subtype is chosen, 
-  // store all that subtype's details in state
-  // on the parent component (mainform)
-  // to be used by subsequent form components
-  const getCharacterSubtypeDetails = subtypeId => {
-    const subtype = characterSubTypeList
-      .filter(subtype => subtype.id === subtypeId)[0]
-    setCharacterSubTypeDetails(subtype);
-  }
-
-  const handleNameFieldChange = (evt, {name, value}) => {
-    const stateToChange = {...character};
-    stateToChange[name] = value;
-    setCharacter(stateToChange)
+  const handleNameFieldChange = (evt, {value}) => {
+    setCharacterName(value);
   }
 
   const handleTypeFieldChange = (evt, {name, value}) => {
-    const stateToChange = {...character};
-    stateToChange[name] = value;
     // If they're a PC, set their subtype for them
     // (there's no subtype for PCs)
     // Otherwise, wipe any chosen subtype
-    if (value === "0") {
+    if (value === 0) {
       // TODO: make this less dependent on being hard-coded
-      stateToChange["subtype"] = "5"; // 5 is the PC subtype
-      // Force a get of the subtype details:
-      getCharacterSubtypeDetails(5); 
+      setCharacterSubType(5) // 5 is the PC subtype
     } else {
       // If they're changing the character's type, 
       // clear any chosen subtype info
-      stateToChange["subtype"] = "";
-      setCharacterSubTypeDetails({});
+      setCharacterSubType("")
     }
-    setCharacter(stateToChange)
+    setCharacterType(value);
   }
 
-  const handleSubTypeFieldChange = (evt, {name, value}) => {
+  const handleSubTypeFieldChange = (evt, {value}) => {
     if (characterInProgress()) {
       resetCharacter();
     }
-    const stateToChange = {...character};
-    stateToChange[name] = value;
-    // Set subtype details in state
-    getCharacterSubtypeDetails(parseInt(value))
-    setCharacter(stateToChange)
+    setCharacterSubType(value);
   }
-
-  useEffect(() => {
-    getCharacterTypeList();
-    getCharacterSubTypeList(); 
-  }, [])
 
   return (
     <>
@@ -100,11 +70,11 @@ const CharacterId = ({
           name="type"
           id="type"
           placeholder="Character type"
-          value={character.type}
-          options={characterTypeList.map(type => (
+          value={characterType}
+          options={characterTypes?.map(type => (
             {
               key: `type-${type.id}`,
-              value: `${type.id}`,
+              value: type.id,
               text: `${type.name}`
             }
           ))}
@@ -121,13 +91,13 @@ const CharacterId = ({
                 name="subtype"
                 id="subtype"
                 placeholder="Character Subtype"
-                value={character.subtype}
-                options={characterSubTypeList
-                  .filter(subtype => subtype.characterTypeId === parseInt(character.type))
+                value={characterSubType}
+                options={characterSubTypes
+                  ?.filter(subtype => subtype.characterTypeId === parseInt(characterType))
                   .map(type => (
                   {
                     key: `type-${type.id}`,
-                    value: `${type.id}`,
+                    value: type.id,
                     text: `${type.name}`
                   }
                 ))}
@@ -144,12 +114,12 @@ const CharacterId = ({
         : <></>
       }
       {
-        character.subtype === ""
-        ? <></>
-        : <TypeDetail 
+        character.characterSubtypeId !== ""
+        ? <TypeDetail 
             verbose={false}
-            subTypeId={parseInt(character.subtype)}
+            subTypeId={parseInt(character.characterSubtypeId)}
           />
+        : <></>
       }
     </>
   )

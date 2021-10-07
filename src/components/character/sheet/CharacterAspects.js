@@ -16,7 +16,7 @@ const CharacterAspects = ({aspects}) => {
               content={aspect.name}
               // meta={aspect.aspectTypeId}
             />
-          : <></>
+          : null
         )}
       </List>
     </>

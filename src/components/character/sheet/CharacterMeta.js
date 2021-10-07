@@ -1,20 +1,21 @@
-import  React, { useState, useEffect } from "react";
+import  React from "react";
 import { Container, Item } from "semantic-ui-react";
-import ApiManager from "../../../modules/ApiManager";
+// import ApiManager from "../../../modules/ApiManager";
 
 const CharacterMeta = ({ userId, character }) => {
-  const [user, setUser] = useState({})
+  // // FIXME: update with useAuth
+  // const [user, setUser] = useState({})
 
-  useEffect(() => {
-    const getUser = () => {
-      if (userId) {
-        ApiManager.get("users", userId)
-          .then(setUser)
-      }
-    }
+  // useEffect(() => {
+  //   const getUser = () => {
+  //     if (userId) {
+  //       ApiManager.get("users", userId)
+  //         .then(setUser)
+  //     }
+  //   }
     
-    getUser();
-  }, [userId])
+  //   getUser();
+  // }, [userId])
 
   return (
     character
@@ -22,7 +23,8 @@ const CharacterMeta = ({ userId, character }) => {
         <Container textAlign="right">
           <Item>
             <Item.Meta className="metadata">
-              <p>Created by: {user.email}</p>
+              {/* FIXME */}
+              {/* <p>Created by: {user.email}</p> */}
               <p>Date Created: {character.created}</p>
               <p>Last Modified: {character.modified}</p>
             </Item.Meta>

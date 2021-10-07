@@ -20,7 +20,7 @@
             options={skillList.map(skill => (
               {
                 key: `skill-${skill.id}--row-${x}`, 
-                value: `${skill.id}`,
+                value: skill.id,
                 text: `${skill.name}`
               }
             ))}

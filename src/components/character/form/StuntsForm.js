@@ -1,28 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 
-import StuntRow from "./StuntRow";
 import "../Character.css";
+import StuntRow from "./StuntRow";
+import { useFateRules } from "../../../hooks/useFateRules";
 
+// TODO: Refactor this and all of its children
 const StuntsForm = ({
-  setCharacterStunts,
   characterStunts,
-  stuntList,
-  setStuntList,
-  skillList,
-  type,
-  maxStunts,
-  stuntComment,
+  setCharacterStunts,
+  characterSubType: {
+    name,
+    maxStunts,
+    stuntComment,
+  }
 }) => {
+
+  const { skillList , stuntList} = useFateRules();
+
+  const [ filteredStuntList, setFilteredStuntList ] = useState(stuntList);
 
   const createStuntRow = () => {
     let stuntRows = [];
-    for (let i = 1; i <= maxStunts; i++) {
+    for (let i = 0; i <= maxStunts; i++) {
       stuntRows.push(
         <StuntRow 
-          x={`${i}`}  
-          stuntList={stuntList} 
-          setStuntList={setStuntList} 
+          key={`stunt-${i}`}
+          x={`${i}`}
+          stuntList={filteredStuntList} 
+          setStuntList={setFilteredStuntList} 
           characterStunts={characterStunts} 
           setCharacterStunts={setCharacterStunts} 
           skillList={skillList}
@@ -49,7 +55,7 @@ const StuntsForm = ({
           </Grid.Column>
           <Grid.Column width={6}>
             {/* TODO: make this look cleaner on render */}
-            <h3>Stunts for {type}</h3>
+            <h3>Stunts for {name}</h3>
             <p>{stuntComment}</p>
           </Grid.Column>
         </Grid>

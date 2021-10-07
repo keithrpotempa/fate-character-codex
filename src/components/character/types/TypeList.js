@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Paginator from "react-hooks-paginator";
 import { Card } from "semantic-ui-react";
+import { useFateRules } from "../../../hooks/useFateRules";
 import SubTypeCard from "./SubTypeCard";
 
 /* 
@@ -8,9 +9,8 @@ import SubTypeCard from "./SubTypeCard";
   this receives a list of subtypes
   (filtered or not) and renders them with pagination
 */
-const TypeList = props => {
-  const typeList = props.typeList;
-  const subTypeList = props.subTypeList;
+const TypeList = ({ filteredSubTypes }) => {
+  const { characterTypes } = useFateRules();
 
   // State related to pagination 
   // reference: https://www.npmjs.com/package/react-hooks-paginator
@@ -20,8 +20,8 @@ const TypeList = props => {
   const [currentData, setCurrentData] = useState([]);
 
   useEffect(() => {
-    setCurrentData(subTypeList.slice(offset, offset + pageLimit))
-  }, [offset, subTypeList])
+    setCurrentData(filteredSubTypes.slice(offset, offset + pageLimit))
+  }, [offset, filteredSubTypes])
 
   return (
     <>
@@ -30,13 +30,13 @@ const TypeList = props => {
             <SubTypeCard
               key={`subType-${subType.id}`}
               subType={subType}
-              type={typeList.find(type => type.id === subType.characterTypeId)}
+              type={characterTypes.find(type => type.id === subType.characterTypeId)}
             />  
           )
         }
       </Card.Group>
       <Paginator 
-          totalRecords={subTypeList.length}
+          totalRecords={filteredSubTypes.length}
           pageLimit={pageLimit}
           pageNeighbours={2}
           setOffset={setOffset}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Dropdown } from "semantic-ui-react"
-import StuntList from "./StuntList"
+import { useFateRules } from "../../hooks/useFateRules";
+import StuntList from "../stunt/StuntList"
 
 // This is a parent component of StuntList
 // ~~it retrieves the stunts,~~ handles filters
@@ -9,8 +10,8 @@ import StuntList from "./StuntList"
 // TODO: Might be able to collapse this into stunt list now that 
 // the lists are coming from props
 const Stunts = props => {
-  const stunts = props.stuntList;
-  const skills = props.skillList;
+  const { skillList, stuntList } = useFateRules();
+
   const [filteredStunts, setFilteredStunts] = useState([]);
   const [filter, setFilter] = useState("");
 
@@ -20,15 +21,15 @@ const Stunts = props => {
 
   useEffect(() => {
     const filterStunts = () => {
-      const stuntList = stunts
+      const filteredStuntList = stuntList
         .filter(stunt => stunt.skillId === parseInt(filter))
-      setFilteredStunts(stuntList)
+      setFilteredStunts(filteredStuntList)
     }
 
     if (filter !== "") {
       filterStunts();
     }
-  }, [filter, stunts])
+  }, [filter, stuntList])
 
   return (
     <>
@@ -46,7 +47,7 @@ const Stunts = props => {
             id="skill"
             placeholder="Filter by skill"
             value={filter}
-            options={skills.map(skill => (
+            options={skillList.map(skill => (
               {
                 key: `skills-${skill.id}`,
                 value: `${skill.id}`,
@@ -60,9 +61,9 @@ const Stunts = props => {
           stunts={ 
             filter !== ""
               ? filteredStunts
-              : stunts
+              : stuntList
           } 
-          skills={skills}
+          skills={skillList}
         />
       </Container>
     </>

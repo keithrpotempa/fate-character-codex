@@ -1,33 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Icon, Label } from "semantic-ui-react"
+
 import "./Character.css";
-import ApiManager from "../../modules/ApiManager";
 
 const CharacterCard = ({
   character,
+  highConcept,
+  subType,
   activeUser,
   handleDelete,
 }) => {
-  const [highConcept, setHighConcept] = useState("");
-  const [subType, setSubType] = useState("");
-  
-  useEffect(() => {
-    ApiManager.getHighConcept(character.id)
-      .then(setHighConcept)
-    ApiManager.get("characterSubTypes", character.characterSubTypeId)
-      .then(subType => setSubType(subType.name))
-  }, [character])
 
   return (
     <>
       <Card 
         raised
-        // href={`/characters/${character.id}`}
         header={character.name}
         description={highConcept}
-        // FIXME: 
-        // meta={`by: ${user.email}`}
+        // TODO: Show the user that created it
+        // meta={`by: ${character.userId.email}`}
         extra={
           <>
             {/* A label detailing what character subtype they are  */}
@@ -39,9 +31,7 @@ const CharacterCard = ({
             />
             {/* Conditionally rendering these buttons 
             if the user created this character */}
-            {/* FIXME: */}
-            {/* {activeUser && activeUser.id === user.id */}
-            {true
+            {activeUser && activeUser?.uid === character.userId
             ? <div className="flex-end">
                 <Link to={`/characters/${character.id}`}>
                   <Button 

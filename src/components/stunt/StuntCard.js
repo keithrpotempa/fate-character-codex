@@ -2,21 +2,20 @@ import React from "react";
 import { Card } from "semantic-ui-react";
 import "./Stunt.css";
 
-const StuntCard = props => {
-  const name = props.stunt.name;
-  const description = props.stunt.description;
-  const skill = props.skill;
-  const skillUrl = props.skill.url;
+const StuntCard = ({ 
+  stunt: { name: stuntName, description }, 
+  skill: { name: skillName, url: stuntUrl } 
+}) => {
 
   return (
     <>
       <Card
         raised
-        header={name}
+        header={stuntName}
         description={description}
-        meta={`Associated Skill: ${skill.name}`}
+        meta={`Associated Skill: ${skillName}`}
         // The following safely open a new tab
-        href={skillUrl}
+        href={stuntUrl}
         target="_blank" 
         rel="noopener"
       />
