@@ -1,7 +1,6 @@
 import firebase from '../firebase'
 
 const fbUrl = "https://fate-character-codex.firebaseio.com";
-const localURL = "http://localhost:5002"
 
 const ApiManager = {
   // ---------------- FIREBASE ----------------
@@ -88,10 +87,10 @@ const ApiManager = {
   },
   // ---------------- JSON SERVER ----------------
   // TODO: Convert to Firebase approach
-  getUserByEmail(email) {
-    return fetch(`${localURL}/users?email=${email}`)
-    .then(result => result.json());
-  },
+  // getUserByEmail(email) {
+  //   return fetch(`${localURL}/users?email=${email}`)
+  //   .then(result => result.json());
+  // },
 };
 
 export default ApiManager;
