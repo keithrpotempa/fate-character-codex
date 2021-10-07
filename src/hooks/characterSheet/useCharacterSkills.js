@@ -22,7 +22,7 @@ export const useCharacterSkills = (id, skillList) => {
         skillsAtRating.forEach(skill => {
           const skillToSave = {
             characterId: characterId,
-            skillId: parseInt(skill),
+            skillId: skill,
             skillRating: parseInt(rating),
           }
           return ApiManager.push("characterSkills", skillToSave);
@@ -35,12 +35,12 @@ export const useCharacterSkills = (id, skillList) => {
     const skillsByRating = (skills, rating) => {
       // Converting the format of the db to the format of the form's state
       const filteredSkills = skills.filter(skill => skill.skillRating === rating)
-      const formattedSkills = filteredSkills.map(skill => skill.skillId.toString())
+      const formattedSkills = filteredSkills.map(skill => skill.skillId)
       return formattedSkills;
     }
 
     const setFormattedSkills = (rawSkills) => {
-      const stateToChange = {...characterSkills};
+      const stateToChange = {...EMPTY_SKILLS};
       // TODO: Make this loop more adaptable to different range of rating levels
       for (let i = 1; i < 7; i++) {
         stateToChange[i] = skillsByRating(rawSkills, i)
@@ -49,25 +49,25 @@ export const useCharacterSkills = (id, skillList) => {
     }
 
     const getCharacterSkills = () => {
-        ApiManager.getCharacterAttributes("characterSkills", id)
-          .then(rawSkills => {
-            // Before the skills are sorted into a weird format to output
-            // we extract the rating of will and physique to use later
-            // If they don't have a rating, consider it to be zero
-            const will = rawSkills.find( ({skillId}) => skillId === 18)
-            will ? setWillRating(will.skillRating) : setWillRating(0)
+      ApiManager.getCharacterAttributes("characterSkills", id)
+        .then(rawSkills => {
+          // Before the skills are sorted into a weird format to output
+          // we extract the rating of will and physique to use later
+          // If they don't have a rating, consider it to be zero
+          const will = rawSkills.find( ({skillId}) => skillId === 18)
+          will ? setWillRating(will.skillRating) : setWillRating(0)
+    
+          const physique = rawSkills.find( ({skillId}) => skillId === 12)
+          physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
+          return rawSkills
+        }).then(setFormattedSkills)
+    }
       
-            const physique = rawSkills.find( ({skillId}) => skillId === 12)
-            physique ? setPhysiqueRating(physique.skillRating) : setPhysiqueRating(0)
-            return rawSkills
-          }).then(setFormattedSkills)
-      }
-      
-      if (id) {
-        getCharacterSkills();
-      };
+    if (id) {
+      getCharacterSkills();
+    };
 
-  }, [characterSkills, id, skillList])
+  }, [id, skillList])
 
   return {
     isLoading,

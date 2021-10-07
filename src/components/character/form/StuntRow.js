@@ -34,7 +34,7 @@ const StuntRow = ({
               x={x} 
               handleFieldChange={handleFilter} 
               skillList={skillList}
-              />
+            />
           </Grid.Column>
           <Grid.Column>
             <StuntsDropdown 

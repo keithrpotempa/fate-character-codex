@@ -184,8 +184,12 @@ const MainForm = ({
   }
 
   useEffect(() => {
-    setIsLoading(false);
-  }, [])
+    // If the user happened to get to the edit page for a character they did not create
+    // reroute them back to home
+    if (character.userId && character.userId !== user.uid) {
+      history.push('/');
+    }
+  }, [character, history, user])
 
   return (
     <Container>

@@ -28,7 +28,7 @@ const SkillsMultiSelector = ({
           options={skillList.map(skill => (
             {
               key: `${skill.id}`,
-              value: `${skill.id}`,
+              value: skill.id,
               text: `${skill.name}`
             }
           ))}

@@ -22,6 +22,7 @@ export const useCharacterBasics = (id, characterSubTypes, user) => {
 
   const saveCharacterBasics = () => {
     const characterToSave = {...character}; 
+    characterToSave.characterSubTypeId = parseInt(characterToSave.characterSubTypeId);
     characterToSave.modified = new Date().toLocaleString();
     
     // Then we're creating a new character

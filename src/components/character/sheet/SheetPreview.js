@@ -20,7 +20,7 @@ const SheetPreview = ({
   // the character sheet (character detail view)
   // Review; last stage of creating / editing a character
 
-  const { isLoading, characterSubTypes, characterTypes } = useFateRules();
+  const { isLoading, characterSubTypes, characterTypes, stuntList } = useFateRules();
 
   let characterSubTypeObject;
   let characterTypeObject;
@@ -60,7 +60,7 @@ const SheetPreview = ({
             </Grid.Column>
           </Grid>
         </Segment>
-        <CharacterStunts stunts={stunts}/>
+        <CharacterStunts stunts={stunts} stuntList={stuntList}/>
         <StressConsequences
           physiqueRating={physiqueRating}
           willRating={willRating}

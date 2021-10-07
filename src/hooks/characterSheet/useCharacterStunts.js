@@ -29,16 +29,7 @@ export const useCharacterStunts = (id, stuntList) => {
   useEffect(()=>{
     const getCharacterStunts = () => {
       ApiManager.getCharacterAttributes("characterStunts", id)
-        .then(stunts => {
-          let formattedStunts = [];
-          // To keep this from crashing if stuntList hasn't loaded yet...
-          if (stuntList.length > 0) {
-            // Map a new array with the actual names of the stunts,
-            // found by matching the fk id from characterStunts and the stunt list
-            formattedStunts = stunts.map(stunt => stuntList[stunt.stuntId])
-          }
-          setCharacterStunts(formattedStunts)
-        });
+        .then((characterStuntObjs) => setCharacterStunts(characterStuntObjs.map((cs) => cs.stuntId)))
     }
     if (id) {
       getCharacterStunts();
@@ -55,10 +46,5 @@ export const useCharacterStunts = (id, stuntList) => {
   }
 };
 
-const EMPTY_STUNTS = {
-  5: "",
-  4: "",
-  3: "",
-  2: "",
-  1: ""
-}
+// An array of stuntIds
+const EMPTY_STUNTS = [];

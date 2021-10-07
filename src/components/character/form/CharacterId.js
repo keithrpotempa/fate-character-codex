@@ -27,9 +27,9 @@ const CharacterId = ({
     // If they're a PC, set their subtype for them
     // (there's no subtype for PCs)
     // Otherwise, wipe any chosen subtype
-    if (value === "0") {
+    if (value === 0) {
       // TODO: make this less dependent on being hard-coded
-      setCharacterSubType("5") // 5 is the PC subtype
+      setCharacterSubType(5) // 5 is the PC subtype
     } else {
       // If they're changing the character's type, 
       // clear any chosen subtype info
@@ -74,7 +74,7 @@ const CharacterId = ({
           options={characterTypes?.map(type => (
             {
               key: `type-${type.id}`,
-              value: `${type.id}`,
+              value: type.id,
               text: `${type.name}`
             }
           ))}
@@ -97,7 +97,7 @@ const CharacterId = ({
                   .map(type => (
                   {
                     key: `type-${type.id}`,
-                    value: `${type.id}`,
+                    value: type.id,
                     text: `${type.name}`
                   }
                 ))}

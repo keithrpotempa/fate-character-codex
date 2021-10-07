@@ -1,9 +1,9 @@
 import React from "react";
 import { Item, Divider } from "semantic-ui-react";
 
-const CharacterStunts = ({ stunts, }) => {
+const CharacterStunts = ({ stunts, stuntList }) => {
   return (
-    stunts.length > 0 
+    stunts.length > 0 && stuntList.length > 0
     ? <>
         <Divider horizontal>
           <h4>Stunts</h4>
@@ -15,12 +15,15 @@ const CharacterStunts = ({ stunts, }) => {
 
             This may cause problems with preview...
           */}
-          {stunts.map(stunt => 
-            <Item key={`stunt-${stunt.id}`}
-            header={stunt.name}
-            description={stunt.description}
-            />
-          )}
+          {stunts.map(stuntId => {
+            const stunt = stuntList.find((s) => s.id === stuntId);
+            return (
+              <Item key={`stunt-${stunt.id}`}
+                header={stunt.name}
+                description={stunt.description}
+              />
+            )
+          })}
         </Item.Group>
       </>
     : <></>

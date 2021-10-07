@@ -28,6 +28,10 @@ const CharacterList = ({ filteredCharacters, highConcepts, deleteCharacter }) =>
     setCurrentData(filteredCharacters.slice(offset, offset + PAGE_LIMIT))
   }, [offset, filteredCharacters])
 
+  if (characterSubTypes.length === 0) {
+    return null;
+  }
+
   return (
     <>
       <div className="header-container">

@@ -5,6 +5,7 @@ import "../Character.css";
 import StuntRow from "./StuntRow";
 import { useFateRules } from "../../../hooks/useFateRules";
 
+// TODO: Refactor this and all of its children
 const StuntsForm = ({
   characterStunts,
   setCharacterStunts,
@@ -21,10 +22,11 @@ const StuntsForm = ({
 
   const createStuntRow = () => {
     let stuntRows = [];
-    for (let i = 1; i <= maxStunts; i++) {
+    for (let i = 0; i <= maxStunts; i++) {
       stuntRows.push(
         <StuntRow 
-          x={`${i}`}  
+          key={`stunt-${i}`}
+          x={`${i}`}
           stuntList={filteredStuntList} 
           setStuntList={setFilteredStuntList} 
           characterStunts={characterStunts} 
