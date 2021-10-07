@@ -29,16 +29,16 @@ const ApplicationViews = props => {
     <>
       {/* -------------------MECHANICS------------------- */}
       {[
-        <Route path="/skills" render={props => {
+        <Route key="skills" path="/skills" render={props => {
           return <SkillList {...props}/>
         }}/>,
-        <Route path="/stunts" render={props => {
+        <Route key="stunts" path="/stunts" render={props => {
           return <Stunts {...props}/>
         }}/>,
-        <Route exact path="/types" render={props => {
+        <Route exact key="types" path="/types" render={props => {
           return <Types {...props}/>
         }}/>,
-        <Route path="/types/:subTypeId(\d+)" 
+        <Route key="type-detail" path="/types/:subTypeId(\d+)" 
           render={props => {
             return <TypeDetail 
               subTypeId={parseInt(props.match.params.subTypeId)}
@@ -46,13 +46,14 @@ const ApplicationViews = props => {
               {...props}
             />
         }}/>,
-        <Route exact path="/" render={props => {
+        <Route exact key="home" path="/" render={props => {
           return <Characters {...props}/>
         }}/>,
-        <Route exact path="/characters" render={props => {
+        <Route exact key="characters" path="/characters" render={props => {
           return <Characters {...props}/>
         }}/>,
         <Route
+          key="character-detail"  
           exact
           path="/characters/:characterId"
           render={props => {
@@ -60,6 +61,7 @@ const ApplicationViews = props => {
           }}
         />,
         <Route
+          key="character-edit"
           exact
           path="/characters/:characterId/edit"
           render={props => {
@@ -74,7 +76,8 @@ const ApplicationViews = props => {
             }
           }}
         />,
-        <Route 
+        <Route
+          key="new-character"
           exact
           path="/new-character"
           render={props => {

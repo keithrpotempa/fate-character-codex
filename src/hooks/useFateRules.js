@@ -30,14 +30,6 @@ const useProvideFateRules = () => {
       .then(setCharacterTypes)
   }
 
-  const getCharacterSubTypeList = () => {
-    return ApiManager.getAll("characterSubTypes")
-      .then((subtypes) => {
-        getSubTypesByType(subtypes);
-        setCharacterSubTypes(subtypes);
-      })
-  }
-
   const getSubTypesByType = subtypes => {
     const newSubTypesByType = {};
     subtypes.forEach(st => {
@@ -69,7 +61,13 @@ const useProvideFateRules = () => {
   }
 
   useEffect(() => {
-    // setIsLoading(true);
+    const getCharacterSubTypeList = () => {
+      return ApiManager.getAll("characterSubTypes")
+        .then((subtypes) => {
+          getSubTypesByType(subtypes);
+          setCharacterSubTypes(subtypes);
+        })
+    }
     Promise.all([
       getCharacterTypeList(),
       getCharacterSubTypeList(),

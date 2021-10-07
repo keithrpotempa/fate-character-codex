@@ -27,9 +27,7 @@ export const useCharacterSheet = (id, stuntList, skillList) => {
 
   const resetCharacter = () => {
     // FIXME: doesn't have access to these others
-    // setCharacterAspects(EMPTY_ASPECTS);
-    // setCharacterSkills(EMPTY_SKILLS);
-    // setCharacterStunts(EMPTY_STUNTS);
+    // setCharacterAspects(EMPTY_ASPECTS);  
   }
   
 

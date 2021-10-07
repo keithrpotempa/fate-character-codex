@@ -190,6 +190,7 @@ const MainForm = ({
   return (
     <Container>
       <SteppedFormControls
+        isLoading={isLoading}
         step={step}
         handleStepItemClick={handleStepItemClick}
         handleNextButtonClick={handleNextButtonClick}

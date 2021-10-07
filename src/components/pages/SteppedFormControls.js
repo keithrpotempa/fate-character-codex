@@ -4,6 +4,7 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 
 
 const SteppedFormControls = ({ 
+  isLoading,
   step,
   handleStepItemClick,
   handleNextButtonClick,
@@ -82,7 +83,7 @@ const SteppedFormControls = ({
             : <Button
                 type="button"
                 value="save"
-                // disabled={isLoading}
+                disabled={isLoading}
                 onClick={handleSaveAll}
               >
                 SAVE
