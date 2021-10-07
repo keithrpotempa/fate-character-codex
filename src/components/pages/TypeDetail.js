@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Container, Icon } from "semantic-ui-react";
-import { useFateRules } from "../../../hooks/useFateRules";
+import { useFateRules } from "../../hooks/useFateRules";
 
 const TypeDetail = ({ subTypeId, verbose }) => {
   const { characterSubTypes, characterTypes } = useFateRules();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Dropdown } from "semantic-ui-react"
 import { useFateRules } from "../../hooks/useFateRules";
-import StuntList from "./StuntList"
+import StuntList from "../stunt/StuntList"
 
 // This is a parent component of StuntList
 // ~~it retrieves the stunts,~~ handles filters

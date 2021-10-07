@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Loader } from "semantic-ui-react"
-import CharacterList from "./CharacterList"
+import CharacterList from "../character/CharacterList"
 
 import { useFateRules } from "../../hooks/useFateRules";
 import { useCharacterList } from "../../hooks/useCharacters";
 import { useCharacterFilter } from "../../hooks/useCharacterFilter";
-import CharacterFilterDropdowns from "./CharacterFilterDropdowns";
+import CharacterFilterDropdowns from "../character/CharacterFilterDropdowns";
 
 /* 
   Parent component of CharacterList

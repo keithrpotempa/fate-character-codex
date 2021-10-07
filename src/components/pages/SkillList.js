@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Paginator from "react-hooks-paginator";
 import { Card, Container } from "semantic-ui-react"
 import { useFateRules } from "../../hooks/useFateRules";
-import SkillCard from "./SkillCard"
+import SkillCard from "../skill/SkillCard"
 
 const SkillList = props => {
   const { skillList } = useFateRules();

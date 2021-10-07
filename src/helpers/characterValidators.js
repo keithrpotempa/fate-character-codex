@@ -2,16 +2,6 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 export const validChar = (character, aspects, skills) => {
-  const skillsAreEmpty = (characterSkills) => {
-    const skillLevels = Object.values(characterSkills)
-    const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
-    if (nonEmptySkillLevels.length > 0) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   if (character.name === "") {
     validationConfirm("Enter a character name")
   } else if (aspects[0].name === "") {
@@ -27,7 +17,17 @@ export const validChar = (character, aspects, skills) => {
   }
 }
 
-const validationConfirm = (message) => {
+export const skillsAreEmpty = (characterSkills) => {
+  const skillLevels = Object.values(characterSkills)
+  const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
+  if (nonEmptySkillLevels.length > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export const validationConfirm = (message) => {
   confirmAlert({
     title: 'Required Field',
     message: message,
@@ -40,7 +40,7 @@ const validationConfirm = (message) => {
   });
 }
 
-const duplicateSkills = (skills) => {
+export const duplicateSkills = (skills) => {
   const skillLevels = Object.values(skills)
   const nonEmptySkillLevels = skillLevels.filter(skillLevel => skillLevel.length !== 0)
   // Flatteing using the ES6 spread operator:
@@ -58,7 +58,7 @@ const duplicateSkills = (skills) => {
   return duplicates;
 }
 
-const duplicateStunts = (stunts) => {
+export const duplicateStunts = (stunts) => {
   const stuntRows = Object.values(stunts)
   const nonEmptyStuntRows = stuntRows.filter(stuntRow => stuntRow.length !== 0)
   // Flatteing using the ES6 spread operator:

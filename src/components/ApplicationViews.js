@@ -3,14 +3,14 @@ import { Route, Redirect } from "react-router-dom";
 
 import { Loader } from "semantic-ui-react";
 
-import SkillList from "./skill/SkillList";
-import Stunts from "./stunt/Stunts";
+import SkillList from "./pages/SkillList";
+import Stunts from "./pages/Stunts";
 
-import Characters from "./character/Characters";
-import CharacterSheet from "./character/sheet/CharacterSheet";
-import MainForm from "./character/form/MainForm";
-import Types from "./character/types/Types";
-import TypeDetail from "./character/types/TypeDetail";
+import Characters from "./pages/Characters";
+import CharacterSheet from "./pages/CharacterSheet";
+import MainForm from "./pages/MainForm";
+import Types from "./pages/Types";
+import TypeDetail from "./pages/TypeDetail";
 
 import { useAuth } from "../hooks/useAuth";
 import { useFateRules } from "../hooks/useFateRules";

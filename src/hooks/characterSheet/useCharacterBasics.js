@@ -38,17 +38,17 @@ export const useCharacterBasics = (id, characterSubTypes, user) => {
     setIsLoading(true);
     const getCharacter = () => {
       return ApiManager.get("characters", id)
-      .then(character => {
-        const subType = characterSubTypes.find((st) => st.id === character.characterSubTypeId);
-        setCharacterType(subType.characterTypeId);
-        setCharacter(character);
-        setIsLoading(false);
-      });
+        .then(character => {
+          const subType = characterSubTypes.find((st) => st.id === parseInt(character.characterSubTypeId));
+          setCharacterType(subType.characterTypeId);
+          setCharacter(character);
+          setIsLoading(false);
+        });
     }
     
     // Then we're editing, we've already retrieved the characterSubTypes, 
     // and we need to fetch the specific character
-    if (characterSubTypes.length && id) {
+    if (characterSubTypes.length > 0 && id) {
       getCharacter();
     } else {
       const newState = {...EMPTY_CHARACTER}
@@ -59,7 +59,6 @@ export const useCharacterBasics = (id, characterSubTypes, user) => {
       newState.userId = user ? user.uid : "";
       setCharacter(newState);
     }
-
   }, [id, characterSubTypes, user]);
 
   return {

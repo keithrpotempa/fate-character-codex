@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Dropdown } from "semantic-ui-react";
-import { useFateRules } from "../../../hooks/useFateRules";
-import TypeList from "./TypeList";
+import { useFateRules } from "../../hooks/useFateRules";
+import TypeList from "../character/types/TypeList";
 
 /*
   This is a parent component of the type list,

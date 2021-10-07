@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider, Dropdown, Form, Label } from "semantic-ui-react";
 import { useFateRules } from "../../../hooks/useFateRules";
-import TypeDetail from "../types/TypeDetail";
+import TypeDetail from "../../pages/TypeDetail";
 
 const CharacterId = ({
   character,
