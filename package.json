@@ -12,7 +12,7 @@
     "react-dom": "^16.13.0",
     "react-hooks-paginator": "^0.4.4",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "rxjs-compat": "^6.6.7",
     "semantic-ui-react": "^0.88.2",
     "yarn": "^1.22.4"
